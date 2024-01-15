@@ -19,7 +19,7 @@ def register(request):
                 user.save()
                 messages.success(request, 'You have singed up successfully.')
                 login(request, user)
-                request.session['username'] = user.username
+                #request.session['username'] = user.username
                 return redirect('profile')
             else:
                 return render(request, 'register.html', {'form': form})
@@ -29,7 +29,7 @@ def register(request):
 
 def login_user(request):
     if request.session.has_key('username'):#request.user.is_authenticated:
-        return redirect('user_home')
+        return redirect('home')
     else:
         if request.method == 'POST':
             form = LoginForm(data=request.POST)
@@ -40,8 +40,8 @@ def login_user(request):
                 if user:
                     messages.success(request, 'You have singed up successfully.')
                     login(request, user)
-                    request.session['username'] = user.username
-                    return redirect('user_home')
+                    #request.session['username'] = user.username
+                    return redirect('home')
             else:
                 messages.error(request,f'Invalid username or password')
                 return render(request, 'login.html', {'form': form})
@@ -54,8 +54,8 @@ def reset_password(request):
 @login_required
 def logout_user(request):
     logout(request)
-    del request.session['username']
-    return redirect('home')
+    #del request.session['username']
+    return redirect('start_page')
 
 @login_required
 def profile(request):

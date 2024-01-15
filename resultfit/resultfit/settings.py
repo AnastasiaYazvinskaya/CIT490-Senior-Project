@@ -29,7 +29,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = ['fresultfit.onrender.com', '.localhost']
+ALLOWED_HOSTS = ['fresultfit.onrender.com', '127.0.0.1']
 
 
 # Application definition
@@ -115,6 +115,7 @@ LOGIN_REDIRECT_URL = 'user_home'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # seconds * minutes * hours * days
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
