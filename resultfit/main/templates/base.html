@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        {#<!-- Required meta tags -->#}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {#<!-- Bootstrap CSS and styles-->#}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        {#<!-- Optional JavaScript -->#}
+        {#<!-- jQuery first, then Popper.js, then Bootstrap JS and scripts-->#}
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+        {% block style %} {% endblock %}
+        {#<!-- Title -->#}
+        <title>{% block title %}ResultFit{% endblock %}</title>
+        {#<!-- JS scripts -->#}
+        <script src="{% static 'js/base.js' %}"></script>
+        {% block script2 %}{% endblock %}
+    </head>
+    <body>
+        <div id="body-container" class="lighten">
+            {#<!-- Navigation (home, about)-->#}
+            <nav class="navbar" id="navbar">
+                {% block name %}{% endblock %}
+                <div class="menu-icon" id="menu-icon" onclick="toggleNav()">
+                    <span></span>
+                </div>
+                <div class="sidebar" id="sidebar">
+                    <a class="nav-link" href="{% url 'home' %}">Домашняя</a>
+                    <br>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="nav-link">{{ user.username }}</a>
+                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+            {% block navigation %} {% endblock %}
+            {#<!-- Content -->#}
+            <div class="content">
+                {% block content %} Шаблон {% endblock %}
+                {#<br><br>#}
+            </div>
+            {% block footer %}{% endblock %}
+            <div id="darken"></div>
+        </div>
+
+        {% block script1 %}{% endblock %}
+    </body>
+</html>

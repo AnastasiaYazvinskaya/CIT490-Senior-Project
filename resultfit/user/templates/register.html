@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- CSS styles -->#}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{#<!-- App name (link to the home page) -->#}
+{% block name %}<a id="cname" href="/">DietCreation</a>{% endblock %}
+{#<!-- Content for displaying list of recipes -->#}
+{% block content %} 
+        <h1>Регистрация</h1>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            {% endfor %}
+        {% endif %}
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {# {{ form.as_p }} #}
+            {% for field in form %}
+                <p>
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {{ field.label_tag }} {{ field }}
+                </p>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Register</button>
+            <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+        </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- CSS styles -->#}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{#<!-- App name (link to the home page) -->#}
+{% block name %}<a id="cname" href="/">DietCreation</a>{% endblock %}
+{#<!-- Content for displaying list of recipes -->#}
+{% block content %}       
+    <h1>Profile</h1>
+    <p>Здесь будет возмодность настроить свой профиль:</p>
+    <p>Аватарка</p>
+    <p>Имя</p>
+    <p>Описание (для других пользователей. короткое)</p>
+    <p>Тип аккаунта (соответственно условия/подписка)</p>
+    <p>Что-нибудь ещё типа статистики. Или другое, ещё надо подумать</p>
+{% endblock %}

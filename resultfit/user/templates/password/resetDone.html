@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- CSS styles -->#}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{#<!-- App name (link to the home page) -->#}
+{% block name %}<a id="cname" href="/">DietCreation</a>{% endblock %}
+{#<!-- Content for displaying list of recipes -->#}
+{% block content %}
+<div class="center card">
+	<h2>Reset Password</h2>
+	<p>Please check your inbox and follow the instruction to reset your password.</p>
+</div>
+{% endblock %}
