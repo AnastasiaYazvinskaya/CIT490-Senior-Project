@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+{#<!-- Main header (title) -->#}
+    <h1>{% block title %}
+        {% if pk != None %}
+            Редактирование данных тренера
+        {% else %}
+            Добавление тренера
+        {% endif %}
+    {% endblock %}</h1>
+    {#<!-- Форма отправки данных -->#}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {#<!-- Таблица полей, для ровного отображения -->#}
+        <table>
+            <tr>
+                <td>{{ form.lastName.label_tag }}</td>
+                <td>{{ form.lastName }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.firstName.label_tag }}</td>
+                <td>{{ form.firstName }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.email.label_tag }}</td>
+                <td>{{ form.email }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.code.label_tag }}</td>
+                <td>{{ form.code }}</td>
+                <td><button type="button" onclick="generateCode()">Сгенерировать код</button></td>
+            </tr>
+        </table>
+        {#<!-- Button for submiting form -->#}
+        <div class="form-group">
+            <a class="btn btn-danger" href="/trainers/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+    </form>
+{% endblock %}

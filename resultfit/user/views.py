@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import *
 from .forms import *
-
-# Create your views here.
 
 def register(request):
     if request.user.is_authenticated:
@@ -15,9 +14,7 @@ def register(request):
             form = RegisterForm(request.POST)
             if form.is_valid():
                 user = form.save(commit=False)
-                user.username = user.username.lower()
                 user.save()
-                messages.success(request, 'You have singed up successfully.')
                 login(request, user)
                 #request.session['username'] = user.username
                 return redirect('profile')
@@ -26,6 +23,32 @@ def register(request):
         form = RegisterForm
         return render(request, 'register.html', {'form': form})
     
+def trainer_register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        if request.method == 'POST':
+            form = TrainerRegisterForm(request.POST)
+            code = request.POST['code']
+            trainer = PrepareUser.objects.get(code=code)
+            if (trainer and not trainer.user):
+                if form.is_valid():
+                    user = form.save(commit=False)
+                    user.save()
+                    group = Group.objects.get(name='trainer')
+                    group.user_set.add(user)
+                    trainer.user = user
+                    trainer.save()
+                    login(request, user)
+                    #request.session['username'] = user.username
+                    return redirect('profile')
+                else:
+                    return render(request, 'trainer/trainer_register.html', {'form': form, 'code': code})
+            else:
+                messages.error(request, 'Тренер по этому коду уже зарегистрирован')
+                return render(request, 'trainer/trainer_register.html', {'form': form, 'code': code})
+        form = TrainerRegisterForm
+        return render(request, 'trainer/trainer_register.html', {'form': form})
 
 def login_user(request):
     if request.session.has_key('username'):#request.user.is_authenticated:
@@ -64,3 +87,78 @@ def profile(request):
 @login_required
 def home(request):
     return render(request, 'home.html')
+
+# Trainers page
+@login_required
+def trainers(request):
+    if request.user.groups.filter(name='administrator').exists():
+        trainers = PrepareUser.objects.all().order_by('active')
+        
+        # Получение значения из поля поиска
+        search = request.GET.get('searchTrainer')
+        if search:
+            # Фильтрация списка
+            trainers = trainers.filter(firstName__icontains = search)|trainers.filter(lastName__icontains = search)|trainers.filter(email__icontains = search)
+        return render(request, 'trainer/trainers.html', {'trainers': trainers, 'search': search})
+    return redirect('home')
+
+# Trainer page
+@login_required
+def trainer(request, pk=None):
+    if request.user.groups.filter(name='administrator').exists():
+        if id:
+            trainer = PrepareUser.objects.get(pk=pk)
+            return render(request, 'trainer/trainer_read.html', {'trainer': trainer})
+        return redirect('trainers')
+    return redirect('home')
+
+# Create/Edit trainer page
+@login_required
+def create_update_trainer(request, pk=None):
+    if pk != None:
+        # Если ключ передан, то ищем объект
+        trainerObj = PrepareUser.objects.get(pk = pk)
+    else: 
+        # Если ключ не передан, то работаем с пустым объектом
+        trainerObj = None
+    if request.method == "POST":
+        form = PrepareUserForm(request.POST, request.FILES, instance = trainerObj)
+        if form.is_valid():
+            # Предсохраняем данные введенные с формы (но не вносим в базу)
+            trainer = form.save(commit=False)
+            # Переносим все изменения в базу
+            trainer.save()
+            #form.save_m2m()
+            return redirect('trainer', pk=trainer.pk)
+    else:
+        form = PrepareUserForm(instance = trainerObj)
+    return render(request, "trainer/trainer_create_update.html", {'form': form, 'pk': pk})
+
+# Deactivate trainer
+@login_required
+def delete_trainer(request, pk=None):
+    trainer = PrepareUser.objects.get(pk = pk)
+    
+    if request.method == "POST":
+        trainer.active = False
+        template = request.POST['template']
+        # Переносим все изменения в базу
+        trainer.save()
+        if template == 'list':
+            return redirect('trainers')
+        elif template == 'card':
+            return redirect('trainer', pk=trainer.pk)
+        
+def validate_code(request):
+    code = request.GET.get('code', None)
+    trainer = PrepareUser.objects.filter(code=code).values().first()
+    if (code != None):
+        response = {
+            'trainer': trainer
+        }
+    else:
+        response = {
+            'error': 'Введите код'
+        }
+        print('response', response)
+    return JsonResponse(response)

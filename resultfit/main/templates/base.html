@@ -32,12 +32,17 @@
                 </div>
                 <div class="sidebar" id="sidebar">
                     <a class="nav-link" href="{% url 'home' %}">Домашняя</a>
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == "administrator" %}
+                            <a class="nav-link" href="{% url 'trainers' %}">Тренера</a>
+                        {% endif %}
+                    {% endfor %}
                     <br>
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'profile' %}" class="nav-link">{{ user.username }}</a>
-                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                        <a href="{% url 'logout' %}" class="nav-link">Выйти</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                        <a href="{% url 'login' %}" class="nav-link">Войти</a>
                     {% endif %}
                 </div>
             </nav>

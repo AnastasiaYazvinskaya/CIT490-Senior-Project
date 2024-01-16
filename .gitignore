@@ -162,3 +162,4 @@ cython_debug/
 #Additional
 .vscode/
 [0-9][0-9][0-9][0-9]*.py
+staticfiles/

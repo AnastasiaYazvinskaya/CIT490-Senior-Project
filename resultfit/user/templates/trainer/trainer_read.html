@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- Content for Reading page -->#}
+{% block content %}
+    {#<!-- Main header (title) -->#}
+    <h1>{% block title %} Тренер {% endblock %}</h1>
+    {#<!-- Other object data -->#}
+    <div class="object-detail">
+        <p>Фамилия: {{ trainer.lastName }}</p>
+        <p>Имя: {{ trainer.firstName }}</p>
+        <p>email: {{ trainer.email }}</p>
+        <p>Код для входа: {{ trainer.code }}</p>
+        <p>Авторизован?: {% if trainer.user %}
+                Да
+            {% else %}
+                Нет
+            {% endif %}
+        </p>
+    </div>
+    <div class="acts">
+        <a href="/trainers/{{ trainer.pk }}/update" style="display: inline-block;">
+            <img src="{% static 'images/editBtn.svg' %}" alt="Edit">
+        </a>
+        <form action="" method="POST" id="delete-form">
+            {% csrf_token %}
+            <input type="hidden" value="card" name="template">
+            <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete"></button>
+        </form>
+    </div>
+{% endblock %}

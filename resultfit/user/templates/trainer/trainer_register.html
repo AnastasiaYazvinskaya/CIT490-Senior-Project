@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load static %}
+{% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
 {% block content %} 
-        <h1>Регистрация</h1>
+        <h1>Регистрация тренера</h1>
         {% if messages %}
             {% for message in messages %}
                 {{ message }}
@@ -12,6 +14,13 @@
         <form action="" method="post" novalidate>
             {% csrf_token %}
             <table>
+                <tr>
+                    <td>Код регистрации:</td>
+                    <td><input type="text" name="code" required autofocus id="id_code" value="{{ code }}"/></td>
+                    <td><button type="button" id="checkCodeBtn">Проверить код</button></td>
+                    <td id="code_error"></td>
+                </tr>
+                <tr><td colspan="3"><hr></td></tr>
                 <tr>
                     <td>{{ form.last_name.label_tag }}</td>
                     <td>{{ form.last_name }}</td>
@@ -87,7 +96,7 @@
                 </tr>
             </table>
             <button type="submit" class="btn btn-success">Зарегистрироваться</button>
-            <p>Являетесь тренером? <a href="{% url 'trainer_register' %}">Зарегистрироваться через код тренера</a></p>
             <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+            <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
         </form>
 {% endblock %}
