@@ -46,7 +46,7 @@ class TrainerRegisterForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Имя пользователя')
-    password1 = forms.CharField(label="Пароль", strip=False, widget=forms.PasswordInput)
+    password = forms.CharField(label="Пароль", strip=False, widget=forms.PasswordInput)
     class Meta:
         model = User
         fields = ['username', 'password']

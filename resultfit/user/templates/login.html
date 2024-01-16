@@ -12,19 +12,32 @@
     {% endif %}
     <form action="" method="post" novalidate>
         {% csrf_token %}
-        {# {{ form.as_p }} #}
-        {% for field in form %}
-                <p>
-                    {% if field.errors %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+                <td>{% if form.username.errors %}
                         <ul class="errorlist">
-                            {% for error in field.errors %}
+                            {% for error in form.username.errors %}
                                 <li>{{ error }}</li>
                             {% endfor %}
                         </ul>
                     {% endif %}
-                    {{ field.label_tag }} {{ field }}
-                </p>
-        {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+                <td>{% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
         <input type="submit" class="btn btn-success" value="Войти" />
         <p>Забыли пароль? <a href="{% url 'reset' %}">Восстановить</a></p>
         <p>Являетесь тренером? <a href="{% url 'trainer_register' %}">Зарегистрироваться через код тренера</a></p>
