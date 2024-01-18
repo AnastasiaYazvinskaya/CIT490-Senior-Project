@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
+{% block pageName %}Список тренеров{% endblock %}
 {#<!-- Content for displaying list of trainers -->#}
 {% block content %}
-    {#<!-- Main header (title)-->#}
-    <h1>{% block title %}Список тренеров{% endblock %}</h1>
+    <div id="messages">
+        <p id="success_code">Какое то сообщение</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     {#<!-- List (line) with general icons -->#}
     <div class="list-icons">
         {#<!-- Add icon (button) for creating new trainer -->#}
@@ -13,8 +20,11 @@
             {#<!-- Text field for search -->#}
             <input type="text" name="searchTrainer" placeholder="Поиск" 
                     class="form-control" 
-                    value="{{ search }}"
-            ></input>
+                    {% if search %}
+                        value="{{ search }}"
+                    {% else %}
+                        value=""
+                    {% endif %}></input>
             {#<!-- Button for submiting form -->#}
             <input type="image" src="{% static 'images/searchBtn.svg' %}" alt="Поиск">
         </form>
@@ -25,8 +35,7 @@
         <tr>
             <th>Фамилия Имя</th>
             <th>Email</th>
-            <th>Код для входа</th>
-            <th>Регистрация пройдена</th>
+            <th>Подтвердил</th>
             <th></th>
             <th></th>
             <th></th>
@@ -36,7 +45,6 @@
                 <tr>
                     <td><a href="/trainers/card/{{ trainer.id }}/">{{ trainer.lastName }} {{ trainer.firstName }}</a></td>
                     <td>{{ trainer.email }}</td>
-                    <td>{{ trainer.code }}</td>
                     <td>
                         {% if trainer.user %}
                             Да
@@ -44,26 +52,31 @@
                             Нет
                         {% endif %}
                     </td>
-                    <td>RE</td>
+                    <td>
+                        
+                        <button type="button" class="sendEmailBtn" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" style="height: 20px; width: 20px;"></button>
+                    </td>
                     <td>
                         <a href="/trainers/{{ trainer.id }}/update">
-                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit">
+                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" style="height: 20px; width: 20px;">
                         </a>
                     </td>
                     <td>
                         <form action="" method="POST" id="delete-form">
                             {% csrf_token %}
                             <input type="hidden" value="list" name="template">
-                            <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete"></button>
+                            <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" style="height: 20px; width: 20px;"></button>
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         {#<!-- If there is no trainer in data then let user know. -->#}
         {% else %}
-            <tr colspan="2">
-                <p>На данный момент не зарегистрированно ни одного тренера.</p>
-                <p><a class="btn btn-secondary" href="#">Добавить тренера</a></p>
+            <tr>
+                <td colspan="6" id="emptyList">
+                    <p>На данный момент не зарегистрированно ни одного тренера.</p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_trainer' %}">Добавить тренера</a></p>
+                </td>
             </div>
         {% endif %}
     </table>

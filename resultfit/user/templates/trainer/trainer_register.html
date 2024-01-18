@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
 {% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
 {% block content %} 
+<div id="enterForm">
+    <h4><a href="{% url 'start_page' %}">ResultFit</a></h4>
+    <hr id="fromTitle">
         <h1>Регистрация тренера</h1>
         {% if messages %}
             {% for message in messages %}
@@ -16,18 +20,23 @@
             <table>
                 <tr>
                     <td>Код регистрации:</td>
-                    <td><input type="text" name="code" required autofocus id="id_code" value="{{ code }}"/></td>
-                    <td><button type="button" id="checkCodeBtn">Проверить код</button></td>
-                    <td id="code_error"></td>
+                    <td><input type="text" name="code" required autofocus id="id_code"
+                        {% if code %}
+                            value="{{ code }}"
+                        {% else %}
+                            value=""
+                        {% endif %}/></td>
+                    <td><button type="button" id="checkCodeBtn" class="btn btn-secondary">Проверить</button></td>
+                    <td class="errorCol"><img src="{% static 'images/error.svg' %}" id="code_error" class="btnImage"></td>
                 </tr>
                 <tr><td colspan="3"><hr></td></tr>
                 <tr>
                     <td>{{ form.last_name.label_tag }}</td>
                     <td>{{ form.last_name }}</td>
-                    <td>{% if form.last_name.errors %}
+                    <td class="errorCol">{% if form.last_name.errors %}
                             <ul class="errorlist">
                                 {% for error in form.last_name.errors %}
-                                    <li>{{ error }}</li>
+                                    <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -36,10 +45,10 @@
                 <tr>
                     <td>{{ form.first_name.label_tag }}</td>
                     <td>{{ form.first_name }}</td>
-                    <td>{% if form.first_name.errors %}
+                    <td class="errorCol">{% if form.first_name.errors %}
                             <ul class="errorlist">
                                 {% for error in form.first_name.errors %}
-                                    <li>{{ error }}</li>
+                                    <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -48,10 +57,10 @@
                 <tr>
                     <td>{{ form.email.label_tag }}</td>
                     <td>{{ form.email }}</td>
-                    <td>{% if form.email.errors %}
+                    <td class="errorCol">{% if form.email.errors %}
                             <ul class="errorlist">
                                 {% for error in form.email.errors %}
-                                    <li>{{ error }}</li>
+                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -64,7 +73,7 @@
                     <td>{% if form.username.errors %}
                             <ul class="errorlist">
                                 {% for error in form.username.errors %}
-                                    <li>{{ error }}</li>
+                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -76,7 +85,7 @@
                     <td>{% if form.password1.errors %}
                             <ul class="errorlist">
                                 {% for error in form.password1.errors %}
-                                    <li>{{ error }}</li>
+                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -88,7 +97,7 @@
                     <td>{% if form.password2.errors %}
                             <ul class="errorlist">
                                 {% for error in form.password2.errors %}
-                                    <li>{{ error }}</li>
+                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -99,4 +108,5 @@
             <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
             <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
         </form>
+        </div>
 {% endblock %}

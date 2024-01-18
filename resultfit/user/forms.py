@@ -55,5 +55,13 @@ class PrepareUserForm(forms.ModelForm):
     code = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'readonly': 'readonly'}), label='Код регистрации')
     class Meta:
         model = PrepareUser
-        fields = ('lastName', 'firstName', 'email', 'code')
+        fields = ('lastName', 'firstName', 'email', 'code') 
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if PrepareUser.objects.filter(email=cleaned_data.get('email')).exists():
+            self.add_error('email', "Эта почта уже используется")
+        if PrepareUser.objects.filter(code=cleaned_data.get('code')).exists():
+            self.add_error('code', "КАжется код случайно повторился, обновите код.")
+
 

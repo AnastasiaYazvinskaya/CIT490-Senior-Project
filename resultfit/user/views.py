@@ -23,7 +23,7 @@ def register(request):
         form = RegisterForm
         return render(request, 'register.html', {'form': form})
     
-def trainer_register(request):
+def trainer_register(request, code=None):
     if request.user.is_authenticated:
         return redirect('home')
     else:
@@ -47,8 +47,16 @@ def trainer_register(request):
             else:
                 messages.error(request, 'Тренер по этому коду уже зарегистрирован')
                 return render(request, 'trainer/trainer_register.html', {'form': form, 'code': code})
-        form = TrainerRegisterForm
-        return render(request, 'trainer/trainer_register.html', {'form': form})
+        if code:
+            if PrepareUser.objects.filter(code=code).exists():
+                trainer = PrepareUser.objects.get(code=code)
+            else:
+                messages.error(request, f'Приглашений с кодом {code} не обнаружено')
+                return redirect('register')
+            form = TrainerRegisterForm(instance = User(last_name = trainer.lastName, first_name = trainer.firstName, email = trainer.email))
+        else:
+            form = TrainerRegisterForm
+        return render(request, 'trainer/trainer_register.html', {'form': form, 'code': code})
 
 def login_user(request):
     if request.session.has_key('username'):#request.user.is_authenticated:
@@ -161,4 +169,27 @@ def validate_code(request):
             'error': 'Введите код'
         }
         print('response', response)
+    return JsonResponse(response)
+
+def send_email(request):
+    email = request.GET.get('email', None)
+    response = {
+        'email': email
+    }
+    if email:
+        trainer = PrepareUser.objects.filter(email=email).values().first()
+        html_message = render_to_string("email/trainerCode.html", {'trainer': trainer})
+        plain_message = strip_tags(html_message)
+
+        message = EmailMultiAlternatives(
+            subject = 'Создание тренерского аккаунта', 
+            body = plain_message,
+            from_email = settings.EMAIL_HOST_USER,
+            to= [email]
+        )
+
+        message.attach_alternative(html_message, "text/html")
+        message.send()
+    else:
+        response.error = 'Пустая почта'
     return JsonResponse(response)

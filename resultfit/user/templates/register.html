@@ -1,5 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
 {% block content %} 
+    <div id="enterForm">
+        <h4><a href="{% url 'start_page' %}">ResultFit</a></h4>
+        <hr id="fromTitle">
         <h1>Регистрация</h1>
         {% if messages %}
             {% for message in messages %}
@@ -15,7 +20,7 @@
                 <tr>
                     <td>{{ form.last_name.label_tag }}</td>
                     <td>{{ form.last_name }}</td>
-                    <td>{% if form.last_name.errors %}
+                    <td class="errorCol">{% if form.last_name.errors %}
                             <ul class="errorlist">
                                 {% for error in form.last_name.errors %}
                                     <li>{{ error }}</li>
@@ -27,7 +32,7 @@
                 <tr>
                     <td>{{ form.first_name.label_tag }}</td>
                     <td>{{ form.first_name }}</td>
-                    <td>{% if form.first_name.errors %}
+                    <td class="errorCol">{% if form.first_name.errors %}
                             <ul class="errorlist">
                                 {% for error in form.first_name.errors %}
                                     <li>{{ error }}</li>
@@ -39,7 +44,7 @@
                 <tr>
                     <td>{{ form.email.label_tag }}</td>
                     <td>{{ form.email }}</td>
-                    <td>{% if form.email.errors %}
+                    <td class="errorCol">{% if form.email.errors %}
                             <ul class="errorlist">
                                 {% for error in form.email.errors %}
                                     <li>{{ error }}</li>
@@ -52,7 +57,7 @@
                 <tr>
                     <td>{{ form.username.label_tag }}</td>
                     <td>{{ form.username }}</td>
-                    <td>{% if form.username.errors %}
+                    <td class="errorCol">{% if form.username.errors %}
                             <ul class="errorlist">
                                 {% for error in form.username.errors %}
                                     <li>{{ error }}</li>
@@ -64,7 +69,7 @@
                 <tr>
                     <td>{{ form.password1.label_tag }}</td>
                     <td>{{ form.password1 }}</td>
-                    <td>{% if form.password1.errors %}
+                    <td class="errorCol">{% if form.password1.errors %}
                             <ul class="errorlist">
                                 {% for error in form.password1.errors %}
                                     <li>{{ error }}</li>
@@ -76,7 +81,7 @@
                 <tr>
                     <td>{{ form.password2.label_tag }}</td>
                     <td>{{ form.password2 }}</td>
-                    <td>{% if form.password2.errors %}
+                    <td class="errorCol">{% if form.password2.errors %}
                             <ul class="errorlist">
                                 {% for error in form.password2.errors %}
                                     <li>{{ error }}</li>
@@ -90,4 +95,5 @@
             <p>Являетесь тренером? <a href="{% url 'trainer_register' %}">Зарегистрироваться через код тренера</a></p>
             <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
         </form>
+    </div>
 {% endblock %}

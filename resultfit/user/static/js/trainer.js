@@ -11,7 +11,6 @@ function generateCode() {
 }
 $(document).ready(function(){
     $('#checkCodeBtn').on('click', function () {
-        console.log('checkCodeBtn clicked');
         // создаем AJAX-вызов
         $.ajax({
             data: {
@@ -33,9 +32,31 @@ $(document).ready(function(){
                         $('#code_error').text(response.error);
                     } else {
                         console.log('do not find trainer');
-                        $('#code_error').value = 'Не найден тренер с этим кодом. Проверьте код и попробуйте ещё раз.';
+                        $('#code_error').attr('title', 'Не найден тренер с этим кодом. Проверьте код и попробуйте ещё раз.');
+                        $('#code_error').css('display', 'inline');
                     }
                 }
+            },
+            // если ошибка, то
+            error: function (response) {
+                // предупредим об ошибке
+                console.log(response.responseJSON.errors)
+            }
+        });
+        return false;
+    })
+
+    $('.sendEmailBtn').on('click', function () {
+        // создаем AJAX-вызов
+        $.ajax({
+            data: {
+                "email": $(this).val()
+            }, // получаяем данные формы
+            url: "send_email",
+            // если успешно, то
+            success: function (response) {
+                $('#messages').text("Повторное письмо для регистрации отправлено на "+response.email);
+                $('#messages').css('display', 'flex');
             },
             // если ошибка, то
             error: function (response) {
