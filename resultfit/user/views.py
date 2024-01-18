@@ -120,13 +120,9 @@ def trainer(request, pk=None):
         return redirect('trainers')
     return redirect('home')
 
-from django.core import mail
-from django.core.mail.backends.smtp import EmailBackend
 # Create/Edit trainer page
 @login_required
 def create_update_trainer(request, pk=None):
-    connection = mail.get_connection()
-    print('connection', connection)
     if pk != None:
         # Если ключ передан, то ищем объект
         trainerObj = PrepareUser.objects.get(pk = pk)
