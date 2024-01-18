@@ -2,8 +2,8 @@
 {% load static %}
 {#<!-- Content for Reading page -->#}
 {% block content %}
-    {#<!-- Main header (title) -->#}
-    <h1>{% block title %} Тренер {% endblock %}</h1>
+<h4 class="small-header">{% block pageName %}Тренер{% endblock %}</h4>
+<div id="inside-content">
     {#<!-- Other object data -->#}
     <div class="object-detail">
         <p>Фамилия: {{ trainer.lastName }}</p>
@@ -27,4 +27,5 @@
             <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete"></button>
         </form>
     </div>
+</div>
 {% endblock %}

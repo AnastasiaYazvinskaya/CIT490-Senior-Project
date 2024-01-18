@@ -2,9 +2,10 @@
 {% load static %}
 {% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
 {% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
-{% block pageName %}Список тренеров{% endblock %}
 {#<!-- Content for displaying list of trainers -->#}
 {% block content %}
+<h4 class="small-header">{% block pageName %}Список тренеров{% endblock %}</h4>
+<div id="inside-content">
     <div id="messages">
         <p id="success_code">Какое то сообщение</p>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -80,4 +81,5 @@
             </div>
         {% endif %}
     </table>
+</div>
 {% endblock %}
