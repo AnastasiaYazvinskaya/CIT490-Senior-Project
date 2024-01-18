@@ -9,9 +9,14 @@ from django.conf import settings
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
-    height = models.CharField(max_length=20, verbose_name ='Рост')
-    weight = models.CharField(max_length=20, verbose_name ='Вес')
-    activity = models.CharField(max_length=20, verbose_name ='Активность')
+    height = models.CharField(max_length=20, verbose_name ='Рост', null=True)
+    weight = models.CharField(max_length=20, verbose_name ='Вес', null=True)
+    activity = models.CharField(max_length=20, verbose_name ='Активность', null=True)
+    SEX_CHOICES = (
+        ('F', 'Ж',),
+        ('M', 'М',),
+    )
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES, null=True)
     
     def __str__(self):
         return self.user.username

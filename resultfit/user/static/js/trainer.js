@@ -19,7 +19,6 @@ $(document).ready(function(){
             url: "validate_code",
             // если успешно, то
             success: function (response) {
-                console.log(response);
                 if (response.trainer) {
                     console.log('response.trainer exists');
                     $('#id_last_name').val(response.trainer.lastName);
@@ -55,7 +54,7 @@ $(document).ready(function(){
             url: "send_email",
             // если успешно, то
             success: function (response) {
-                $('#messages').text("Повторное письмо для регистрации отправлено на "+response.email);
+                $('#success_code').text("Повторное письмо для регистрации отправлено на "+response.email);
                 $('#messages').css('display', 'flex');
             },
             // если ошибка, то

@@ -35,38 +35,37 @@
     <table class="table table-striped">
         <tr>
             <th>Фамилия Имя</th>
-            <th>Email</th>
+            <th class="emailCol">Email</th>
             <th>Подтвердил</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th class="btnCol"></th>
+            <th class="btnCol"></th>
+            <th class="btnCol"></th>
         </tr>
         {% if trainers %}
             {% for trainer in trainers %}
                 <tr>
                     <td><a href="/trainers/card/{{ trainer.id }}/">{{ trainer.lastName }} {{ trainer.firstName }}</a></td>
-                    <td>{{ trainer.email }}</td>
-                    <td>
+                    <td class="emailCol">{{ trainer.email }}</td>
+                    <td class="acceptCol">
                         {% if trainer.user %}
                             Да
                         {% else %}
                             Нет
                         {% endif %}
                     </td>
-                    <td>
-                        
-                        <button type="button" class="sendEmailBtn" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" style="height: 20px; width: 20px;"></button>
+                    <td class="btnCol">
+                        <button type="button" class="sendEmailBtn btnImage" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" class="btnImage"></button>
                     </td>
-                    <td>
+                    <td class="btnCol">
                         <a href="/trainers/{{ trainer.id }}/update">
-                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" style="height: 20px; width: 20px;">
+                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
                         </a>
                     </td>
-                    <td>
+                    <td class="btnCol">
                         <form action="" method="POST" id="delete-form">
                             {% csrf_token %}
                             <input type="hidden" value="list" name="template">
-                            <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" style="height: 20px; width: 20px;"></button>
+                            <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
                         </form>
                     </td>
                 </tr>

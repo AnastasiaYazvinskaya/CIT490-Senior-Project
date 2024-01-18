@@ -18,13 +18,13 @@
         </p>
     </div>
     <div class="acts">
-        <a href="/trainers/{{ trainer.pk }}/update" style="display: inline-block;">
-            <img src="{% static 'images/editBtn.svg' %}" alt="Edit">
+        <a href="/trainers/{{ trainer.pk }}/update">
+            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
         </a>
         <form action="" method="POST" id="delete-form">
             {% csrf_token %}
             <input type="hidden" value="card" name="template">
-            <button type="submit"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete"></button>
+            <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
         </form>
     </div>
 </div>

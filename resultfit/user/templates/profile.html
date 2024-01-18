@@ -3,6 +3,17 @@
 {% block content %}   
 <h4 class="small-header">{% block pageName %}Профиль{% endblock %}</h4>
 <div id="inside-content">
-    <p>Потом решим что тут будет</p>
+    <p>Фамилия Имя</p>
+    <p>Email</p>
+    <p>Тип пользователя</p>
+    <hr>
+    <p>Пол</p>
+    <p>Рост</p>
+    <p>Вес</p>
+    <p>Активность</p>
+    <p>КБЖУ <button>Рассчитать</button></p>
+    <hr>
+    <a href="#" class="btn btn-primary" style="text-decoration: line-through;">Редактировать</a>
+    <a href="{% url 'logout' %}" class="btn btn-danger">Выйти</a>
 </div>    
 {% endblock %}

@@ -120,9 +120,13 @@ def trainer(request, pk=None):
         return redirect('trainers')
     return redirect('home')
 
+from django.core import mail
+from django.core.mail.backends.smtp import EmailBackend
 # Create/Edit trainer page
 @login_required
 def create_update_trainer(request, pk=None):
+    connection = mail.get_connection()
+    print('connection', connection)
     if pk != None:
         # Если ключ передан, то ищем объект
         trainerObj = PrepareUser.objects.get(pk = pk)
@@ -137,7 +141,7 @@ def create_update_trainer(request, pk=None):
             # Переносим все изменения в базу
             trainer.save()
             #form.save_m2m()
-            return redirect('trainer', pk=trainer.pk)
+            return redirect('trainers')
     else:
         form = PrepareUserForm(instance = trainerObj)
     return render(request, "trainer/trainer_create_update.html", {'form': form, 'pk': pk})
@@ -159,6 +163,7 @@ def delete_trainer(request, pk=None):
         
 def validate_code(request):
     code = request.GET.get('code', None)
+    print('code', code)
     trainer = PrepareUser.objects.filter(code=code).values().first()
     if (code != None):
         response = {
