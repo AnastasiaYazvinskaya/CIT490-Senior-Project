@@ -1,9 +1,8 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import PrepareUser
 from django.core.validators import RegexValidator
-from django.core.exceptions import ValidationError
+from .models import Profile
 
 class RegisterForm(UserCreationForm):
     username = forms.CharField(validators=[RegexValidator(
@@ -51,17 +50,15 @@ class LoginForm(AuthenticationForm):
         model = User
         fields = ['username', 'password']
 
-class PrepareUserForm(forms.ModelForm):
-    code = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'readonly': 'readonly'}), label='Код регистрации')
+class ProfileForm(forms.ModelForm):
+    CHOICES = [('M','Мужчина'),('F','Женщина')]
+    sex = forms.CharField(label='Пол', widget=forms.RadioSelect(choices=CHOICES))
     class Meta:
-        model = PrepareUser
-        fields = ('lastName', 'firstName', 'email', 'code') 
+        model = Profile
+        fields = ('sex', 'age', 'height', 'weight', 'activity', 'purpose') 
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if PrepareUser.objects.filter(email=cleaned_data.get('email')).exists():
-            self.add_error('email', "Эта почта уже используется")
-        if PrepareUser.objects.filter(code=cleaned_data.get('code')).exists():
-            self.add_error('code', "КАжется код случайно повторился, обновите код.")
-
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('last_name', 'first_name', 'email')
 

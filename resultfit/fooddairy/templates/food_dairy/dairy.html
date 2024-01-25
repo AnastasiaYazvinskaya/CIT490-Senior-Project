@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/food_dairy.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/food_dairy.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of trainers -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Дневник питания{% endblock %}</h4>
+<div id="inside-content">
+    <p>День первый (чт 24.01.2024)</p>
+    <p>Фото</p>
+    <p>КБЖУ</p>
+    <p>Описание</p>
+    <p>Комментарии тренера (и клиента ?)</p>
+    <hr>
+    <p>День второй (пт 25.01.2024)</p>
+    <p>Фото</p>
+    <p>КБЖУ</p>
+    <p>Описание</p>
+    <p>Комментарии тренера (и клиента ?)</p>
+    <hr>
+    <p>и тд</p>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+/*Tables*/
+.list-icons {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    height: 25px;
+}
+#addBtn {
+    font-size: 45px;
+    line-height: 25px;
+    padding: 0;
+    margin-top: -5px;
+}
+#addBtn:hover {
+    text-decoration: none;
+    color: black;
+}
+#search {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    margin-top: 2px;
+}
+#search input{
+    height: 25px;
+    margin-top: 0;
+}
+th {
+    font-size: 15px;
+}
+#emptyList {
+    text-align: center;
+}
+.btnCol {
+    width: 25px;
+    padding: 0.75rem 0.3rem !important;
+}
+.table-striped {
+    max-width: 100%;
+}
+.emailCol {
+    display: none;
+}
+.acceptCol, th {
+    text-align: center;
+}
+
+@media screen and (min-width: 600px){
+    
+    .emailCol {
+        display: block;
+    }
+}

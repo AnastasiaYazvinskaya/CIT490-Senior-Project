@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Редактирование профиля{% endblock %}</h4>
+<div id="inside-content">
+    {#<!-- Форма отправки данных -->#}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {#<!-- Таблица полей, для ровного отображения -->#}
+        <table>
+            <tr>
+                <td>Фамилия Имя</td>
+                <td>{{ form2.last_name }}{{ form2.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ form2.email }}</td>
+            </tr>
+            <tr>
+                <td>Тип пользователя</td>
+                <td>{% for group in request.user.groups.all %}
+                        {% if request.user.groups.all|length == 1 or request.user.groups.all|length > 1 and group.name != 'base' %}
+                            {{ group }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><hr></td>
+            </tr>
+            <tr>
+                <td>Пол</td>
+                <td>{{ form1.sex }}</td>
+            </tr>
+            <tr>
+                <td>Возраст</td>
+                <td>{{ form1.age }}</td>
+            </tr>
+            <tr>
+                <td>Рост</td>
+                <td>{{ form1.height }}</td>
+            </tr>
+            <tr>
+                <td>Вес</td>
+                <td>{{ form1.weight }}</td>
+            </tr>
+            <tr>
+                <td>Активность</td>
+                <td>{{ form1.activity }}</td>
+            </tr>
+            <tr>
+                <td>Цель</td>
+                <td>{{ form1.purpose }}</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-danger" href="/profile/">Отмена</a></td>
+                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

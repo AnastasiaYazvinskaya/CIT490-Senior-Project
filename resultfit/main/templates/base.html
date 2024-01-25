@@ -34,13 +34,19 @@
                     </div>
                 </div>
                 <div id="menu" class="menu">
-                    <a href="{% url 'home' %}">Домашняя</a>
-                    <a href="#" style="text-decoration: line-through;">Питание</a>
-                    <a href="#" style="text-decoration: line-through;">Тренировки</a>
-                    
+                    <a href="{% url 'home' %}" {% if activeHome %}class="active"{% endif %}>Домашняя</a>
+                    <a href="{% url 'fooddairy' %}" {% if activeFood %}class="active"{% endif %}>Питание</a>
+                    <a href="#" style="text-decoration: line-through;" {% if activeSport %}class="active"{% endif %}>Тренировки</a>
+                    <br>
                     {% for group in request.user.groups.all %}
+                        {% if group.name == "trainer" %}
+                            <a href="{% url 'clients' %}" {% if activeClient %}class="active"{% endif %}>Клиенты</a>
+                        {% endif %}
                         {% if group.name == "administrator" %}
-                            <a href="{% url 'trainers' %}">Тренера</a>
+                            <a href="{% url 'trainers' %}" {% if activeTrainer %}class="active"{% endif %}>Тренера</a>
+                        {% endif %}
+                        {% if group.name == "programmer" %}
+                            <a href="{% url 'systemdata' %}" {% if activeSystemdata %}class="active"{% endif %}>Системные данные</a>
                         {% endif %}
                     {% endfor %}
                 </div>

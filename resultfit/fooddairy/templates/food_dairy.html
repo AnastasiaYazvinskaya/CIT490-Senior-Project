@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/food_dairy.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/food_dairy.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of trainers -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Питание{% endblock %}</h4>
+<div id="inside-content">
+    <table>
+        <tr>
+            <td>Ккал</td>
+            <td>{% if dairy.kkal %}{{ dairy.kkal }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Белки</td>
+            <td>{% if dairy.proteins %}{{ dairy.proteins }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Жиры</td>
+            <td>{% if dairy.fats %}{{ dairy.fats }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Углеводы</td>
+            <td>{% if dairy.carbohydrates %}{{ dairy.carbohydrates }}{% else %}-{% endif %}</td>
+        </tr>
+    </table>
+    <a class="btn btn-secondary" href="{% url 'food_dairy' %}">Дневник</a>
+</div>
+{% endblock %}

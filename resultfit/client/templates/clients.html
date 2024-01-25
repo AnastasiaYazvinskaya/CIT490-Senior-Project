@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of clients -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Список клиентов{% endblock %}</h4>
+<div id="inside-content">
+    <div id="messages">
+        <p id="success_code">Какое то сообщение</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {#<!-- List (line) with general icons -->#}
+    <div class="list-icons">
+        {#<!-- Search -->#}
+        <form id="search" method="GET" class="form" action="{% url 'clients' %}">
+            {#<!-- Text field for search -->#}
+            <input type="text" name="searchclient" placeholder="Поиск" 
+                    class="form-control" 
+                    {% if search %}
+                        value="{{ search }}"
+                    {% else %}
+                        value=""
+                    {% endif %}></input>
+            {#<!-- Button for submiting form -->#}
+            <input type="image" src="{% static 'images/searchBtn.svg' %}" alt="Поиск">
+        </form>
+    </div>
+    {#<!-- List of clients. If there is any client in data then show them all. -->#}
+    {#<!-- For each client in data create a new block -->#}
+    <table class="table table-striped">
+        <tr>
+            <th>Фамилия Имя</th>
+            <th>Email</th>
+            <th class="btnCol"></th>
+        </tr>
+        {% if clients %}
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.client.last_name }} {{ client.client.first_name }}</td>
+                    <td>{{ client.client.email }}</td>
+                    <td class="btnCol">
+                        <a href="{% url 'client' client.client.id %}">
+                            <img src="{% static 'images/viewBtn.svg' %}" alt="View" class="btnImage">
+                        </a>
+                    </td>
+                    {% comment %} <td class="btnCol">
+                        {% if client.active %}
+                            <a href="#">
+                                <img src="{% static 'images/deactivate.svg' %}" alt="Deactivate" class="btnImage">
+                            </a>
+                        {% else %}
+                            <a href="#">
+                                <img src="{% static 'images/activate.svg' %}" alt="Activate" class="btnImage">
+                            </a>
+                        {% endif %}
+                    </td>
+                    {% endcomment %}
+                </tr>
+            {% endfor %}
+        {#<!-- If there is no client in data then let user know. -->#}
+        {% else %}
+            <tr>
+                <td colspan="6" id="emptyList">
+                    <p>На данный момент не зарегистрированно ни одного тренера.</p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_client' %}">Добавить тренера</a></p>
+                </td>
+            </div>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

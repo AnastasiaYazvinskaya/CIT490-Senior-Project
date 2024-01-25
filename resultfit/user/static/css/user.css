@@ -1,42 +1,3 @@
-.list-icons {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-}
-#addBtn {
-    font-size: 45px;
-    line-height: 25px;
-    padding: 0;
-    margin-top: -5px;
-}
-#addBtn:hover {
-    text-decoration: none;
-    color: black;
-}
-#search {
-    display: flex;
-    position: absolute;
-    right: 10px;
-    margin-top: 2px;
-}
-#search input{
-    height: 25px;
-    margin-top: 0;
-}
-th {
-    font-size: 15px;
-}
-#emptyList {
-    text-align: center;
-}
-.saveCol {
-    position: relative;
-}
-.saveCol button {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 /*Login and Register*/
 #enterForm {
     text-align: center;
@@ -65,75 +26,13 @@ hr#fromTitle {
     background-color: #133417;
     height: 2px;
 }
-.btnCol {
-    width: 25px;
-    padding: 0.75rem 0.3rem !important;
-}
-.table-striped {
-    max-width: 100%;
-}
-.emailCol {
-    display: none;
-}
-.acceptCol, th {
-    text-align: center;
-}
-.acts {
-    display: flex;
-    width: fit-content;
-}
-.acts a{
-    margin: 0 1px;
-}
 
 @media screen and (min-width: 600px){
-    .list-icons {
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 10px;
-    }
-    #addBtn {
-        font-size: 45px;
-        line-height: 25px;
-        padding: 0;
-        margin-top: -5px;
-    }
-    #addBtn:hover {
-        text-decoration: none;
-        color: black;
-    }
-    #search {
-        display: flex;
-        position: absolute;
-        right: 10px;
-        margin-top: 2px;
-    }
-    #search input{
-        height: 25px;
-        margin-top: 0;
-    }
-    th {
-        font-size: 15px;
-    }
-    #emptyList {
-        text-align: center;
-    }
-    .saveCol {
-        position: relative;
-    }
-    .saveCol button {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
     /*Login and Register*/
     #enterForm {
         min-height: fit-content;
         width: 500px;
         margin: 10px auto;
         border-radius: 10px;
-    }
-    .emailCol {
-        display: block;
     }
 }

@@ -41,8 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
-    'user',
+    'main', #
+    'systemdata', #Системные данные - справочники
+    'user', #Работа с пользователями (вход, регистрация, выход, профиль)
+    'trainer', #Работа с приглашенными тренером (регистрация, список тренеров, создание/просмотр/изменение/удаление тренера)
+    'client', #Работа с клиентом (список клиентов, просмотр/изменение/удаление тренера)
+    'fooddairy', #Дневник питания
+    'recipe', #Работа с рецептами (вообще тут должно быть согласование с DietCreation)
 ]
 
 MIDDLEWARE = [
@@ -137,9 +142,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+#STATICFILES_DIRS = (
+#    BASE_DIR / 'static',
+#)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

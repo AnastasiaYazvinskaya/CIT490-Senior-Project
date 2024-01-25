@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    {% block style2 %}{% endblock %}
+{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Системные данные{% endblock %}</h4>
+<div id="inside-content">
+    <div id="submenu" class="submenu">
+        <a href="{% url 'activity' %}" {% if activeActivity %}class="subactive"{% endif %}>Тип активности</a>
+        <a href="{% url 'purpose' %}" {% if activePurpose %}class="subactive"{% endif %}>Цель</a>
+    </div>
+    <div id="messages">
+        <p id="success_code">Какое то сообщение</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {#<!-- List (line) with general icons -->#}
+    <div class="list-icons">
+        {#<!-- Add icon (button) for creating new trainer -->#}
+        <a  {% if activeActivity %}
+                href="{% url 'create_activity' %}"
+            {% elif activePurpose %}
+                href="{% url 'create_purpose' %}"
+            {% endif %}
+        id="addBtn">+</a>
+        {#<!-- Search -->#}
+        <form id="search" method="GET" class="form" 
+            {% if activeActivity %}
+                action="{% url 'activity' %}"
+            {% elif activePurpose %}
+                action="{% url 'purpose' %}"
+            {% endif %}
+        >
+            {#<!-- Text field for search -->#}
+            <input type="text" name="search" placeholder="Поиск" 
+                    class="form-control" 
+                    {% if search %}
+                        value="{{ search }}"
+                    {% else %}
+                        value=""
+                    {% endif %}></input>
+            {#<!-- Button for submiting form -->#}
+            <input type="image" src="{% static 'images/searchBtn.svg' %}" alt="Поиск">
+        </form>
+    </div>
+    {% block content2 %}{% endblock %}
+</div>
+{% endblock %}

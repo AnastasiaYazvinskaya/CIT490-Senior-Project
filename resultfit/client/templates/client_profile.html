@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of clients -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Профиль клиента{% endblock %}</h4>
+<div id="inside-content">
+    <table>
+        <tr>
+            <td>Фамилия Имя</td>
+            <td>{{ client.user.last_name }} {{ client.user.first_name }}</td>
+        </tr>
+        <tr>
+            <td>Телефон</td>
+            <td></td>
+        </tr>
+    </table>
+    <p>Фамилия Имя</p>
+    <p>Контактные данные (телефон?)</p>
+    <p>Текущие показатели (рост/вес/активность)</p>
+    <p>Статистика по дневнику питания</p>
+    <p>Статистика по дневнику тренировок (+ план/график тренировок)</p>
+</div>
+{% endblock %}

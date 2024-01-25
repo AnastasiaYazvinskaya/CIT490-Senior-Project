@@ -1,0 +1,41 @@
+{% extends "systemdata.html" %}
+{% load static %}
+{#<!-- Content for displaying list of trainers -->#}
+{% block content2 %}
+    <table class="table table-striped">
+        <tr>
+            <th>Название</th>
+            <th>Коэфициент</th>
+            <th class="emailCol">Описание</th>
+            <th class="btnCol"></th>
+            <th class="btnCol"></th>
+        </tr>
+        {% if activities %}
+            {% for activity in activities %}
+                <tr>
+                    <td>{{ activity.name }}</td>
+                    <td class="centerCol">{{ activity.rate }}</td>
+                    <td class="emailCol">{{ activity.description }}</td>
+                    <td class="btnCol">
+                        <a href="{% url 'update_activity' activity.id %}">
+                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
+                        </a>
+                    </td>
+                    <td class="btnCol">
+                        <a href="{% url 'delete_activity' activity.id %}">
+                            <img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage">
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {#<!-- If there is no trainer in data then let user know. -->#}
+        {% else %}
+            <tr>
+                <td colspan="6" id="emptyList">
+                    <p>На данный момент данные отсутствуют.</p>
+                    <p><a class="btn btn-secondary" href="">Добавить</a></p>
+                </td>
+            </div>
+        {% endif %}
+    </table>
+{% endblock %}

@@ -1,19 +1,65 @@
 {% extends "base.html" %}
+{% load static %}
 {#<!-- Content for displaying list of recipes -->#}
 {% block content %}   
 <h4 class="small-header">{% block pageName %}Профиль{% endblock %}</h4>
 <div id="inside-content">
-    <p>Фамилия Имя</p>
-    <p>Email</p>
-    <p>Тип пользователя</p>
-    <hr>
-    <p>Пол</p>
-    <p>Рост</p>
-    <p>Вес</p>
-    <p>Активность</p>
-    <p>КБЖУ <button>Рассчитать</button></p>
-    <hr>
-    <a href="#" class="btn btn-primary" style="text-decoration: line-through;">Редактировать</a>
+    <a href="{% url 'update_profile' profile.id %}" class="btn btn-primary">Редактировать</a>
     <a href="{% url 'logout' %}" class="btn btn-danger">Выйти</a>
+    <br>
+    <table>
+        <tr>
+            <td>Фамилия Имя</td>
+            <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{ profile.user.email }}</td>
+        </tr>
+        <tr>
+            <td>Тип пользователя</td>
+            <td>{% for group in profile.user.groups.all %}
+                    {% if profile.user.groups.all|length == 1 or profile.user.groups.all|length > 1 and group.name != 'base' %}
+                        {{ group }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><hr></td>
+        </tr>
+        <tr>
+            <td>Пол</td>
+            <td>{% if profile.sex %}{{ profile.sex }}{% else %}-{% endif %}</td>
+            <td rowspan="5"  class="centerCol">
+                {% if profile.sex and profile.age and profile.height and profile.weight and profile.activity %}
+                    <a href="{% url 'calculate_cpfc' profile.user.id %}" class="btn btn-secondary">Рассчитать КБЖУ</a>
+                {% else %}
+                    <p>Заполните данные, чтобы мы могли сформировать для вас наилучшие рекомендации по питанию и физической активности.</p>
+                    <a href="{% url 'update_profile' profile.id %}" class="btn btn-secondary">Заполнить</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Возраст</td>
+            <td>{% if profile.age %}{{ profile.age }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Рост</td>
+            <td>{% if profile.height %}{{ profile.height }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Вес</td>
+            <td>{% if profile.weight %}{{ profile.weight }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Активность</td>
+            <td>{% if profile.activity %}{{ profile.activity }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Цель</td>
+            <td>{% if profile.purpose %}{{ profile.purpose }}{% else %}-{% endif %}</td>
+        </tr>
+    </table>
 </div>    
 {% endblock %}

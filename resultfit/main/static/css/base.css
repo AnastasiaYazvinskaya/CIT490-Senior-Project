@@ -83,11 +83,31 @@ nav {
     color: #f6eedb;
 }
 #menu a:hover {
-    background-color: #375c33;
+    /*background-color: #375c33;*/
     color: #ffffff;
     text-decoration: none;
 }
 a {
+    color: #000000;
+}
+#menu a.active {
+    background-color: #375c33;
+    color: #ffffff;
+}
+#submenu a {
+    font-size: 16.5px;
+    line-height: 35px;
+    border-bottom: 3px solid #b1b1b1;
+    padding: 0 15px;
+    margin-right: -5px;
+    color: #807f7f;
+}
+#submenu a:hover {
+    color: #285422;
+    text-decoration: none;
+}
+#submenu a.subactive {
+    border-bottom: 3px solid #4b8a44;
     color: #000000;
 }
 #interface {
@@ -145,6 +165,14 @@ h4.small-header {
     color:#9a0303;
     width: 30px;
 }
+.saveCol {
+    position: relative;
+}
+.saveCol button {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
 img.btnImage {
     height: 25px;
     width: 25px;
@@ -157,6 +185,16 @@ button.btnImage {
 }
 #code_error {
     display: none;
+}
+.acts {
+    display: flex;
+    width: fit-content;
+}
+.acts a{
+    margin: 0 1px;
+}
+.centerCol {
+    text-align: center;
 }
 
 @media screen and (min-width: 600px){/*and (orientation: portrait){*/
@@ -197,5 +235,13 @@ button.btnImage {
     }
     #inside-content {
         margin-left: 0;
+    }
+    .saveCol {
+        position: relative;
+    }
+    .saveCol button {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 }
