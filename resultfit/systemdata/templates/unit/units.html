@@ -5,29 +5,29 @@
     <table class="table table-striped">
         <tr>
             <th>Название</th>
-            <th>Коэфициент</th>
+            <th>Полное Название</th>
             <th class="emailCol">Описание</th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
         </tr>
-        {% if activities %}
-            {% for activity in activities %}
+        {% if units %}
+            {% for unit in units %}
                 <tr>
-                    <td>{{ activity.name }}</td>
-                    <td class="centerCol">{{ activity.rate }}</td>
-                    <td class="emailCol">{{ activity.description }}</td>
+                    <td>{{ unit.name }}</td>
+                    <td>{{ unit.full_name }}</td>
+                    <td class="emailCol">{{ unit.description }}</td>
                     <td class="btnCol">
-                        <a href="{% url 'update_activity' activity.id %}">
+                        <a href="{% url 'update_unit' unit.id %}">
                             <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
                         </a>
                     </td>
                     <td class="btnCol">
-                        {% if activity.active %}
-                            <a href="{% url 'delete_activity' activity.id %}">
+                        {% if unit.active %}
+                            <a href="{% url 'delete_unit' unit.id %}">
                                 <img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage">
                             </a>
                         {% else %}
-                            <a href="{% url 'activate_activity' activity.id %}">
+                            <a href="{% url 'activate_unit' unit.id %}">
                                 <img src="{% static 'images/return.svg' %}" alt="Return to active" class="btnImage">
                             </a>
                         {% endif %}
@@ -39,7 +39,7 @@
             <tr>
                 <td colspan="6" id="emptyList">
                     <p>На данный момент данные отсутствуют.</p>
-                    <p><a class="btn btn-secondary" href="{% url 'create_activity' %}">Добавить</a></p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_unit' %}">Добавить</a></p>
                 </td>
             </tr>
         {% endif %}

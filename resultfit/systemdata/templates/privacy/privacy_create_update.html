@@ -6,9 +6,9 @@
 {% block content %}
 <h4 class="small-header">{% block pageName %}
     {% if pk != None %}
-        Редактирование типа активности
+        Редактирование типа приватности
     {% else %}
-        Добавление типа активности
+        Добавление типа приватности
     {% endif %}
 {% endblock %}</h4>
 <div id="inside-content">
@@ -22,16 +22,12 @@
                 <td>{{ form.name }}</td>
             </tr>
             <tr>
-                <td>{{ form.rate.label_tag }}</td>
-                <td>{{ form.rate }}</td>
-            </tr>
-            <tr>
                 <td>{{ form.description.label_tag }}</td>
                 <td>{{ form.description }}</td>
             </tr>
             <tr>
-                <td><a class="btn btn-danger" href="{% url 'activity' %}?active=True">Отмена</a></td>
-                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
+                <td><a class="btn btn-danger" href="{% url 'privacy' %}?active=True">Отмена</a></td>
+                <td class="saveCol" colspan="3"><button type="submit" class="btn btn-primary">Сохранить</button></td>
             </tr>
         </table>
     </form>

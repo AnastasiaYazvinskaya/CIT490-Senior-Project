@@ -89,6 +89,10 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL')
     )
+    #,'dietcreation': {
+    #    'ENGINE': str(os.getenv('DB_ENGINE')),
+    #    'NAME': BASE_DIR / str(os.getenv('DB_NAME')),
+    #}
 }
 
 #DATABASES = {

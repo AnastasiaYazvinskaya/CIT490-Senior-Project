@@ -44,10 +44,16 @@ th {
 .acceptCol, th {
     text-align: center;
 }
+.minCol {
+    font-size: 12.5px;
+}
 
 @media screen and (min-width: 600px){
     
     .emailCol {
         display: block;
+    }
+    .minCol {
+        font-size: 1em;
     }
 }

@@ -8,16 +8,21 @@ from user.models import Profile
    
 # Clients page
 @login_required
-def clients(request):#Список клиентов для тренера
+def clients(request, type):#Список клиентов для тренера
     if request.user.groups.filter(name='trainer').exists():
-        clients = ClientTrainer.objects.all().order_by('id', 'active')
+        if type == 'current':
+            clients = ClientTrainer.objects.filter(trainer = request.user, active = True).order_by('id')
+        elif type == 'request':
+            clients = ClientTrainer.objects.filter(trainer = request.user, active = False).order_by('id')
+        requestNum = len(ClientTrainer.objects.filter(active = False))
         
         # Получение значения из поля поиска
         search = request.GET.get('search')
         if search:
+            pass
             # Фильтрация списка
-            clients = clients.filter(client_firstName__icontains = search)|clients.filter(client_lastName__icontains = search)|clients.filter(client_email__icontains = search)
-        return render(request, 'clients.html', {'clients': clients, 'search': search, 'activeClient': True})
+            #clients = clients.filter(client_firstName__icontains = search)|clients.filter(client_lastName__icontains = search)|clients.filter(client_email__icontains = search)
+        return render(request, 'clients.html', {'clients': clients, 'search': search, 'activeCurrent': type == 'current', 'activeRequest': type == 'request', 'requestNum': requestNum})
     return redirect('home')
 
 # Client page
@@ -29,6 +34,24 @@ def client(request, pk=None):
             return render(request, 'client_profile.html', {'client': client, 'activeClient': True})
         return redirect('clients')
     return redirect('home')
+
+@login_required
+def accept_client(request, pk):
+    if request.user.groups.filter(name='trainer').exists():
+        if pk:
+            client = ClientTrainer.objects.get(pk=pk)
+            if (client.trainer == request.user):
+                client.active = True
+                client.save()
+        requestNum = len(ClientTrainer.objects.filter(active = False))
+        if requestNum > 0:
+            type = 'request'
+        else:
+            type = 'current'
+        return redirect('clients', type)
+    return redirect('home')
+
+
 """
 # Deactivate trainer
 @login_required

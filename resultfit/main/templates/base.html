@@ -40,7 +40,7 @@
                     <br>
                     {% for group in request.user.groups.all %}
                         {% if group.name == "trainer" %}
-                            <a href="{% url 'clients' %}" {% if activeClient %}class="active"{% endif %}>Клиенты</a>
+                            <a href="{% url 'clients' 'current' %}" {% if activeClient %}class="active"{% endif %}>Клиенты</a>
                         {% endif %}
                         {% if group.name == "administrator" %}
                             <a href="{% url 'trainers' %}" {% if activeTrainer %}class="active"{% endif %}>Тренера</a>

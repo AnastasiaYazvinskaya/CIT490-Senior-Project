@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
-{% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
 {#<!-- Content for displaying list of clients -->#}
 {% block content %}
 <h4 class="small-header">{% block pageName %}Список клиентов{% endblock %}</h4>
 <div id="inside-content">
+    <div id="submenu" class="submenu">
+        <a href="{% url 'clients' 'current' %}" {% if activeCurrent %}class="subactive"{% endif %}>Текущие клиенты</a>
+        <a href="{% url 'clients' 'request' %}" {% if activeRequest %}class="subactive"{% endif %}>Запросы<span class="countNum">{{ requestNum }}</span></a>
+    </div>
     <div id="messages">
         <p id="success_code">Какое то сообщение</p>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,7 +18,9 @@
     {#<!-- List (line) with general icons -->#}
     <div class="list-icons">
         {#<!-- Search -->#}
-        <form id="search" method="GET" class="form" action="{% url 'clients' %}">
+        <form id="search" method="GET" class="form" 
+            {% if activeCurrent %}action="{% url 'clients' 'current' %}"{% endif %}
+            {% if activeRequest %}action="{% url 'clients' 'request' %}"{% endif %}>
             {#<!-- Text field for search -->#}
             <input type="text" name="searchclient" placeholder="Поиск" 
                     class="form-control" 
@@ -33,41 +38,31 @@
     <table class="table table-striped">
         <tr>
             <th>Фамилия Имя</th>
-            <th>Email</th>
+            <th>Телефон</th>
+            <th>Цель</th>
             <th class="btnCol"></th>
+            {% if activeRequest %}<th class="btnCol"></th>{% endif %}
         </tr>
         {% if clients %}
             {% for client in clients %}
                 <tr>
-                    <td>{{ client.client.last_name }} {{ client.client.first_name }}</td>
-                    <td>{{ client.client.email }}</td>
+                    <td>{{ client.client.user.last_name }} {{ client.client.user.first_name }}</td>
+                    <td class="centerCol">{% if client.client.phone %}{{ client.client.phone }}{% else %}-{% endif %}</td>
+                    <td class="centerCol">{% if client.client.purpose %}{{ client.client.purpose }}{% else %}-{% endif %}</td>
                     <td class="btnCol">
-                        <a href="{% url 'client' client.client.id %}">
+                        <a href="{% url 'client' client.client.user.id %}">
                             <img src="{% static 'images/viewBtn.svg' %}" alt="View" class="btnImage">
                         </a>
                     </td>
-                    {% comment %} <td class="btnCol">
-                        {% if client.active %}
-                            <a href="#">
-                                <img src="{% static 'images/deactivate.svg' %}" alt="Deactivate" class="btnImage">
+                    {% if not client.active %}
+                        <td class="btnCol">
+                            <a href="{% url 'accept_client' client.id %}">
+                                <img src="{% static 'images/accept.svg' %}" alt="accept" class="btnImage">
                             </a>
-                        {% else %}
-                            <a href="#">
-                                <img src="{% static 'images/activate.svg' %}" alt="Activate" class="btnImage">
-                            </a>
-                        {% endif %}
-                    </td>
-                    {% endcomment %}
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
-        {#<!-- If there is no client in data then let user know. -->#}
-        {% else %}
-            <tr>
-                <td colspan="6" id="emptyList">
-                    <p>На данный момент не зарегистрированно ни одного тренера.</p>
-                    <p><a class="btn btn-secondary" href="{% url 'create_client' %}">Добавить тренера</a></p>
-                </td>
-            </div>
         {% endif %}
     </table>
 </div>

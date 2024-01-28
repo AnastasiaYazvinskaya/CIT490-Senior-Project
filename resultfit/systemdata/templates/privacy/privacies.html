@@ -5,29 +5,27 @@
     <table class="table table-striped">
         <tr>
             <th>Название</th>
-            <th>Коэфициент</th>
-            <th class="emailCol">Описание</th>
+            <th>Описание</th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
         </tr>
-        {% if activities %}
-            {% for activity in activities %}
+        {% if privacies %}
+            {% for privacy in privacies %}
                 <tr>
-                    <td>{{ activity.name }}</td>
-                    <td class="centerCol">{{ activity.rate }}</td>
-                    <td class="emailCol">{{ activity.description }}</td>
+                    <td>{{ privacy.name }}</td>
+                    <td>{{ privacy.description }}</td>
                     <td class="btnCol">
-                        <a href="{% url 'update_activity' activity.id %}">
+                        <a href="{% url 'update_privacy' privacy.id %}">
                             <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
                         </a>
                     </td>
                     <td class="btnCol">
-                        {% if activity.active %}
-                            <a href="{% url 'delete_activity' activity.id %}">
+                        {% if privacy.active %}
+                            <a href="{% url 'delete_privacy' privacy.id %}">
                                 <img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage">
                             </a>
                         {% else %}
-                            <a href="{% url 'activate_activity' activity.id %}">
+                            <a href="{% url 'activate_privacy' privacy.id %}">
                                 <img src="{% static 'images/return.svg' %}" alt="Return to active" class="btnImage">
                             </a>
                         {% endif %}
@@ -39,7 +37,7 @@
             <tr>
                 <td colspan="6" id="emptyList">
                     <p>На данный момент данные отсутствуют.</p>
-                    <p><a class="btn btn-secondary" href="{% url 'create_activity' %}">Добавить</a></p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_privacy' %}">Добавить</a></p>
                 </td>
             </tr>
         {% endif %}

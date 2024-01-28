@@ -9,8 +9,9 @@
 <h4 class="small-header">{% block pageName %}Системные данные{% endblock %}</h4>
 <div id="inside-content">
     <div id="submenu" class="submenu">
-        <a href="{% url 'activity' %}" {% if activeActivity %}class="subactive"{% endif %}>Тип активности</a>
-        <a href="{% url 'purpose' %}" {% if activePurpose %}class="subactive"{% endif %}>Цель</a>
+        <a href="{% url 'activity' %}?active=True" {% if activeActivity %}class="subactive"{% endif %}>Тип активности</a>
+        <a href="{% url 'purpose' %}?active=True" {% if activePurpose %}class="subactive"{% endif %}>Цель</a>
+        <a href="{% url 'privacy' %}?active=True" {% if activePrivacy %}class="subactive"{% endif %}>Тип приватности</a>
     </div>
     <div id="messages">
         <p id="success_code">Какое то сообщение</p>
@@ -25,6 +26,8 @@
                 href="{% url 'create_activity' %}"
             {% elif activePurpose %}
                 href="{% url 'create_purpose' %}"
+            {% elif activePrivacy %}
+                href="{% url 'create_privacy' %}"
             {% endif %}
         id="addBtn">+</a>
         {#<!-- Search -->#}
@@ -33,8 +36,12 @@
                 action="{% url 'activity' %}"
             {% elif activePurpose %}
                 action="{% url 'purpose' %}"
+            {% elif activePrivacy %}
+                action="{% url 'privacy' %}"
             {% endif %}
         >
+            <input type="checkbox" id="active" name="active" value="True" {% if active %}checked{% endif %}>
+            <label for="active">Активный</label>
             {#<!-- Text field for search -->#}
             <input type="text" name="search" placeholder="Поиск" 
                     class="form-control" 

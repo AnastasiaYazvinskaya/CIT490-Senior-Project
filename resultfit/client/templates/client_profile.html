@@ -13,13 +13,20 @@
         </tr>
         <tr>
             <td>Телефон</td>
-            <td></td>
+            <td>{% if client.phone %}{{ client.phone }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Текущие показатели (рост/вес/активность)</td>
+            <td>{% if client.height %}{{ client.height }}{% else %}-{% endif %}/{% if client.weight %}{{ client.weight }}{% else %}-{% endif %}/{% if client.activity %}{{ client.activity }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Статистика по дневнику питания</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Статистика по дневнику тренировок</td>
+            <td>-</td>
         </tr>
     </table>
-    <p>Фамилия Имя</p>
-    <p>Контактные данные (телефон?)</p>
-    <p>Текущие показатели (рост/вес/активность)</p>
-    <p>Статистика по дневнику питания</p>
-    <p>Статистика по дневнику тренировок (+ план/график тренировок)</p>
 </div>
 {% endblock %}

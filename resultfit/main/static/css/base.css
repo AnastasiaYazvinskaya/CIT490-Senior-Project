@@ -94,6 +94,13 @@ a {
     background-color: #375c33;
     color: #ffffff;
 }
+#submenu {
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: fit-content;
+}
 #submenu a {
     font-size: 16.5px;
     line-height: 35px;
@@ -109,6 +116,16 @@ a {
 #submenu a.subactive {
     border-bottom: 3px solid #4b8a44;
     color: #000000;
+}
+.countNum {
+    background-color: #bf6e6eb6;
+    border-radius: 50%;
+    color: #000000;
+    width: 20px;
+    display:inline-block;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
 }
 #interface {
     width: 100%;

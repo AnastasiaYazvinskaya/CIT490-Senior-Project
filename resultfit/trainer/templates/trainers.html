@@ -54,12 +54,16 @@
                         {% endif %}
                     </td>
                     <td class="btnCol">
-                        <button type="button" class="sendEmailBtn btnImage" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" class="btnImage"></button>
+                        {% if not trainer.user %}
+                            <button type="button" class="sendEmailBtn btnImage" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" class="btnImage"></button>
+                        {% endif %}
                     </td>
                     <td class="btnCol">
-                        <a href="/trainers/{{ trainer.id }}/update">
-                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
-                        </a>
+                        {% if not trainer.user %}
+                            <a href="/trainers/{{ trainer.id }}/update">
+                                <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
+                            </a>
+                        {% endif %}
                     </td>
                     <td class="btnCol">
                         <form action="" method="POST" id="delete-form">
@@ -77,7 +81,7 @@
                     <p>На данный момент не зарегистрированно ни одного тренера.</p>
                     <p><a class="btn btn-secondary" href="{% url 'create_trainer' %}">Добавить тренера</a></p>
                 </td>
-            </div>
+            </tr>
         {% endif %}
     </table>
 </div>

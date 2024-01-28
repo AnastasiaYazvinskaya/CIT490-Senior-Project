@@ -7,6 +7,7 @@ from systemdata.models import ActivityType, PurposeType
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
+    phone = models.CharField(max_length=12, verbose_name="Телефон", blank=True, null=True, default=None)
     height = models.CharField(max_length=20, verbose_name ='Рост', blank=True, null=True, default=None)
     weight = models.CharField(max_length=20, verbose_name ='Вес', blank=True, null=True, default=None)
     activity = models.ForeignKey(ActivityType, on_delete=models.PROTECT, verbose_name ='Активность', blank=True, null=True, default=None)
