@@ -6,7 +6,7 @@ class IngredientInline(admin.StackedInline):
     extra = 0
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'recipe', 'product', 'weight', 'weight_type')
+    list_display = ('id', 'recipe', 'product', 'amount', 'unitType')
 admin.site.register(Ingredient, IngredientAdmin)
 
 class RecipeAdmin(admin.ModelAdmin):
