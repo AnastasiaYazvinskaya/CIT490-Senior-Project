@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import *
 from .forms import *
+from client.models import ClientTrainer
 
 def register(request):
     if request.user.is_authenticated:
@@ -56,7 +58,8 @@ def logout_user(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html', {'activeHome': True})
+    trainers = Profile.objects.filter(user__groups__name='trainer').exclude(user = request.user).order_by('-trainer_rating')
+    return render(request, 'home.html', {'trainers': trainers, 'activeHome': True})
 
 @login_required
 def profile(request):
@@ -88,3 +91,23 @@ def update_profile(request, pk=None):
         form1 = ProfileForm(instance = profileObj)
         form2 = UserForm(instance = userObj)
     return render(request, "profile_update.html", {'form1': form1, 'form2': form2, 'pk': pk})
+
+@login_required
+def choose_trainer(request):
+    trainer_pk = request.GET.get('trainer', None)
+    trainer = User.objects.get(pk=trainer_pk)
+    client = Profile.objects.get(user = request.user)
+    is_exist = len(ClientTrainer.objects.filter(client=client, trainer=trainer)) > 0
+    if not is_exist:
+        ClientTrainer.objects.create(
+            client=client,
+            trainer=trainer
+        )
+        response = {
+            'trainer': f'{trainer.last_name} {trainer.first_name}'
+        }
+    else:
+        response = {
+            'error': 'Вы уже отправляли заявку этому тренеру.'
+        }
+    return JsonResponse(response)

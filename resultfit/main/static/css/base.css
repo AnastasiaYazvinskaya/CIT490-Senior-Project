@@ -95,11 +95,14 @@ a {
     color: #ffffff;
 }
 #submenu {
-    
+    margin-bottom: 5px;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    width: fit-content;
+    overflow: scroll;
+    max-width: 97vw;
+}
+#submenu::-webkit-scrollbar {
+    display: none;
 }
 #submenu a {
     font-size: 16.5px;
@@ -108,6 +111,7 @@ a {
     padding: 0 15px;
     margin-right: -5px;
     color: #807f7f;
+    min-width: max-content;
 }
 #submenu a:hover {
     color: #285422;
@@ -157,6 +161,7 @@ h4.small-header {
 #inside-content {
     margin-left: -50px;
     padding: 10px;
+    width: auto;
 }
 #messages {
     display: none;
@@ -213,8 +218,15 @@ button.btnImage {
 .centerCol {
     text-align: center;
 }
+/*@media screen and (max-width: 1000px) and (orientation: landscape){
+        
+    nav {
+        height: 61.6px;
+        background-color: #542922;
+    }
+}*/
 
-@media screen and (min-width: 600px){/*and (orientation: portrait){*/
+@media screen and (min-width: 600px){/* and (orientation: portrait){ /*Large view*/
     nav {
         width: 200px;
         height: 100vh;

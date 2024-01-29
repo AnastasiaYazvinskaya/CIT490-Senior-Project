@@ -5,6 +5,7 @@
         {#<!-- Required meta tags -->#}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 
         {#<!-- Bootstrap CSS and styles-->#}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -34,7 +35,7 @@
                     </div>
                 </div>
                 <div id="menu" class="menu">
-                    <a href="{% url 'home' %}" {% if activeHome %}class="active"{% endif %}>Домашняя</a>
+                    <a href="{% url 'home' %}" {% if activeHome %}class="active"{% endif %}>Планы</a>
                     <a href="{% url 'fooddairy' %}" {% if activeFood %}class="active"{% endif %}>Питание</a>
                     <a href="#" style="text-decoration: line-through;" {% if activeSport %}class="active"{% endif %}>Тренировки</a>
                     <br>
@@ -49,6 +50,7 @@
                             <a href="{% url 'systemdata' %}" {% if activeSystemdata %}class="active"{% endif %}>Системные данные</a>
                         {% endif %}
                     {% endfor %}
+                    <a href="{% url 'recipes' %}" {% if activeRecipe %}class="active"{% endif %}>Рецепты</a>
                 </div>
             </nav>
             {% endif %}

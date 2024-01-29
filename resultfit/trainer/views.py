@@ -105,7 +105,6 @@ def delete_trainer(request, pk=None):
         
 def validate_code(request):
     code = request.GET.get('code', None)
-    print('code', code)
     trainer = PrepareUser.objects.filter(code=code).values().first()
     if (code != None):
         response = {

@@ -12,6 +12,7 @@ class Profile(models.Model):
     weight = models.CharField(max_length=20, verbose_name ='Вес', blank=True, null=True, default=None)
     activity = models.ForeignKey(ActivityType, on_delete=models.PROTECT, verbose_name ='Активность', blank=True, null=True, default=None)
     age = models.IntegerField(verbose_name ='Возраст', blank=True, null=True, default=None)
+    trainer_rating = models.FloatField(default=0, blank=True, null=True)
     SEX_CHOICES = (
         ('F', 'Женщина',),
         ('M', 'Мужчина',),

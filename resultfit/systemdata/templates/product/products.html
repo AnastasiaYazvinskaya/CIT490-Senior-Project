@@ -5,31 +5,29 @@
     <table class="table table-striped">
         <tr>
             <th class="minCol">Название</th>
-            <th class="minCol">% Белков</th>
-            <th class="minCol">% Жиров</th>
-            <th class="minCol">% Углеводов</th>
+            <th class="minCol">КБЖУ</th>
+            <th class="minCol">Ед измерения</th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
         </tr>
-        {% if purposes %}
-            {% for purpose in purposes %}
+        {% if products %}
+            {% for product in products %}
                 <tr>
-                    <td class="minCol">{{ purpose.name }}</td>
-                    <td class="centerCol minCol">{{ purpose.proteins_rate_min }} - {{ purpose.proteins_rate_max }}</td>
-                    <td class="centerCol minCol">{{ purpose.fats_rate_min }} - {{ purpose.fats_rate_max }}</td>
-                    <td class="centerCol minCol">{{ purpose.carbohydrates_rate_min }} - {{ purpose.carbohydrates_rate_max }}</td>
+                    <td class="minCol">{{ product.name }}</td>
+                    <td class="centerCol minCol">{{ product.kkal }}/{{ product.proteins }}/{{ product.fats }}/{{ product.carbohydrates }}</td>
+                    <td class="centerCol minCol">{{ product.baseUnit }}</td>
                     <td class="btnCol">
-                        <a href="{% url 'update_purpose' purpose.id %}">
+                        <a href="{% url 'update_product' product.id %}">
                             <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
                         </a>
                     </td>
                     <td class="btnCol">
-                        {% if purpose.active %}
-                            <a href="{% url 'delete_purpose' purpose.id %}">
+                        {% if product.active %}
+                            <a href="{% url 'delete_product' product.id %}">
                                 <img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage">
                             </a>
                         {% else %}
-                            <a href="{% url 'activate_purpose' purpose.id %}">
+                            <a href="{% url 'activate_product' product.id %}">
                                 <img src="{% static 'images/return.svg' %}" alt="Return to active" class="btnImage">
                             </a>
                         {% endif %}
@@ -41,7 +39,7 @@
             <tr>
                 <td colspan="6" id="emptyList">
                     <p>На данный момент данные отсутствуют.</p>
-                    <p><a class="btn btn-secondary" href="{% url 'create_purpose' %}">Добавить</a></p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_product' %}">Добавить</a></p>
                 </td>
             </tr>
         {% endif %}

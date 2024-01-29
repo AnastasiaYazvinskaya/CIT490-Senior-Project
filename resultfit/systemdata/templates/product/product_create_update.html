@@ -22,23 +22,27 @@
                 <td>{{ form.name }}</td>
             </tr>
             <tr>
-                <td></td>
-                <td class="centerCol">Минимум</td><td class="centerCol">-</td><td class="centerCol">Максимум</td>
+                <td>Ккал:</td>
+                <td>{{ form.kkal }}</td>
             </tr>
             <tr>
-                <td>% Протеинов:</td>
-                <td>{{ form.proteins_rate_min }}</td><td>-</td><td>{{ form.proteins_rate_max }}</td>
+                <td>Протеины:</td>
+                <td>{{ form.proteins }}</td>
             </tr>
             <tr>
-                <td>% Жиров:</td>
-                <td>{{ form.fats_rate_min }}</td><td>-</td><td>{{ form.fats_rate_max }}</td>
+                <td>Жиры:</td>
+                <td>{{ form.fats }}</td>
             </tr>
             <tr>
-                <td>% Углеводов:</td>
-                <td>{{ form.carbohydrates_rate_min }}</td><td>-</td><td>{{ form.carbohydrates_rate_max }}</td>
+                <td>Углеводы:</td>
+                <td>{{ form.carbohydrates }}</td>
             </tr>
             <tr>
-                <td><a class="btn btn-danger" href="{% url 'porpuse' %}?active=True">Отмена</a></td>
+                <td>Ед. измерения:</td>
+                <td>{{ form.baseUnit }}</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-danger" href="{% url 'product' %}?active=True">Отмена</a></td>
                 <td class="saveCol" colspan="3"><button type="submit" class="btn btn-primary">Сохранить</button></td>
             </tr>
         </table>

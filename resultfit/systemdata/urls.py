@@ -21,4 +21,16 @@ urlpatterns = [
     path('privacy/<int:pk>/update/', views.create_update_privacy, name='update_privacy'),
     path('privacy/<int:pk>/delete/', views.delete_privacy, name='delete_privacy'),
     path('privacy/<int:pk>/activate/', views.activate_privacy, name='activate_privacy'),
+
+    path('unit/', views.unit, name='unit'),
+    path('unit/create/', views.create_update_unit, name='create_unit'),
+    path('unit/<int:pk>/update/', views.create_update_unit, name='update_unit'),
+    path('unit/<int:pk>/delete/', views.delete_unit, name='delete_unit'),
+    path('unit/<int:pk>/activate/', views.activate_unit, name='activate_unit'),
+
+    path('product/', views.product, name='product'),
+    path('product/create/', views.create_update_product, name='create_product'),
+    path('product/<int:pk>/update/', views.create_update_product, name='update_product'),
+    path('product/<int:pk>/delete/', views.delete_product, name='delete_product'),
+    path('product/<int:pk>/activate/', views.activate_product, name='activate_product'),
 ]

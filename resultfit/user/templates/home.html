@@ -1,8 +1,21 @@
 {% extends "base.html" %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/user.js' %}"></script>{% endblock %}
 {#<!-- Content -->#}
 {% block content %}  
-<h4 class="small-header">{% block pageName %}Домашняя страница{% endblock %}</h4>
+<h4 class="small-header">{% block pageName %}Планы{% endblock %}</h4>
 <div id="inside-content">
-    <p>Потом она будет называться иначе. Думаю тут должны быть какие-то общие данные для пользователя (планы ближайшие, напоминания и тп)</p>
+    <div id="trainer-list">
+        <p>У вас ещё нет тренера? Вот наши топ тренера:</p>
+        <div id="trainers">
+            {% for trainer in trainers %}
+                <a>
+                    <p>{{ trainer.user.last_name }} {{trainer.user.first_name }}</p>
+                    <button type="button" class="btn btn-primary" id="chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

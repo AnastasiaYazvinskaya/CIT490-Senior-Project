@@ -28,48 +28,6 @@ def activity(request):
         return render(request, 'activity/activities.html', {'activities': activities, 'search': search, 'active': active, 'activeActivity': True})
     return redirect('home')
 
-@login_required
-def purpose(request):
-    if request.user.groups.filter(name='programmer').exists():
-        active = bool(request.GET.get('active'))
-        purposes = PurposeType.objects.filter(active = active).order_by('id')
-        
-        # Получение значения из поля поиска
-        search = request.GET.get('search')
-        if search:
-            # Фильтрация списка
-            purposes = purposes.filter(name__icontains = search)
-        return render(request, 'purpose/purposes.html', {'purposes': purposes, 'search': search, 'active': active, 'activePurpose': True})
-    return redirect('home')
-
-@login_required
-def privacy(request):
-    if request.user.groups.filter(name='programmer').exists():
-        active = bool(request.GET.get('active'))
-        privacies = PrivacyType.objects.filter(active = active).order_by('id')
-        
-        # Получение значения из поля поиска
-        search = request.GET.get('search')
-        if search:
-            # Фильтрация списка
-            privacies = privacies.filter(name__icontains = search)
-        return render(request, 'privacy/privacies.html', {'privacies': privacies, 'search': search, 'active': active, 'activePrivacy': True})
-    return redirect('home')
-
-@login_required
-def unit(request):
-    if request.user.groups.filter(name='programmer').exists():
-        active = bool(request.GET.get('active'))
-        units = UnitType.objects.filter(active = active).order_by('id')
-        
-        # Получение значения из поля поиска
-        search = request.GET.get('search')
-        if search:
-            # Фильтрация списка
-            units = units.filter(name__icontains = search)
-        return render(request, 'unit/units.html', {'units': units, 'search': search, 'active': active, 'activeUnit': True})
-    return redirect('home')
-
 # Create/Edit activity page
 @login_required
 def create_update_activity(request, pk=None):
@@ -92,6 +50,37 @@ def create_update_activity(request, pk=None):
         form = ActivityTypeForm(instance = activityObj)
     return render(request, "activity/activity_create_update.html", {'form': form, 'pk': pk, 'activeActivity': True})
 
+# Delete activity 
+@login_required
+def delete_activity(request, pk=None):
+    activityObj = ActivityType.objects.get(pk = pk)
+    activityObj.active = False
+    activityObj.save()
+    return redirect(reverse('activity')+ '?active=True')
+
+# Activate activity 
+@login_required   
+def activate_activity(request, pk=None):
+    activityObj = ActivityType.objects.get(pk = pk)
+    activityObj.active = True
+    activityObj.save()
+    to_active = len(ActivityType.objects.filter(active = False)) == 0
+    return redirect(reverse('activity')+ '?active='+str(to_active))
+
+@login_required
+def purpose(request):
+    if request.user.groups.filter(name='programmer').exists():
+        active = bool(request.GET.get('active'))
+        purposes = PurposeType.objects.filter(active = active).order_by('id')
+        
+        # Получение значения из поля поиска
+        search = request.GET.get('search')
+        if search:
+            # Фильтрация списка
+            purposes = purposes.filter(name__icontains = search)
+        return render(request, 'purpose/purposes.html', {'purposes': purposes, 'search': search, 'active': active, 'activePurpose': True})
+    return redirect('home')
+
 # Create/Edit purpose page
 @login_required
 def create_update_purpose(request, pk=None):
@@ -113,6 +102,37 @@ def create_update_purpose(request, pk=None):
     else:
         form = PurposeTypeForm(instance = purposeObj)
     return render(request, "purpose/purpose_create_update.html", {'form': form, 'pk': pk, 'activePurpose': True})
+
+# Delete purpose 
+@login_required
+def delete_purpose(request, pk=None):
+    purposeObj = PurposeType.objects.get(pk = pk)
+    purposeObj.active = False
+    purposeObj.save()
+    return redirect(reverse('purpose')+ '?active=True')
+
+# Activate purpose 
+@login_required
+def activate_purpose(request, pk=None):
+    purposeObj = PurposeType.objects.get(pk = pk)
+    purposeObj.active = True
+    purposeObj.save()
+    to_active = len(PurposeType.objects.filter(active = False)) == 0
+    return redirect(reverse('purpose')+ '?active='+str(to_active))
+
+@login_required
+def privacy(request):
+    if request.user.groups.filter(name='programmer').exists():
+        active = bool(request.GET.get('active'))
+        privacies = PrivacyType.objects.filter(active = active).order_by('id')
+        
+        # Получение значения из поля поиска
+        search = request.GET.get('search')
+        if search:
+            # Фильтрация списка
+            privacies = privacies.filter(name__icontains = search)
+        return render(request, 'privacy/privacies.html', {'privacies': privacies, 'search': search, 'active': active, 'activePrivacy': True})
+    return redirect('home')
 
 # Create/Edit privacy page
 @login_required
@@ -142,6 +162,37 @@ def create_update_privacy(request, pk=None):
         form = PrivacyTypeForm(instance = privacyObj)
     return render(request, "privacy/privacy_create_update.html", {'form': form, 'pk': pk, 'activePrivacy': True})
 
+# Delete privacy 
+@login_required
+def delete_privacy(request, pk=None):
+    privacyObj = PrivacyType.objects.get(pk = pk)
+    privacyObj.active = False
+    privacyObj.save()
+    return redirect(reverse('privacy')+ '?active=True')
+
+# Activate privacy 
+@login_required
+def activate_privacy(request, pk=None):
+    privacyObj = PrivacyType.objects.get(pk = pk)
+    privacyObj.active = True
+    privacyObj.save()
+    to_active = len(PrivacyType.objects.filter(active = False)) == 0
+    return redirect(reverse('privacy')+ '?active='+str(to_active))
+
+@login_required
+def unit(request):
+    if request.user.groups.filter(name='programmer').exists():
+        active = bool(request.GET.get('active'))
+        units = UnitType.objects.filter(active = active).order_by('id')
+        
+        # Получение значения из поля поиска
+        search = request.GET.get('search')
+        if search:
+            # Фильтрация списка
+            units = units.filter(name__icontains = search)
+        return render(request, 'unit/units.html', {'units': units, 'search': search, 'active': active, 'activeUnit': True})
+    return redirect('home')
+
 # Create/Edit purpose page
 @login_required
 def create_update_unit(request, pk=None):
@@ -164,30 +215,6 @@ def create_update_unit(request, pk=None):
         form = UnitTypeForm(instance = unitObj)
     return render(request, "unit/unit_create_update.html", {'form': form, 'pk': pk, 'activeUnit': True})
 
-# Delete activity 
-@login_required
-def delete_activity(request, pk=None):
-    activityObj = ActivityType.objects.get(pk = pk)
-    activityObj.active = False
-    activityObj.save()
-    return redirect(reverse('activity')+ '?active=True')
-
-# Delete purpose 
-@login_required
-def delete_purpose(request, pk=None):
-    purposeObj = PurposeType.objects.get(pk = pk)
-    purposeObj.active = False
-    purposeObj.save()
-    return redirect(reverse('purpose')+ '?active=True')
-
-# Delete privacy 
-@login_required
-def delete_privacy(request, pk=None):
-    privacyObj = PrivacyType.objects.get(pk = pk)
-    privacyObj.active = False
-    privacyObj.save()
-    return redirect(reverse('privacy')+ '?active=True')
-
 # Delete unit 
 @login_required
 def delete_unit(request, pk=None):
@@ -195,33 +222,6 @@ def delete_unit(request, pk=None):
     unitObj.active = False
     unitObj.save()
     return redirect(reverse('unit')+ '?active=True')
-
-# Activate activity 
-@login_required   
-def activate_activity(request, pk=None):
-    activityObj = ActivityType.objects.get(pk = pk)
-    activityObj.active = True
-    activityObj.save()
-    to_active = len(ActivityType.objects.filter(active = False)) == 0
-    return redirect(reverse('activity')+ '?active='+str(to_active))
-
-# Activate purpose 
-@login_required
-def activate_purpose(request, pk=None):
-    purposeObj = PurposeType.objects.get(pk = pk)
-    purposeObj.active = True
-    purposeObj.save()
-    to_active = len(PurposeType.objects.filter(active = False)) == 0
-    return redirect(reverse('purpose')+ '?active='+str(to_active))
-
-# Activate privacy 
-@login_required
-def activate_privacy(request, pk=None):
-    privacyObj = PrivacyType.objects.get(pk = pk)
-    privacyObj.active = True
-    privacyObj.save()
-    to_active = len(PrivacyType.objects.filter(active = False)) == 0
-    return redirect(reverse('privacy')+ '?active='+str(to_active))
 
 # Activate unit 
 @login_required
@@ -231,3 +231,56 @@ def activate_unit(request, pk=None):
     unitObj.save()
     to_active = len(UnitType.objects.filter(active = False)) == 0
     return redirect(reverse('unit')+ '?active='+str(to_active))
+
+@login_required
+def product(request):
+    if request.user.groups.filter(name='programmer').exists():
+        active = bool(request.GET.get('active'))
+        products = Product.objects.filter(active = active).order_by('id')
+        
+        # Получение значения из поля поиска
+        search = request.GET.get('search')
+        if search:
+            # Фильтрация списка
+            products = products.filter(name__icontains = search)
+        return render(request, 'product/products.html', {'products': products, 'search': search, 'active': active, 'activeProduct': True})
+    return redirect('home')
+
+# Create/Edit purpose page
+@login_required
+def create_update_product(request, pk=None):
+    if pk != None:
+        # Если ключ передан, то ищем объект
+        productObj = Product.objects.get(pk = pk)
+    else: 
+        # Если ключ не передан, то работаем с пустым объектом
+        productObj = None
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES, instance = productObj)
+        if form.is_valid():
+            # Предсохраняем данные введенные с формы (но не вносим в базу)
+            product = form.save(commit=False)
+            # Переносим все изменения в базу
+            product.save()
+            #form.save_m2m()
+            return redirect(reverse('product')+ '?active=True')
+    else:
+        form = ProductForm(instance = productObj)
+    return render(request, "product/product_create_update.html", {'form': form, 'pk': pk, 'activeProduct': True})
+
+# Delete product 
+@login_required
+def delete_product(request, pk=None):
+    productObj = Product.objects.get(pk = pk)
+    productObj.active = False
+    productObj.save()
+    return redirect(reverse('product')+ '?active=True')
+
+# Activate product 
+@login_required
+def activate_product(request, pk=None):
+    productObj = Product.objects.get(pk = pk)
+    productObj.active = True
+    productObj.save()
+    to_active = len(Product.objects.filter(active = False)) == 0
+    return redirect(reverse('product')+ '?active='+str(to_active))

@@ -49,3 +49,14 @@ class UnitTypeForm(forms.ModelForm):
         if PurposeType.objects.filter(name=cleaned_data.get('name')).exists():
             self.add_error('name', "Цель с таким именем уже существует")
     '''
+    
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name', 'kkal', 'proteins', 'fats', 'carbohydrates', 'baseUnit')
+
+    '''def clean(self):
+        cleaned_data = super().clean()
+        if PurposeType.objects.filter(name=cleaned_data.get('name')).exists():
+            self.add_error('name', "Цель с таким именем уже существует")
+    '''

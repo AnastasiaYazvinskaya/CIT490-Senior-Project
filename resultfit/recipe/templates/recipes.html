@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    {% block style2 %}{% endblock %}
+{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Рецепты{% endblock %}</h4>
+<div id="inside-content">
+    <p>Тут будут ваши рецепты (ещу не готово) и может быть общедоступные тоже можно будет тут смотреть.</p>
+</div>
+{% endblock %}

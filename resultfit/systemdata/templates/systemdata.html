@@ -12,6 +12,8 @@
         <a href="{% url 'activity' %}?active=True" {% if activeActivity %}class="subactive"{% endif %}>Тип активности</a>
         <a href="{% url 'purpose' %}?active=True" {% if activePurpose %}class="subactive"{% endif %}>Цель</a>
         <a href="{% url 'privacy' %}?active=True" {% if activePrivacy %}class="subactive"{% endif %}>Тип приватности</a>
+        <a href="{% url 'unit' %}?active=True" {% if activeUnit %}class="subactive"{% endif %}>Единицы измерения</a>
+        <a href="{% url 'product' %}?active=True" {% if activeProduct %}class="subactive"{% endif %}>Продукты</a>
     </div>
     <div id="messages">
         <p id="success_code">Какое то сообщение</p>
@@ -28,6 +30,10 @@
                 href="{% url 'create_purpose' %}"
             {% elif activePrivacy %}
                 href="{% url 'create_privacy' %}"
+            {% elif activeUnit %}
+                href="{% url 'create_unit' %}"
+            {% elif activeProduct %}
+                href="{% url 'create_product' %}"
             {% endif %}
         id="addBtn">+</a>
         {#<!-- Search -->#}
@@ -38,10 +44,16 @@
                 action="{% url 'purpose' %}"
             {% elif activePrivacy %}
                 action="{% url 'privacy' %}"
+            {% elif activeUnit %}
+                action="{% url 'unit' %}"
+            {% elif activeProduct %}
+                action="{% url 'product' %}"
             {% endif %}
         >
-            <input type="checkbox" id="active" name="active" value="True" {% if active %}checked{% endif %}>
-            <label for="active">Активный</label>
+            <label for="active" class="switch">
+                <input type="checkbox" id="active" name="active" value="True" {% if active %}checked{% endif %}>
+                <span class="slider round"></span>
+            </label>
             {#<!-- Text field for search -->#}
             <input type="text" name="search" placeholder="Поиск" 
                     class="form-control" 
