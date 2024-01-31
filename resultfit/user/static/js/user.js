@@ -1,17 +1,22 @@
 $(document).ready(function(){
-    $('#chooseTrainer').on('click', function () {
-        console.log('chooseTrainer');
+    $('.chooseTrainer').on('click', function () {
+        console.log('chooseTrainer', $(this).val());
         // создаем AJAX-вызов
         $.ajax({
             data: {
-                "thainer": $(this).val()
+                "trainer": $(this).val()
             }, // получаяем данные формы
             url: "choose_trainer",
             // если успешно, то
             success: function (response) {
-                $('#success_code').text("Ваша заявка была отправлена тренеру: "+$('#trainers p').text()+".<br>Вы получите уведомление, когда тренер примет решение.");
-                $('#messages').css('display', 'flex');
-                $('#trainer-list').css('display', 'none');
+                if (response.error) {
+                    $('#success_code').text(response.error);
+                    $('#messages').css('display', 'flex');
+                } else {
+                    $('#success_code').text("Ваша заявка была отправлена тренеру: "+response.trainer+". Вы получите уведомление, когда тренер примет решение.");
+                    $('#messages').css('display', 'flex');
+                    $('#trainer-list').css('display', 'none');
+                }
             },
             // если ошибка, то
             error: function (response) {

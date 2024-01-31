@@ -6,13 +6,19 @@
 {% block content %}  
 <h4 class="small-header">{% block pageName %}Планы{% endblock %}</h4>
 <div id="inside-content">
+    <div id="messages">
+        <p id="success_code">Какое то сообщение</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div id="trainer-list">
         <p>У вас ещё нет тренера? Вот наши топ тренера:</p>
         <div id="trainers">
             {% for trainer in trainers %}
                 <a>
                     <p>{{ trainer.user.last_name }} {{trainer.user.first_name }}</p>
-                    <button type="button" class="btn btn-primary" id="chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
+                    <button type="button" class="btn btn-primary chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
                 </a>
             {% endfor %}
         </div>

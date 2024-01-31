@@ -40,12 +40,19 @@ class UnitType(models.Model):
         return self.name
     
 class Product(models.Model):
-    name = models.CharField(max_length=20, verbose_name ='Название', null=True, default=None)
+    name = models.CharField(max_length=50, verbose_name ='Название', null=True, default=None)
     kkal = models.IntegerField(verbose_name ='Ккалории', blank=True, null=True, default=None)
     proteins = models.IntegerField(verbose_name ='Белки', blank=True, null=True, default=None)
     fats = models.IntegerField(verbose_name ='Жиры', blank=True, null=True, default=None)
     carbohydrates = models.IntegerField(verbose_name ='Углеводы', blank=True, null=True, default=None)
     baseUnit = models.ForeignKey(UnitType, on_delete=models.PROTECT, null=True, blank=True, related_name='Стандартная_ед_измерения')
+    active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
+
+    def __str__(self):
+        return self.name
+    
+class MealType(models.Model):
+    name = models.CharField(max_length=20, verbose_name ='Название', null=True, default=None)
     active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
 
     def __str__(self):

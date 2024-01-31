@@ -14,7 +14,7 @@ def clients(request, type):#Список клиентов для тренера
             clients = ClientTrainer.objects.filter(trainer = request.user, active = True).order_by('id')
         elif type == 'request':
             clients = ClientTrainer.objects.filter(trainer = request.user, active = False).order_by('id')
-        requestNum = len(ClientTrainer.objects.filter(active = False))
+        requestNum = len(ClientTrainer.objects.filter(trainer = request.user, active = False))
         
         # Получение значения из поля поиска
         search = request.GET.get('search')

@@ -110,4 +110,5 @@ def choose_trainer(request):
         response = {
             'error': 'Вы уже отправляли заявку этому тренеру.'
         }
+    print('responce', response)
     return JsonResponse(response)

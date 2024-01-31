@@ -17,6 +17,10 @@ class UnitTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'full_name', 'description', 'active')
 admin.site.register(UnitType, UnitTypeAdmin)
 
+class MealTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active')
+admin.site.register(MealType, MealTypeAdmin)
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'kkal', 'proteins', 'fats', 'carbohydrates', 'baseUnit', 'active')
 admin.site.register(Product, ProductAdmin)

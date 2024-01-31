@@ -1,13 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}
-    <link rel="stylesheet" href="{% static 'css/table.css' %}">
-    {% block style2 %}{% endblock %}
-{% endblock %}
-{#<!-- Content for Creating/Updating page -->#}
+{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/recipe.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of recipes -->#}
 {% block content %}
 <h4 class="small-header">{% block pageName %}Рецепты{% endblock %}</h4>
 <div id="inside-content">
-    <p>Тут будут ваши рецепты (ещу не готово) и может быть общедоступные тоже можно будет тут смотреть.</p>
+    <div id="messages">
+        <p id="success_code">Какое то сообщение</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {#<!-- List (line) with general icons -->#}
+    <div class="list-icons">
+        {#<!-- Add icon (button) for creating new recipe -->#}
+        <a href="{% url 'create_recipe' %}" id="addBtn">+</a>
+        {#<!-- Search -->#}
+        <form id="search" method="GET" class="form" action="{% url 'recipes' %}">
+            {#<!-- Text field for search -->#}
+            <input type="text" name="searchrecipe" placeholder="Поиск" 
+                    class="form-control" 
+                    {% if search %}
+                        value="{{ search }}"
+                    {% else %}
+                        value=""
+                    {% endif %}></input>
+            {#<!-- Button for submiting form -->#}
+            <input type="image" src="{% static 'images/searchBtn.svg' %}" alt="Поиск">
+        </form>
+    </div>
+    {#<!-- List of recipes. If there is any recipe in data then show them all. -->#}
+    {#<!-- For each recipe in data create a new block -->#}
+    <table class="table table-striped">
+        <tr>
+            <th>Название</th>
+            <th>Прием пищи</th>
+            <th>КБЖУ</th>
+            <th>Доступ</th>
+            <th class="btnCol"></th>
+            <th class="btnCol"></th>
+        </tr>
+        {% if recipes %}
+            {% for recipe in recipes %}
+                <tr>
+                    <td><a href="/recipes/card/{{ recipe.id }}/">{{ recipe.name }}</a></td>
+                    <td>{{ recipe.mealType }}</td>
+                    <td>{{ recipe.kkal }}/{{ recipe.proteins }}/{{ recipe.fats }}/{{ recipe.carbohydrates }}</td>
+                    <td>{{ recipe.privacy }}</td>
+                    <td class="btnCol">
+                        <a href="/recipes/{{ recipe.id }}/update">
+                            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
+                        </a>
+                    </td>
+                    {% comment %}<td class="btnCol">
+                        <form action="" method="POST" id="delete-form">
+                            {% csrf_token %}
+                            <input type="hidden" value="list" name="template">
+                            <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
+                        </form>
+                    </td>
+                    {% endcomment %}
+                </tr>
+            {% endfor %}
+        {#<!-- If there is no recipe in data then let user know. -->#}
+        {% else %}
+            <tr>
+                <td colspan="6" id="emptyList">
+                    <p>На данный момент база пуста.</p>
+                    <p><a class="btn btn-secondary" href="{% url 'create_recipe' %}">Добавить</a></p>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
 </div>
 {% endblock %}

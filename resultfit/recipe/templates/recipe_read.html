@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- Content for Reading page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Рецепт{% endblock %}</h4>
+<div id="inside-content">
+    {#<!-- Other object data -->#}
+    <table class="object-detail">
+        <tr>
+            <td>Название:</td>
+            <td>{{ recipe.name }}</td>
+        </tr>
+        <tr>
+            <td>Доступ:</td>
+            <td>{{ recipe.privacy }}</td>
+        </tr>
+        <tr>
+            <td>Прием пищи:</td>
+            <td>{{ recipe.mealType }}</td>
+        </tr>
+        <tr>
+            <td>Ингредиенты:</td>
+        </tr>
+        {% for product in ingredients %}
+            <tr>
+                <td>{{ product.amount }} {{ product.unitType }} - {{ product.product }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>Описание:</td>
+            <td>{{ recipe.description }}</td>
+        </tr>
+    </table>
+    <div class="acts">
+        <a href="/recipes/{{ recipe.pk }}/update">
+            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
+        </a>
+        <form action="" method="POST" id="delete-form">
+            {% csrf_token %}
+            <input type="hidden" value="card" name="template">
+            <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
+        </form>
+    </div>
+</div>
+{% endblock %}

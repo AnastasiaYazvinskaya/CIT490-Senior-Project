@@ -25,5 +25,5 @@ urlpatterns = [
     path('', include('client.urls')),
     path('fooddairy/', include('fooddairy.urls')),
     path('systemdata/', include('systemdata.urls')),
-    path('recipe/', include('recipe.urls')),
+    path('', include('recipe.urls')),
 ]

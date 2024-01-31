@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block script2 %}<script src="{% static 'js/recipe.js' %}"></script>{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}
+    {% if pk != None %}
+        Редактирование рецепта
+    {% else %}
+        Добавление рецепта
+    {% endif %}
+{% endblock %}</h4>
+<div id="inside-content">
+    {#<!-- Форма отправки данных -->#}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {#<!-- Таблица полей, для ровного отображения -->#}
+        <table>
+            <tr>
+                <td>{{ form.name.label_tag }}</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.privacy.label_tag }}</td>
+                <td>{{ form.privacy }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.mealType.label_tag }}</td>
+                <td>{{ form.mealType }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">Ингредиенты</td>
+            </tr>
+        </table>
+        {{  formset.management_form }}
+        <div id="formset">
+            {% for form in formset %}
+                <table id="form-{{ forloop.counter0 }}">
+                    <tr>
+                        <td>{{ form.product.label_tag }}</td>
+                        <td>{{ form.product }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.amount.label_tag }}</td>
+                        <td>{{ form.amount }} {{ form.unitType }}</td>
+                        <td rowspan="2">
+                            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% if form.product.value %}
+                        <tr>{{ form.id }}</tr>
+                        <tr class="hidden">{% if formset.can_delete %}<td>{{ form.DELETE }}</td>{% endif %}</tr>
+                    {% endif %}
+                </table>
+            {% endfor %}
+        </div>
+        <div class="hidden">
+            <table id="empty-form">
+                <tr>
+                    <td>{{ formset.empty_form.product.label_tag }}</td>
+                    <td>{{ formset.empty_form.product }}</td>
+                </tr>
+                <tr>
+                    <td>{{ formset.empty_form.amount.label_tag }}</td>
+                    <td>{{ formset.empty_form.amount }} {{ formset.empty_form.unitType }}</td>
+                    <td rowspan="2">
+                        <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table>
+            <tr><td><button type="button" id="add-ingredient" class="btn btn-secondary">+ Ингредиент</button></td></tr>
+            <tr>
+                <td>Описание</td>
+                <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-danger" href="/recipes/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a></td>
+                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

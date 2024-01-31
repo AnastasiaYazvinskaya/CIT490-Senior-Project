@@ -2,9 +2,9 @@
 {% load static %}
 {% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
 {% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
-{#<!-- Content for displaying list of trainers -->#}
+{#<!-- Content for displaying list of objects -->#}
 {% block content %}
-<h4 class="small-header">{% block pageName %}Список тренеров{% endblock %}</h4>
+<h4 class="small-header">{% block pageName %}Список объектов{% endblock %}</h4>
 <div id="inside-content">
     <div id="messages">
         <p id="success_code">Какое то сообщение</p>
@@ -14,12 +14,12 @@
     </div>
     {#<!-- List (line) with general icons -->#}
     <div class="list-icons">
-        {#<!-- Add icon (button) for creating new trainer -->#}
-        <a href="{% url 'create_trainer' %}" id="addBtn">+</a>
+        {#<!-- Add icon (button) for creating new object -->#}
+        <a href="#" id="addBtn">+</a>
         {#<!-- Search -->#}
-        <form id="search" method="GET" class="form" action="{% url 'trainers' %}">
+        <form id="search" method="GET" class="form" action="{% url 'table' %}">
             {#<!-- Text field for search -->#}
-            <input type="text" name="searchTrainer" placeholder="Поиск" 
+            <input type="text" name="searchobject" placeholder="Поиск" 
                     class="form-control" 
                     {% if search %}
                         value="{{ search }}"
@@ -30,56 +30,57 @@
             <input type="image" src="{% static 'images/searchBtn.svg' %}" alt="Поиск">
         </form>
     </div>
-    {#<!-- List of trainers. If there is any trainer in data then show them all. -->#}
-    {#<!-- For each trainer in data create a new block -->#}
+    {#<!-- List of objects. If there is any object in data then show them all. -->#}
+    {#<!-- For each object in data create a new block -->#}
     <table class="table table-striped">
+        {% if objects %}
         <tr>
-            <th>Фамилия Имя</th>
-            <th class="emailCol">Email</th>
-            <th>Подтвердил</th>
+            {% for k, v in objects.1.item %}
+                <th>{{ k }}</th>
+            {% endfor %}
             <th class="btnCol"></th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
         </tr>
-        {% if trainers %}
-            {% for trainer in trainers %}
+        
+            {% for object in objects %}
                 <tr>
-                    <td><a href="/trainers/card/{{ trainer.id }}/">{{ trainer.lastName }} {{ trainer.firstName }}</a></td>
-                    <td class="emailCol">{{ trainer.email }}</td>
+                    <td><a href="#">{{ object.lastName }} {{ object.firstName }}</a></td>
+                    <td class="emailCol">{{ object.email }}</td>
                     <td class="acceptCol">
-                        {% if trainer.user %}
+                        {% if object.user %}
                             Да
                         {% else %}
                             Нет
                         {% endif %}
                     </td>
                     <td class="btnCol">
-                        {% if not trainer.user %}
-                            <button type="button" class="sendEmailBtn btnImage" value="{{ trainer.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" class="btnImage"></button>
+                        {% if not object.user %}
+                            <button type="button" class="sendEmailBtn btnImage" value="{{ object.email }}"><img src="{% static 'images/sendMail.svg' %}" alt="Send email" class="btnImage"></button>
                         {% endif %}
                     </td>
                     <td class="btnCol">
-                        {% if not trainer.user %}
-                            <a href="/trainers/{{ trainer.id }}/update">
+                        {% if not object.user %}
+                            <a href="#">
                                 <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
                             </a>
                         {% endif %}
                     </td>
-                    {% comment %}<td class="btnCol">
+                    <td class="btnCol">
                         <form action="" method="POST" id="delete-form">
                             {% csrf_token %}
                             <input type="hidden" value="list" name="template">
                             <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
                         </form>
-                    </td>{% endcomment %}
+                    </td>
                 </tr>
             {% endfor %}
-        {#<!-- If there is no trainer in data then let user know. -->#}
+        {#<!-- If there is no object in data then let user know. -->#}
         {% else %}
             <tr>
                 <td colspan="6" id="emptyList">
                     <p>На данный момент не зарегистрированно ни одного тренера.</p>
-                    <p><a class="btn btn-secondary" href="{% url 'create_trainer' %}">Добавить тренера</a></p>
+                    <p><a class="btn btn-secondary" href="#">Добавить тренера</a></p>
                 </td>
             </tr>
         {% endif %}

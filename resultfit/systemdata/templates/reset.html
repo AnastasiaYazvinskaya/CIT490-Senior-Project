@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    {% block style2 %}{% endblock %}
+{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Сброс данных{% endblock %}</h4>
+<div id="inside-content">
+    {% if message %}
+    <div id="message">
+        <p id="success_code">{{ message }}</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {#<!-- Таблица полей, для ровного отображения -->#}
+        <table>
+            <tr>
+                <td>База данных</td>
+                <td><input type="text" name="database" required></td>
+            </tr>
+            <tr>
+                <td>Условия удаления</td>
+            </tr>
+            <tr>
+                <td><label for="nonefk">Any None FK</label></td>
+                <td>
+                    <input type="checkbox" name="nonefk" value="nonefk" id="nonefk"><label for="nonefk">Any None FK</label>
+                    <input type="text" name="fkname">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="all">All</label></td>
+                <td>
+                    <input type="checkbox" name="all" value="all" id="all">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td><a class="btn btn-danger" href="{% url 'reset' %}">Отмена</a></td>
+                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

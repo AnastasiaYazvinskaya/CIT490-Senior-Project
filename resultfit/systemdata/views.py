@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from .models import *
 from user.models import Group
 from .forms import *
+from recipe.models import Ingredient, Recipe
 
 @login_required
 def systemdata(request):
@@ -284,3 +285,35 @@ def activate_product(request, pk=None):
     productObj.save()
     to_active = len(Product.objects.filter(active = False)) == 0
     return redirect(reverse('product')+ '?active='+str(to_active))
+
+@login_required
+def reset(request):
+    if request.user.groups.filter(name='programmer').exists():
+        message = ''
+        if request.method == "POST":
+            form = request.POST
+            #check database
+            if form['database'].lower() == 'ingredient':
+                model = Ingredient
+                message = 'Вы работали с Ингредиентами.'
+            if form['database'].lower() == 'recipe':
+                model = Recipe
+                message = 'Вы работали с Рецептами.'
+            #check filter
+            if 'nonefk' in form.keys():
+                if 'product' in form['fkname']:
+                    model = model.objects.filter(product = None)
+            else:
+                print('not nonefk')
+            if 'all' in form.keys():
+                model = model.objects.all()
+                for obj in model:
+                    obj.delete()
+                message += ' Удалены все записи.'
+            else:
+                print('not all')
+            
+        
+        print('message', message)
+        return render(request, 'reset.html', {'message': message, 'activeReset': True})
+    return redirect('home')

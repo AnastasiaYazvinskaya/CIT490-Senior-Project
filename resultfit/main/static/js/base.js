@@ -17,5 +17,5 @@ function openHint() {
 $(document).ready(function(){
     $('.close').on('click', function () {
         $('#messages').css('display', 'none');
-    });
+    })
 })
