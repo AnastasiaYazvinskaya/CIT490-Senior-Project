@@ -1,4 +1,5 @@
 from django.forms import modelformset_factory
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -52,7 +53,15 @@ def create_update_recipe(request, pk=None):
             recipe.save()
             for form in formset:
                 ingredient = form.save(commit=False)
-                if ingredient.product != None:
+                if ingredient.product_name != None:
+                    product = Product.objects.filter(name = ingredient.product_name).exists()
+                    if not product:
+                        product = Product.objects.create(
+                            name = ingredient.product_name,
+                            baseUnit = ingredient.unitType
+                        )
+                    product = Product.objects.get(name = ingredient.product_name)
+                    ingredient.product = product
                     if ingredient.recipe is None:
                         ingredient.recipe = recipe
                     ingredient.save()
@@ -66,5 +75,16 @@ def create_update_recipe(request, pk=None):
         recipeForm = RecipeForm(instance = recipeObj)
         ingredientFormset = modelformset_factory(Ingredient, form=IngredientForm, extra=extra, can_delete=True)
         formset = ingredientFormset(queryset=ingredients)
-    products = Product.objects.all()[:10]
-    return render(request, "recipe_create_update.html", {'form': recipeForm, 'formset': formset, 'products': products, 'pk': pk, 'activeRecipe': True})
+    return render(request, "recipe_create_update.html", {'form': recipeForm, 'formset': formset, 'pk': pk, 'activeRecipe': True})
+
+'''from django.core import serializers
+def update_datalist(request):
+    inputVal = request.GET.get('inputVal', None)
+    if inputVal:
+        products = Product.objects.filter(name__icontains = inputVal)[:10]
+        response = serializers.serialize('json', products)
+    else:
+        products = Product.objects.all()[:10]
+        response = serializers.serialize('json', products)
+    return JsonResponse(data=response, safe=False)
+'''

@@ -11,6 +11,32 @@ $(document).ready(function(){
         document.getElementById('formset').append(newForm);
         return false;
     });
+    //choose ingredient from datalist
+    $(".product_name").on('input', function () {
+        console.log('product choosen', this.value);
+        //send ajax for update datalist
+        /*$.ajax({
+            data: {
+                "inputVal": this.value
+            }, // получаяем данные формы
+            url: "update_datalist",
+            // если успешно, то
+            success: function (response) {
+                console.log('elem', this);
+                console.log('response', response);
+            },
+            // если ошибка, то
+            error: function (response) {
+                // предупредим об ошибке
+                console.log(response.responseJSON.errors)
+            }
+        });
+        return false;*/
+    });
+    $(".product_name").on('blur', function () {
+        console.log('product choosen (blur)', this.value);
+        //send ajax for update unitType
+    });
     //delete ingredient
     $(document).on('click', '.delete', function () {
         console.log('delete', $(this).val());

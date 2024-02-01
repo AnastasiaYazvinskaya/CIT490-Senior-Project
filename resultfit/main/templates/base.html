@@ -48,7 +48,7 @@
                         {% endif %}
                         {% if group.name == "programmer" %}
                             <a href="{% url 'systemdata' %}" {% if activeSystemdata %}class="active"{% endif %}>Системные данные</a>
-                            <a href="{% url 'reset' %}" {% if activeReset %}class="active"{% endif %}>Сброс данных</a>
+                            <a href="{% url 'reset' %}" {% if activeReset %}class="active"{% endif %}>Работа с БД</a>
                         {% endif %}
                     {% endfor %}
                     <a href="{% url 'recipes' %}" {% if activeRecipe %}class="active"{% endif %}>Рецепты</a>

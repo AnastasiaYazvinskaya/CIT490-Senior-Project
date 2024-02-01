@@ -37,8 +37,8 @@
             {% for form in formset %}
                 <table id="form-{{ forloop.counter0 }}">
                     <tr>
-                        <td>{{ form.product.label_tag }}</td>
-                        <td>{{ form.product }}</td>
+                        <td>{{ form.product_name.label_tag }}</td>
+                        <td>{{ form.product_name }}</td>
                     </tr>
                     <tr>
                         <td>{{ form.amount.label_tag }}</td>
@@ -59,8 +59,8 @@
         <div class="hidden">
             <table id="empty-form">
                 <tr>
-                    <td>{{ formset.empty_form.product.label_tag }}</td>
-                    <td>{{ formset.empty_form.product }}</td>
+                    <td>{{ formset.empty_form.product_name.label_tag }}</td>
+                    <td>{{ formset.empty_form.product_name }}</td>
                 </tr>
                 <tr>
                     <td>{{ formset.empty_form.amount.label_tag }}</td>
@@ -76,8 +76,16 @@
         <table>
             <tr><td><button type="button" id="add-ingredient" class="btn btn-secondary">+ Ингредиент</button></td></tr>
             <tr>
-                <td>Описание</td>
+                <td>{{ form.description.label_tag }}</td>
+            </tr>
+            <tr>
                 <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.recommends.label_tag }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.recommends }}</td>
             </tr>
             <tr>
                 <td><a class="btn btn-danger" href="/recipes/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a></td>

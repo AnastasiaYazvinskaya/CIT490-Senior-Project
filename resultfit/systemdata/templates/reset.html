@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}
-    <link rel="stylesheet" href="{% static 'css/table.css' %}">
-    {% block style2 %}{% endblock %}
-{% endblock %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block script2 %}<script src="{% static 'js/systemdata.js' %}"></script>{% endblock %}
 {#<!-- Content for Creating/Updating page -->#}
 {% block content %}
-<h4 class="small-header">{% block pageName %}Сброс данных{% endblock %}</h4>
+<h4 class="small-header">{% block pageName %}Работа с БД{% endblock %}</h4>
 <div id="inside-content">
-    {% if message %}
-    <div id="message">
-        <p id="success_code">{{ message }}</p>
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+            <p id="success_code">{{ message }}</p>
+        {% endfor %}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -22,23 +22,19 @@
         <table>
             <tr>
                 <td>База данных</td>
-                <td><input type="text" name="database" required></td>
+                <td><select id="database" name="database" required>
+                    <option value="Ingredient">Ingredient</option>
+                    <option value="Product">Product</option>
+                    <option value="Recipe">Recipe</option>
+                    <option value="PrepareUser">PrepareUser</option>
+                    <option value="ClientTrainer">ClientTrainer</option>
+                    <option value="MealType">MealType</option>
+                </select></td>
             </tr>
             <tr>
-                <td>Условия удаления</td>
-            </tr>
-            <tr>
-                <td><label for="nonefk">Any None FK</label></td>
+                <td><label for="sql">SQL-выражение</label></td>
                 <td>
-                    <input type="checkbox" name="nonefk" value="nonefk" id="nonefk"><label for="nonefk">Any None FK</label>
-                    <input type="text" name="fkname">
-                </td>
-            </tr>
-            <tr>
-                <td><label for="all">All</label></td>
-                <td>
-                    <input type="checkbox" name="all" value="all" id="all">
-                    
+                    <textarea rows="5" name="sql"></textarea>
                 </td>
             </tr>
             <tr>
@@ -46,6 +42,24 @@
                 <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
             </tr>
         </table>
+        <hr>
+        {% if table_data %}
+        <table class="table">
+            <tr><td colspan="2" id="table_name">{{ table_data.table_name }} ({{ table_data.db_table }})</td></tr>
+            <tr>
+                <th>Атрибут</th>
+                <th>Тип</th>
+            </tr>
+        </table>
+        <table id="table_fields" class="table">
+            {% for field in table_data.fields %}
+                <tr>
+                    <td>{{ field.name }}</td>
+                    <td>{{ field.type }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

@@ -286,34 +286,60 @@ def activate_product(request, pk=None):
     to_active = len(Product.objects.filter(active = False)) == 0
     return redirect(reverse('product')+ '?active='+str(to_active))
 
+from django.db import connection
 @login_required
 def reset(request):
     if request.user.groups.filter(name='programmer').exists():
-        message = ''
+        messages = []
         if request.method == "POST":
             form = request.POST
             #check database
             if form['database'].lower() == 'ingredient':
                 model = Ingredient
-                message = 'Вы работали с Ингредиентами.'
+                messages.append('Вы работали с Ингредиентами. Был выполнен скрипт:')
             if form['database'].lower() == 'recipe':
                 model = Recipe
-                message = 'Вы работали с Рецептами.'
+                messages.append('Вы работали с Рецептами. Был выполнен скрипт:')
+            if form['database'].lower() == 'product':
+                model = Product
+                messages.append('Вы работали с Продуктами. Был выполнен скрипт:')
             #check filter
-            if 'nonefk' in form.keys():
-                if 'product' in form['fkname']:
-                    model = model.objects.filter(product = None)
+            if 'sql' in form.keys():
+                with connection.cursor() as cursor:
+                    cursor.execute(form['sql'])
+                messages.append(form['sql'])
             else:
-                print('not nonefk')
-            if 'all' in form.keys():
-                model = model.objects.all()
-                for obj in model:
-                    obj.delete()
-                message += ' Удалены все записи.'
-            else:
-                print('not all')
-            
+                print('not sql')
         
-        print('message', message)
-        return render(request, 'reset.html', {'message': message, 'activeReset': True})
+        model = Ingredient
+        table_data = {
+            'table_name': "Ingredient",
+            'db_table': model._meta.db_table,
+            'fields': []
+        }
+        for field in model._meta.get_fields():
+            table_data['fields'].append({'name': field.name, 'type': field.get_internal_type()})
+        return render(request, 'reset.html', {'messages': messages, 'table_data': table_data, 'activeReset': True})
     return redirect('home')
+
+def update_table(request):
+    database = request.GET.get('database', None)
+    if database.lower() == 'ingredient':
+        model = Ingredient
+    elif database.lower() == 'recipe':
+        model = Recipe
+    elif database.lower() == 'product':
+        model = Product
+    elif database.lower() == 'mealtype':
+        model = MealType
+    table_data = {
+        'table': {
+            'table_name': database,
+            'db_table': model._meta.db_table,
+            'fields': []
+        }
+    }
+    for field in model._meta.get_fields(include_parents=False):
+        table_data['table']['fields'].append({'name': field.name, 'type': field.get_internal_type()})
+    print(table_data)
+    return JsonResponse(table_data)
