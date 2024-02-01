@@ -14,7 +14,7 @@
             {% for product in products %}
                 <tr>
                     <td class="minCol">{{ product.name }}</td>
-                    <td class="centerCol minCol">{{ product.kkal }}/{{ product.proteins }}/{{ product.fats }}/{{ product.carbohydrates }}</td>
+                    <td class="centerCol minCol">{% if product.kkal %}{{ product.kkal }}{% else %}-{% endif %}/{% if product.proteins %}{{ product.proteins }}{% else %}-{% endif %}/{% if product.fats %}{{ product.fats }}{% else %}-{% endif %}/{% if product.carbohydrates %}{{ product.carbohydrates }}{% else %}-{% endif %}</td>
                     <td class="centerCol minCol">{{ product.baseUnit }}</td>
                     <td class="btnCol">
                         <a href="{% url 'update_product' product.id %}">
