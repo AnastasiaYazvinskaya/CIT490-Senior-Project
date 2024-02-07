@@ -7,6 +7,7 @@ from .models import *
 from user.models import Group
 from .forms import *
 from recipe.models import Ingredient, Recipe
+from django.forms import modelformset_factory
 
 @login_required
 def systemdata(request):
@@ -253,21 +254,33 @@ def create_update_product(request, pk=None):
     if pk != None:
         # Если ключ передан, то ищем объект
         productObj = Product.objects.get(pk = pk)
+        extra = 0
     else: 
         # Если ключ не передан, то работаем с пустым объектом
-        productObj = None
+        productObj = Product.objects.none()
+        extra = 1
     if request.method == "POST":
-        form = ProductForm(request.POST, request.FILES, instance = productObj)
-        if form.is_valid():
+        productFormset = modelformset_factory(Product, form=ProductForm, extra=extra)
+        formset = productFormset(request.POST, queryset=productObj)
+        #form = ProductForm(request.POST, request.FILES, instance = productObj)
+        for form in formset:
+            if formset.is_valid():
+                product = form.save(commit=False)
+                if product.name != None:
+                        exist = Product.objects.filter(name = product.name).exists()
+                        if not exist:
+                            product.save()
             # Предсохраняем данные введенные с формы (но не вносим в базу)
-            product = form.save(commit=False)
+            #product = form.save(commit=False)
             # Переносим все изменения в базу
-            product.save()
+            #product.save()
             #form.save_m2m()
             return redirect(reverse('product')+ '?active=True')
     else:
-        form = ProductForm(instance = productObj)
-    return render(request, "product/product_create_update.html", {'form': form, 'pk': pk, 'activeProduct': True})
+        #form = ProductForm(instance = productObj)
+        productFormset = modelformset_factory(Product, form=ProductForm, extra=extra)
+        formset = productFormset(queryset=productObj)
+    return render(request, "product/product_create_update.html", {'formset': formset, 'pk': pk, 'activeProduct': True})
 
 # Delete product 
 @login_required
@@ -303,6 +316,9 @@ def reset(request):
             if form['database'].lower() == 'product':
                 model = Product
                 messages.append('Вы работали с Продуктами. Был выполнен скрипт:')
+            #if form['database'].lower() == 'prepareuser':
+            #    model = Product
+            #    messages.append('Вы работали с PrepareUser. Был выполнен скрипт:')
             #check filter
             if 'sql' in form.keys():
                 with connection.cursor() as cursor:
@@ -332,6 +348,8 @@ def update_table(request):
         model = Product
     elif database.lower() == 'mealtype':
         model = MealType
+    #elif database.lower() == 'prepareuser':
+    #    model = PrepareUser
     table_data = {
         'table': {
             'table_name': database,

@@ -12,16 +12,63 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div id="trainer-list">
-        <p>У вас ещё нет тренера? Вот наши топ тренера:</p>
-        <div id="trainers">
-            {% for trainer in trainers %}
-                <a>
-                    <p>{{ trainer.user.last_name }} {{trainer.user.first_name }}</p>
-                    <button type="button" class="btn btn-primary chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
-                </a>
-            {% endfor %}
+    {% comment %}
+        <div id="trainer-list">
+            <p>У вас ещё нет тренера? Вот наши топ тренера:</p>
+            <div id="trainers">
+                {% for trainer in trainers %}
+                    <a>
+                        <p>{{ trainer.user.last_name }} {{trainer.user.first_name }}</p>
+                        <button type="button" class="btn btn-primary chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
+                    </a>
+                {% endfor %}
+            </div>
         </div>
+    {% endcomment %}
+    <p>Сегодня</p>
+    <hr>
+    <div>
+        <p>Цели КБЖУ:</p>
+        <table>
+            <tr>
+                <td>Ккал:</td>
+                <td>800 / 2200</td>
+            </tr>
+            <tr>
+                <td>Белки:</td>
+                <td>800 / 2200</td>
+            </tr>
+            <tr>
+                <td>Жиры:</td>
+                <td>800 / 2200</td>
+            </tr>
+            <tr>
+                <td>Углеводы:</td>
+                <td>800 / 2200</td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    {% if menu %}
+    <div id="day-menu">
+        <p>Меню:</p>
+        <table>
+            {% for recipe in menu %}
+            <tr>
+                <td>{{ recipe.mealType }}:</td>
+                <td>{{ recipe.name }}</td>
+            </tr>
+            {% endfor %}
+            <tr><td>
+                <a href="#" style="text-decoration: line-through;">Изменить меню</a>
+            </td></tr>
+        </table>
+    </div>
+    {% endif %}
+    <hr>
+    <div id="day-training">
+        <p>Тренировки:</p>
+        <p>Тут будут данные по плановым тренировкам (при создании дневника/плана тренировок)</p>
     </div>
 </div>
 {% endblock %}

@@ -228,6 +228,13 @@ button.btnImage {
 .hidden {
     display: none;
 }
+input[type=number] {
+    width: 50px;
+}
+#wait-message {
+    display: none;
+    background-color: #0000007a;
+}
 
 @media screen and (min-width: 600px){/* and (orientation: portrait){ /*Large view*/
     nav {

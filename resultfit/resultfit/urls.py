@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include('user.urls')),
     path('', include('trainer.urls')),
     path('', include('client.urls')),
-    path('fooddairy/', include('fooddairy.urls')),
+    path('', include('fooddairy.urls')),
     path('systemdata/', include('systemdata.urls')),
     path('', include('recipe.urls')),
 ]

@@ -6,6 +6,9 @@ from django.http import JsonResponse
 from .models import *
 from .forms import *
 from client.models import ClientTrainer
+from fooddairy.models import DayMenu, Recipe
+
+from django.utils import timezone
 
 def register(request):
     if request.user.is_authenticated:
@@ -59,7 +62,17 @@ def logout_user(request):
 @login_required
 def home(request):
     trainers = Profile.objects.filter(user__groups__name='trainer').exclude(user = request.user).order_by('-trainer_rating')
-    return render(request, 'home.html', {'trainers': trainers, 'activeHome': True})
+    todayMenu = DayMenu.objects.filter(user = request.user, day = timezone.now().date())[0]
+    if todayMenu is None:
+        todayMenu = DayMenu.objects.create(
+            day = timezone.now().date(),
+            user = request.user
+        )
+        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Завтрак').order_by("?").first())
+        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Обед').order_by("?").first())
+        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Ужин').order_by("?").first())
+    todayMenu = todayMenu.recipes.all().order_by('mealType__id')
+    return render(request, 'home.html', {'trainers': trainers, 'menu': todayMenu, 'activeHome': True})
 
 @login_required
 def profile(request):

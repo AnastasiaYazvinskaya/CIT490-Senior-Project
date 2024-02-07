@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class ActivityType(models.Model):
     name = models.CharField(max_length=20, verbose_name ='Тип', null=True, default=None)
