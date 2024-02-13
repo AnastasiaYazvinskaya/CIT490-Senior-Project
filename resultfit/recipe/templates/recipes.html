@@ -36,7 +36,7 @@
         <tr>
             <th>Название</th>
             <th>Прием пищи</th>
-            <th>КБЖУ</th>
+            <th class="emailCol">КБЖУ</th>
             <th>Доступ</th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
@@ -46,7 +46,7 @@
                 <tr>
                     <td><a href="/recipes/card/{{ recipe.id }}/">{{ recipe.name }}</a></td>
                     <td>{{ recipe.mealType }}</td>
-                    <td>{{ recipe.kkal }}/{{ recipe.proteins }}/{{ recipe.fats }}/{{ recipe.carbohydrates }}</td>
+                    <td class="emailCol">{{ recipe.kkal }}/{{ recipe.proteins }}/{{ recipe.fats }}/{{ recipe.carbohydrates }}</td>
                     <td>{{ recipe.privacy }}</td>
                     <td class="btnCol">
                         <a href="/recipes/{{ recipe.id }}/update">
