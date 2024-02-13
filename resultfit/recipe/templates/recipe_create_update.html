@@ -21,10 +21,10 @@
         </div>
         <div class="raw-fields">
             <div class="input_field">
-                <span class="label">{{ form.privacy.label }}</span>{{ form.privacy }}
+                <span class="label">Доступ</span>{{ form.privacy }}
             </div>
             <div class="input_field">
-                <span class="label">{{ form.mealType.label }}</span>{{ form.mealType }}
+                <span class="label">Прием пищи</span>{{ form.mealType }}
             </div>
         </div>
         <div class="multi-field-block">
@@ -36,19 +36,21 @@
                     <div class="input_field large-field">
                         <span class="label">{{ form.product_name.label }}</span>{{ form.product_name }}
                     </div>
-                    <div class="input_field small-field">
+                    <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="raw-fields">
+                    <div class="input_field">
                         <span class="label">Кол-во</span>{{ form.amount }}
                     </div>
-                    <div class="input_field small-field">
+                    <div class="input_field">
                         <span class="label">Ед. изм.</span>{{ form.unitType }}
                     </div>
                     {% if form.product.value %}
                     {{ form.id }}
                     <div class="hidden">{% if formset.can_delete %}{{ form.DELETE }}{% endif %}</div>
                     {% endif %}
-                    <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 {% endfor %}
             </div>
@@ -62,23 +64,28 @@
         </div>
         <div class="form-buttons">
             <a class="btn btn-danger" href="/recipes/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a>
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="submit" class="save btn btn-primary">Сохранить</button>
         </div>
     </form>
     <div class="hidden">
-        <div class="raw-fields" id="empty-form">
-            <div class="input_field large-field">
-                <span class="label">{{ formset.empty_form.product_name.label }}</span>{{ formset.empty_form.product_name }}
+        <div id="empty-form">
+            <hr>
+            <div class="raw-fields">
+                <div class="input_field large-field">
+                    <span class="label">{{ formset.empty_form.product_name.label }}</span>{{ formset.empty_form.product_name }}
+                </div>
+                <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="input_field small-field">
-                <span class="label">{{ formset.empty_form.amount.label }}</span>{{ formset.empty_form.amount }}
+            <div class="raw-fields">
+                <div class="input_field">
+                    <span class="label">Кол-во</span>{{ formset.empty_form.amount }}
+                </div>
+                <div class="input_field">
+                    <span class="label">Ед. Изм.</span>{{ formset.empty_form.unitType }}
+                </div>
             </div>
-            <div class="input_field small-field">
-                <span class="label">{{ formset.empty_form.unitType.label }}</span>{{ formset.empty_form.unitType }}
-            </div>
-            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     </div>
 </div>

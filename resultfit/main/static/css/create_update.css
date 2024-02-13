@@ -89,7 +89,7 @@ form {
     position: relative;
     width: 100%;
 }
-.form-buttons button {
+.form-buttons button.save {
     position: absolute;
     right: 10px;
 }

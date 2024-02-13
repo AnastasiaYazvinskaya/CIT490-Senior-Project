@@ -48,10 +48,6 @@ th {
     font-size: 12.5px;
 }
 
-table td {
-  overflow: hidden;
-  height: 20px;
-}
 
 @media screen and (min-width: 600px){
     

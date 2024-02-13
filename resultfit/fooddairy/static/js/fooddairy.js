@@ -6,8 +6,9 @@ $(document).ready(function(){
             <span class="label">Комментарий</span><textarea rows='4' id='comment-text_${note_id}' name='comment'></textarea>
         </div>
         <p id="save-error_${note_id}"><p>
-        <div class='single-button'>
-            <button type='button' class='save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>
+        <div class='form-buttons'>
+            <button type='button' class="cancel-comment btn btn-danger" value='${note_id}'>Отмена</button>
+            <button type='button' class='save save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>
         </div>`);
         $('#add-comment_'+note_id).hide();
         return false;
@@ -40,6 +41,12 @@ $(document).ready(function(){
                 console.log(response.responseJSON.errors)
             }
         });
+    });
+    $(document).on('click', '.cancel-comment', function () {
+        console.log('cancel-comment');
+        note_id = $(this).val();
+        $('#add-comment_'+note_id).show();
+        $('#comment-form_'+note_id).html('');
     });
     $('#add-note').on('click', function () {
         const currentDate = new Date().toISOString().slice(0, 10);
@@ -79,8 +86,9 @@ $(document).ready(function(){
             <span class="label">Комментарий</span><textarea rows='3' id='comment' name='comment'></textarea>
         </div>
         <p id="note-save-error"><p>
-        <div class='single-button'>
-            <button type='button' class='save-note btn btn-primary'>Сохранить</button>
+        <div class='form-buttons'>
+            <button type='button' class="cancel-note btn btn-danger" >Отмена</button>
+            <button type='button' class='save save-note btn btn-primary'>Сохранить</button>
         </div>`);
         $('#add-note').hide();
         return false;
@@ -121,6 +129,10 @@ $(document).ready(function(){
                 console.log(response.responseJSON.errors)
             }
         });
+    });
+    $(document).on('click', '.cancel-note', function () {
+        $('#add-note').show();
+        $('#note-form-fields').html('');
     });
     //delete ingredient
     $(document).on('click', '.delete', function () {

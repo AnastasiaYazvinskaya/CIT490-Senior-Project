@@ -17,13 +17,15 @@ def fooddairy(request):
 def calculate_cpfc(request, pk):
     if request.user.pk == pk:
         dairy = FoodDairyGeneral.objects.get(user = request.user)
-        print('dairy', dairy)
         if (dairy != None):
             profile = Profile.objects.get(user = request.user)
             if profile.sex == 'F':
                 dairy.kkal = round((655.1 + (9.563*float(profile.weight)) + (1.85*float(profile.height)) - (4.676*float(profile.age))) * float(profile.activity.rate))
             elif profile.sex == 'M':
                 dairy.kkal = round((66.5 + (13.75*float(profile.weight)) + (5.003*float(profile.height)) - (6.775*float(profile.age))) * float(profile.activity.rate))
+            dairy.proteins = round(dairy.kkal * float(profile.purpose.proteins_rate_min) / 100)
+            dairy.fats = round(dairy.kkal * float(profile.purpose.fats_rate_min) / 100)
+            dairy.carbohydrates = round(dairy.kkal * float(profile.purpose.carbohydrates_rate_max) / 100)
             dairy.save()
             return redirect('fooddairy')
         return redirect('profile')
@@ -33,23 +35,25 @@ def calculate_cpfc(request, pk):
 @login_required
 def food_dairy(request, day=None):
     dayNotes = DayNote.objects.filter(user = request.user).order_by('-day')
-    if day is None:
-        day = dayNotes[0]
+    if len(dayNotes) == 0:
+        dayNotes = {}
+        day = timezone.now().date()
+        notes = {}
     else:
-        day = dayNotes.filter(day = datetime.strptime(day, '%Y-%m-%d'))[0]
-        print('day', day.day)
+        if day is None:
+            day = dayNotes[0]
+        else:
+            day = dayNotes.filter(day = datetime.strptime(day, '%Y-%m-%d'))[0]
+        
+        notesQ = day.foodday.all()#.order_by('-mealType__id')
+        notes = notesQ.values()
+        for idy, note in enumerate(notes):
+            note['comments'] = notesQ[idy].foodnote.all().order_by('-created_by')
+            note['image_url'] = notesQ[idy].image.url
+            note['mealType'] = notesQ[idy].mealType.name
+        day = day.day
     
-    notesQ = day.foodday.all()#.order_by('-mealType__id')
-    notes = {}
-    notes['notes'] = notesQ.values()
-    notes['day'] = day.day#.strftime('%Y-%m-%d')
-    for idy, note in enumerate(notes['notes']):
-        note['comments'] = notesQ[idy].foodnote.all().order_by('-created_by')
-        note['image_url'] = notesQ[idy].image.url
-        note['mealType'] = notesQ[idy].mealType.name
-    print('notes', notes)
-    
-    return render(request, 'food_dairy/dairy.html', {"days": dayNotes, "notes": notes, "activeFood": True, "activeDay": day.day})
+    return render(request, 'food_dairy/dairy.html', {"days": dayNotes, "notes": notes, "activeFood": True, "activeDay": day})
 
 def save_comment(request, day=None):
     text = request.GET.get('comment', None)
