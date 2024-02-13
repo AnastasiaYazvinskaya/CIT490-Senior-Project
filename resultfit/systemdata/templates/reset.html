@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
+{% endblock %}
 {% block script2 %}<script src="{% static 'js/systemdata.js' %}"></script>{% endblock %}
 {#<!-- Content for Creating/Updating page -->#}
 {% block content %}
@@ -19,29 +22,25 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {#<!-- Таблица полей, для ровного отображения -->#}
-        <table>
-            <tr>
-                <td>База данных</td>
-                <td><select id="database" name="database" required>
-                    <option value="Ingredient">Ingredient</option>
-                    <option value="Product">Product</option>
-                    <option value="Recipe">Recipe</option>
-                    <option value="PrepareUser">PrepareUser</option>
-                    <option value="ClientTrainer">ClientTrainer</option>
-                    <option value="MealType">MealType</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td><label for="sql">SQL-выражение</label></td>
-                <td>
-                    <textarea rows="5" name="sql"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-danger" href="{% url 'reset' %}">Отмена</a></td>
-                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
-            </tr>
-        </table>
+        <div class="input_field">
+            <span class="label">База данных</span>
+            <select id="database" name="database" required>
+                <option value="Ingredient">Ingredient</option>
+                <option value="Product">Product</option>
+                <option value="Recipe">Recipe</option>
+                <option value="PrepareUser">PrepareUser</option>
+                <option value="ClientTrainer">ClientTrainer</option>
+                <option value="MealType">MealType</option>
+            </select>
+        </div>
+        <div class="input_field">
+            <span class="label">SQL-выражение</span>
+            <textarea rows="5" name="sql"></textarea>
+        </div>
+        <div class="form-buttons">
+            <a class="btn btn-danger" href="{% url 'reset' %}">Сбросить</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
         <hr>
         {% if table_data %}
         <table class="table">

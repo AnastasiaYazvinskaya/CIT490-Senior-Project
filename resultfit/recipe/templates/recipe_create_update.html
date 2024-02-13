@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% block style %}<link rel="stylesheet" href="{% static 'css/create_update.css' %}">{% endblock %}
 {% block script2 %}<script src="{% static 'js/recipe.js' %}"></script>{% endblock %}
 {#<!-- Content for Creating/Updating page -->#}
 {% block content %}
@@ -15,83 +16,70 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {#<!-- Таблица полей, для ровного отображения -->#}
-        <table>
-            <tr>
-                <td>{{ form.name.label_tag }}</td>
-                <td>{{ form.name }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.privacy.label_tag }}</td>
-                <td>{{ form.privacy }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.mealType.label_tag }}</td>
-                <td>{{ form.mealType }}</td>
-            </tr>
-            <tr>
-                <td colspan="3">Ингредиенты</td>
-            </tr>
-        </table>
-        {{  formset.management_form }}
-        <div id="formset">
-            {% for form in formset %}
-                <table id="form-{{ forloop.counter0 }}">
-                    <tr>
-                        <td>{{ form.product_name.label_tag }}</td>
-                        <td>{{ form.product_name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.amount.label_tag }}</td>
-                        <td>{{ form.amount }} {{ form.unitType }}</td>
-                        <td rowspan="2">
-                            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </td>
-                    </tr>
+        <div class="input_field">
+            <span class="label">{{ form.name.label }}</span>{{ form.name }}
+        </div>
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">{{ form.privacy.label }}</span>{{ form.privacy }}
+            </div>
+            <div class="input_field">
+                <span class="label">{{ form.mealType.label }}</span>{{ form.mealType }}
+            </div>
+        </div>
+        <div class="multi-field-block">
+            <span class="label">Ингредиенты</span>
+            {{  formset.management_form }}
+            <div id="formset">
+                {% for form in formset %}
+                <div class="raw-fields">
+                    <div class="input_field large-field">
+                        <span class="label">{{ form.product_name.label }}</span>{{ form.product_name }}
+                    </div>
+                    <div class="input_field small-field">
+                        <span class="label">Кол-во</span>{{ form.amount }}
+                    </div>
+                    <div class="input_field small-field">
+                        <span class="label">Ед. изм.</span>{{ form.unitType }}
+                    </div>
                     {% if form.product.value %}
-                        <tr>{{ form.id }}</tr>
-                        <tr class="hidden">{% if formset.can_delete %}<td>{{ form.DELETE }}</td>{% endif %}</tr>
+                    {{ form.id }}
+                    <div class="hidden">{% if formset.can_delete %}{{ form.DELETE }}{% endif %}</div>
                     {% endif %}
-                </table>
-            {% endfor %}
+                    <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-ingredient" class="btn btn-secondary">+ Ингредиент</button>
         </div>
-        <div class="hidden">
-            <table id="empty-form">
-                <tr>
-                    <td>{{ formset.empty_form.product_name.label_tag }}</td>
-                    <td>{{ formset.empty_form.product_name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ formset.empty_form.amount.label_tag }}</td>
-                    <td>{{ formset.empty_form.amount }} {{ formset.empty_form.unitType }}</td>
-                    <td rowspan="2">
-                        <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </td>
-                </tr>
-            </table>
+        <div class="input_field">
+            <span class="label">{{ form.description.label }}</span>{{ form.description }}
         </div>
-        <table>
-            <tr><td><button type="button" id="add-ingredient" class="btn btn-secondary">+ Ингредиент</button></td></tr>
-            <tr>
-                <td>{{ form.description.label_tag }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.description }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.recommends.label_tag }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.recommends }}</td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-danger" href="/recipes/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a></td>
-                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
-            </tr>
-        </table>
+        <div class="input_field">
+            <span class="label">{{ form.recommends.label }}</span>{{ form.recommends }}
+        </div>
+        <div class="form-buttons">
+            <a class="btn btn-danger" href="/recipes/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
     </form>
+    <div class="hidden">
+        <div class="raw-fields" id="empty-form">
+            <div class="input_field large-field">
+                <span class="label">{{ formset.empty_form.product_name.label }}</span>{{ formset.empty_form.product_name }}
+            </div>
+            <div class="input_field small-field">
+                <span class="label">{{ formset.empty_form.amount.label }}</span>{{ formset.empty_form.amount }}
+            </div>
+            <div class="input_field small-field">
+                <span class="label">{{ formset.empty_form.unitType.label }}</span>{{ formset.empty_form.unitType }}
+            </div>
+            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
 </div>
 {% endblock %}

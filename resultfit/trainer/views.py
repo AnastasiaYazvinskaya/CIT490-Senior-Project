@@ -13,7 +13,7 @@ def trainer_register(request, code=None):
     else:
         if request.method == 'POST':
             form = TrainerRegisterForm(request.POST)
-            code = request.POST['code']
+            #code = request.POST['code']
             trainer = PrepareUser.objects.get(code=code)
             if (trainer and not trainer.user):
                 if form.is_valid():

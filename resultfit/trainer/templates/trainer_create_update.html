@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
+{% endblock %}
 {% block script2 %}<script src="{% static 'js/trainer.js' %}"></script>{% endblock %}
 {#<!-- Content for Creating/Updating page -->#}
 {% block content %}
@@ -15,31 +18,27 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {#<!-- Таблица полей, для ровного отображения -->#}
-        <table>
-            <tr>
-                <td>{{ form.lastName.label_tag }}</td>
-                <td>{{ form.lastName }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.firstName.label_tag }}</td>
-                <td>{{ form.firstName }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.email.label_tag }}</td>
-                <td>{{ form.email }}</td>
-                <td class="errorCol">{{ form.email.errors }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.code.label_tag }}</td>
-                <td>{{ form.code }}</td>
-                <td><button type="button" class="btn btn-secondary" onclick="generateCode()"><img src="{% static 'images/update.svg' %}" alt="Generate code" class="btnImage"></button></td>
-                <td class="errorCol">{{ form.code.errors }}</td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-danger" href="/trainers/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a></td>
-                <td class="saveCol"><button type="submit" class="btn btn-primary">Сохранить</button></td>
-            </tr>
-        </table>
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">Фамилия</span>{{ form.lastName }}
+            </div>
+            <div class="input_field">
+                <span class="label">Имя</span>{{ form.firstName }}
+            </div>
+        </div>
+        <div class="input_field">
+            <span class="label">E-mail</span>{{ form.email }}
+        </div>
+        <div class="raw-fields">
+            <div class="input_field large-field">
+                <span class="label">Код регистрации</span>{{ form.code }}
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="generateCode()"><img src="{% static 'images/update.svg' %}" alt="Generate code" class="btnImage"></button>
+        </div>
+        <div class="form-buttons">
+            <a class="btn btn-danger" href="/trainers/{% if pk != None %}/card/{{ pk }}{% endif %}">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
     </form>
 </div>
 {% endblock %}

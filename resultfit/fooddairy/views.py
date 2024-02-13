@@ -31,20 +31,27 @@ def calculate_cpfc(request, pk):
         return redirect('profile')
     
 @login_required
-def food_dairy(request):
+def food_dairy(request, day=None):
     dayNotes = DayNote.objects.filter(user = request.user).order_by('-day')
-    days = dayNotes.values()
-    for idx, day in enumerate(days):
-        notes = dayNotes[idx].foodday.all()#.order_by('-mealType__id')
-        day['notes'] = notes.values()
-        for idy, note in enumerate(day['notes']):
-            note['comments'] = notes[idy].foodnote.all().order_by('-created_by')
-            note['image_url'] = notes[idy].image.url
-            note['mealType'] = notes[idy].mealType.name
+    if day is None:
+        day = dayNotes[0]
+    else:
+        day = dayNotes.filter(day = datetime.strptime(day, '%Y-%m-%d'))[0]
+        print('day', day.day)
     
-    return render(request, 'food_dairy/dairy.html', {"notes": days, "activeFood": True})
+    notesQ = day.foodday.all()#.order_by('-mealType__id')
+    notes = {}
+    notes['notes'] = notesQ.values()
+    notes['day'] = day.day#.strftime('%Y-%m-%d')
+    for idy, note in enumerate(notes['notes']):
+        note['comments'] = notesQ[idy].foodnote.all().order_by('-created_by')
+        note['image_url'] = notesQ[idy].image.url
+        note['mealType'] = notesQ[idy].mealType.name
+    print('notes', notes)
+    
+    return render(request, 'food_dairy/dairy.html', {"days": dayNotes, "notes": notes, "activeFood": True, "activeDay": day.day})
 
-def save_comment(request):
+def save_comment(request, day=None):
     text = request.GET.get('comment', None)
     note_id = request.GET.get('note_id', None)
     if text:
@@ -68,7 +75,7 @@ def save_comment(request):
         }
     return JsonResponse(response)
 
-def save_note(request):
+def save_note(request, day=None):
     date = request.POST.get('date', None)
     meal = request.POST.get('meal', None)
     image = request.POST.get('image', None)

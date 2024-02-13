@@ -1,34 +1,46 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}<link rel="stylesheet" href="{% static 'css/fooddairy.css' %}">{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/fooddairy.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
+{% endblock %}
 {% block script2 %}<script src="{% static 'js/fooddairy.js' %}"></script>{% endblock %}
 {#<!-- Content for displaying list of trainers -->#}
 {% block content %}
 <h4 class="small-header">{% block pageName %}Дневник питания{% endblock %}</h4>
 <div id="inside-content">
+    <div id="submenu" class="submenu">
+        {% for day in days %}
+            {% if activeDay == day.day %}
+                <a href="{% url 'food_dairy_by_date' day.day %}" class="subactive">
+                    {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
+                </a>
+            {% else %}
+                <a href="{% url 'food_dairy_by_date' day.day %}">
+                    {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
     <p><button type="button" id="add-note" class="add-note">+ Запись</button></p>
     <div id="note-form">
         {% csrf_token %}
         <div id="note-form-fields"></div>
     </div>
     {% if notes %}
-        {% for day in notes %}
-        <div id="day-{{ forloop.counter0 }} date-{{ day.day|date:'d.m.Y' }}">
-            <hr>
-            <p>{% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}</p>
-            {% for note in day.notes %}
-                <p>{{ note.mealType }}</p>
-                <p>КБЖУ: {{ note.kkal }}/{{ note.proteins }}/{{ note.fats }}/{{ note.carbohydrates }}</p>
-                <p><img src='{{ note.image_url }}' alt='{{ note.image_url }}' style="width: 200px;"></p>
-                <div id="comments_{{ note.id }}" class="comments">
-                    {% for comment in note.comments %}
-                        <p>{{ comment.author }} ({{ comment.created_by }})</p>
-                        <p>{{ comment.text }}</p>
-                    {% endfor %}
-                </div>
-                <p><button type="button" id="add-comment_{{ note.id }}" class="add-comment" value="{{ note.id }}">+ Комментарий</button></p>
-                <div id="comment-form_{{ note.id }}"></div>
-            {% endfor %}
+        {% for note in notes.notes %}
+        <div class="note-info">
+            <p>{{ note.mealType }}</p>
+            <p>КБЖУ: {{ note.kkal }}/{{ note.proteins }}/{{ note.fats }}/{{ note.carbohydrates }}</p>
+            <p><img src='{{ note.image_url }}' alt='{{ note.image_url }}' style="width: 200px;"></p>
+            <div id="comments_{{ note.id }}" class="comments">
+                {% for comment in note.comments %}
+                    <p>{{ comment.author }} ({{ comment.created_by }})</p>
+                    <p>{{ comment.text }}</p>
+                {% endfor %}
+            </div>
+            <p><button type="button" id="add-comment_{{ note.id }}" class="add-comment" value="{{ note.id }}">+ Комментарий</button></p>
+            <div id="comment-form_{{ note.id }}"></div>
         </div>
         {% endfor %}
     {% endif %}

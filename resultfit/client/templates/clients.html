@@ -38,7 +38,7 @@
     <table class="table table-striped">
         <tr>
             <th>Фамилия Имя</th>
-            <th>Телефон</th>
+            <th class="emailCol">Телефон</th>
             <th>Цель</th>
             <th class="btnCol"></th>
             {% if activeRequest %}<th class="btnCol"></th>{% endif %}
@@ -47,7 +47,7 @@
             {% for client in clients %}
                 <tr>
                     <td>{{ client.client.user.last_name }} {{ client.client.user.first_name }}</td>
-                    <td class="centerCol">{% if client.client.phone %}{{ client.client.phone }}{% else %}-{% endif %}</td>
+                    <td class="centerCol emailCol">{% if client.client.phone %}{{ client.client.phone }}{% else %}-{% endif %}</td>
                     <td class="centerCol">{% if client.client.purpose %}{{ client.client.purpose }}{% else %}-{% endif %}</td>
                     <td class="btnCol">
                         <a href="{% url 'client' client.client.user.id %}">

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}<link rel="stylesheet" href="{% static 'css/user.css' %}">{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
+{% endblock %}
 {% block script2 %}<script src="{% static 'js/systemdata.js' %}"></script>{% endblock %}
 {#<!-- Content for Creating/Updating page -->#}
 {% block content %}
@@ -50,82 +53,81 @@
         {{  formset.management_form }}
         <div id="formset">
             {% for form in formset %}
-                <table id="form-{{ forloop.counter0 }}">
-                    <tr>
-                        <td>{{ form.name.label_tag }}</td>
-                        <td>{{ form.name }}</td>
+                <div id="form-{{ forloop.counter0 }}">
+                    <div class="raw-fields">
+                        <div class="input_field large-field">
+                            <span class="label">{{ form.name.label }}</span>
+                            {{ form.name }}
+                        </div>
                         {% if not form.name.value %}
-                        <td rowspan="2">
-                            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
+                            <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </td>
                         {% endif %}
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <span style="width: 50px;">кКал/</span>
-                            <span>Белки/</span>
-                            <span>Жиры/</span>
-                            <span>Углеводы</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>КБЖУ:</td>
-                        <td style="width: 50px">{{ form.kkal }}/{{ form.proteins }}/{{ form.fats }}/{{ form.carbohydrates }}</td>
-                    </tr>
-                    <tr>
-                        <td>Ед. измерения:</td>
-                        <td style="width: 230px;">{{ form.baseUnit }}</td>
-                    </tr>
-                    <tr><td colspan="3"><hr></td></tr>
-                </table>
+                    </div>
+                    <div class="raw-fields">
+                        <div class="input_field">
+                            <span class="label">Ккал</span>{{ form.kkal }}
+                        </div>
+                        <div class="input_field">
+                            <span class="label">Белки</span>{{ form.proteins }}
+                        </div>
+                        <div class="input_field">
+                            <span class="label">Жиры</span>{{ form.fats }}
+                        </div>
+                        <div class="input_field">
+                            <span class="label">Угл-ды</span>{{ form.carbohydrates }}
+                        </div>
+                    </div>
+                    <div class="input_field">
+                        <span class="label">Ед. измерения</span>{{ form.baseUnit }}
+                    </div>
+                    <hr>
+                </div>
             {% endfor %}
         </div>
-        <table>
-            {% if not form.name.value %}
-            <tr>
-                <td><button type="button" id="add-ingredient" class="btn btn-secondary">+ Продукт</button></td>
-                <td></td>
-            </tr>
-            {% endif %}
-            <tr>
-                <td><a class="btn btn-danger" href="{% url 'product' %}?active=True">Отмена</a></td>
-                <td ><button type="submit" class="btn btn-primary">Сохранить</button></td>
-            </tr>
-        </table>
-        <div class="hidden">
-            <table id="empty-form">
-                <tr>
-                    <td>{{ formset.empty_form.name.label_tag }}</td>
-                    <td>{{ formset.empty_form.name }}</td>
-                    <td rowspan="2">
-                        <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <span>кКал/</span>
-                        <span>Белки/</span>
-                        <span>Жиры/</span>
-                        <span>Углеводы</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>КБЖУ:</td>
-                    <td>{{ formset.empty_form.kkal }}/{{ formset.empty_form.proteins }}/{{ formset.empty_form.fats }}/{{ formset.empty_form.carbohydrates }}</td>
-                </tr>
-                <tr>
-                    <td>Ед. измерения:</td>
-                    <td>{{ formset.empty_form.baseUnit }}</td>
-                </tr>
-                <tr><td colspan="3"><hr></td></tr>
-            </table>
+        {% if not form.name.value %}
+            <div class="single-button">
+                <button type="button" id="add-ingredient" class="btn btn-secondary">+ Продукт</button></td>
+            </div>
+        {% endif %}
+        
+        <div class="form-buttons">
+            <a class="btn btn-danger" href="{% url 'product' %}?active=True">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
     </form>
+
+    <div class="hidden">
+        <div id="empty-form">
+            <div class="raw-fields">
+                <div class="input_field large-field">
+                    <span class="label">{{ formset.empty_form.name.label }}</span>
+                    {{ formset.empty_form.name }}
+                </div>
+                <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="raw-fields">
+                <div class="input_field">
+                    <span class="label">Ккал</span>{{ formset.empty_form.kkal }}
+                </div>
+                <div class="input_field">
+                    <span class="label">Белки</span>{{ formset.empty_form.proteins }}
+                </div>
+                <div class="input_field">
+                    <span class="label">Жиры</span>{{ formset.empty_form.fats }}
+                </div>
+                <div class="input_field">
+                    <span class="label">Угл-ды</span>{{ formset.empty_form.carbohydrates }}
+                </div>
+            </div>
+            <div class="input_field">
+                <span class="label">Ед. измерения</span>{{ formset.empty_form.baseUnit }}
+            </div>
+        </div>
+        <hr>
+    </div>
 </div>
 {% endblock %}

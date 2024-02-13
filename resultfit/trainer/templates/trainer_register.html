@@ -19,94 +19,88 @@
             {% csrf_token %}
             <table>
                 <tr>
-                    <td>Код регистрации:</td>
-                    <td><input type="text" name="code" required autofocus id="id_code"
-                        {% if code %}
-                            value="{{ code }}"
-                        {% else %}
-                            value=""
-                        {% endif %}/></td>
-                    <td><button type="button" id="checkCodeBtn" class="btn btn-secondary">Проверить</button></td>
-                    <td class="errorCol"><img src="{% static 'images/error.svg' %}" id="code_error" class="btnImage"></td>
+                    <td colspan="2" class="errorCol">{% if form.last_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.last_name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
                 </tr>
-                <tr><td colspan="3"><hr></td></tr>
+                <tr>
+                    <td colspan="2" class="errorCol">{% if form.first_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.first_name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="errorCol">{% if form.email.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
+                </tr>
                 <tr>
                     <td>{{ form.last_name.label_tag }}</td>
                     <td>{{ form.last_name }}</td>
-                    <td class="errorCol">{% if form.last_name.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.last_name.errors %}
-                                    <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
                 <tr>
                     <td>{{ form.first_name.label_tag }}</td>
                     <td>{{ form.first_name }}</td>
-                    <td class="errorCol">{% if form.first_name.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.first_name.errors %}
-                                    <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
                 <tr>
                     <td>{{ form.email.label_tag }}</td>
                     <td>{{ form.email }}</td>
-                    <td class="errorCol">{% if form.email.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.email.errors %}
-                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
                 <tr><td colspan="3"><hr></td></tr>
                 <tr>
+                    <td colspan="2" class="errorCol">{% if form.username.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="errorCol">{% if form.password1.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password1.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="errorCol">{% if form.password2.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password2.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}</td>
+                </tr>
+                <tr>
                     <td>{{ form.username.label_tag }}</td>
                     <td>{{ form.username }}</td>
-                    <td>{% if form.username.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.username.errors %}
-                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
                 <tr>
                     <td>{{ form.password1.label_tag }}</td>
                     <td>{{ form.password1 }}</td>
-                    <td>{% if form.password1.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.password1.errors %}
-                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
                 <tr>
                     <td>{{ form.password2.label_tag }}</td>
                     <td>{{ form.password2 }}</td>
-                    <td>{% if form.password2.errors %}
-                            <ul class="errorlist">
-                                {% for error in form.password2.errors %}
-                                <li><img src="{% static 'images/error.svg' %}" title='{{ error }}' class="btnImage"></li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
                 </tr>
             </table>
             <button type="submit" class="btn btn-success">Зарегистрироваться</button>
             <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
-            <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+            <p>Не являетесь тренером? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
         </form>
         </div>
 {% endblock %}

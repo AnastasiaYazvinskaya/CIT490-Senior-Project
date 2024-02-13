@@ -1,0 +1,104 @@
+form {
+    margin-top: 5px;;
+}
+.input_field , .multi-field-block, .form-buttons, .single-button, .radio-field {
+    position: relative;
+    margin: auto 5px;
+    margin-bottom: 15px;
+}
+.input_field .label {
+    position: absolute;
+    top:-13px;
+    left: 5px;
+    font-weight: bold;
+    /*background-color: #f9f3e7;*/
+    background-image: linear-gradient(#f9f3e7 55%, #ebebeb 45%);
+    padding: 0 3px;
+}
+.input_field input, .input_field select {
+    height: 40px;
+    padding: 5px 5px;
+    border: 1.5px solid #aaaaaa;
+    border-radius: 5px;
+    background-color: #ebebeb;
+    width: 100%;
+}
+.input_field input {
+    padding: 5px 10px;
+}
+.input_field input[type=file] {
+    height: 45px;
+    padding-top: 10px;
+}
+.radio-field #id_sex {
+    display: flex;
+}
+.radio-field #id_sex label {
+    display: flex;
+    margin: 10px;
+}
+/*.radio-field input[type=radio] {
+    
+}*/
+.input_field textarea {
+    padding: 5px 10px;
+    border: 1.5px solid #aaaaaa;
+    border-radius: 5px;
+    background-color: #ebebeb;
+    width: 100%;
+}
+.input_field input:active {
+    border: none;
+}
+.raw-fields {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.raw-fields .input_field {
+    width: 50%;
+    margin: auto 5px;
+}
+.multi-field-block, .radio-field {
+    position: relative;
+    border:1.5px solid #aaaaaa;
+    border-radius: 5px;
+}
+.multi-field-block .label, .radio-field .label {
+    position: absolute;
+    top:-13px;
+    left: 5px;
+    font-weight: bold;
+    background-color: #f9f3e7;
+    padding: 0 3px;
+}
+.multi-field-block #formset {
+    margin-top: 20px;
+}
+.multi-field-block button {
+    margin: 0 0 5px 5px;
+}
+.raw-fields .large-field {
+    width: 100%;
+}
+.raw-fields .small-field {
+    width: 40%;
+}
+.form-buttons {
+    position: relative;
+    width: 100%;
+}
+.form-buttons button {
+    position: absolute;
+    right: 10px;
+}
+button.delete {
+    border: none;
+    background-color: inherit;
+    margin: 0;
+    margin-right: 5px;
+    padding: 0;
+    font-size: 35px;
+    padding-bottom: 5px;
+}

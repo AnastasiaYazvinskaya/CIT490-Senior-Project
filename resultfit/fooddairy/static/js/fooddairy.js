@@ -1,9 +1,14 @@
 $(document).ready(function(){
     $('.add-comment').on('click', function () {
         note_id = $(this).val();
-        $('#comment-form_'+note_id).html(`<textarea rows='4' id='comment-text_${note_id}'></textarea>
+        $('#comment-form_'+note_id).html(`
+        <div class="input_field">
+            <span class="label">Комментарий</span><textarea rows='4' id='comment-text_${note_id}' name='comment'></textarea>
+        </div>
         <p id="save-error_${note_id}"><p>
-        <button type='button' class='save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>`);
+        <div class='single-button'>
+            <button type='button' class='save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>
+        </div>`);
         $('#add-comment_'+note_id).hide();
         return false;
     });
@@ -38,35 +43,45 @@ $(document).ready(function(){
     });
     $('#add-note').on('click', function () {
         const currentDate = new Date().toISOString().slice(0, 10);
-        $('#note-form-fields').html(`<table>
-        <tr>
-            <td><label for='day'>Дата</label></td>
-            <td><input type='date' id='day' name='day' value='${currentDate}'/></td>
-        </tr>
-        <tr>
-            <td><label for='meal'>Прием пищи</label></td>
-            <td><select id='meal' name='meal'>
-                <option value='1'>Завтрак</option>
-                <option value='2'>Обед</option>
-                <option value='3'>Ужин</option>
-                <option value='4'>Перекус</option>
-            </select></td>
-        </tr>
-        <tr>
-            <td><label for='image'>Фото</label></td>
-            <td><input type='file' id='image' name='image'/></td>
-        </tr>
-        <tr>
-            <td>КБЖУ</td>
-            <td><input type='number' id='kkal' name='kkal'/>/<input type='number' id='proteins' name='proteins'/>/<input type='number' id='fats' name='fats'/>/<input type='number' id='carbohydrates' name='carbohydrates'/></td>
-        </tr>
-        <tr>
-            <td><label for='comment'>Коментарий</label></td>
-            <td><textarea rows='3' id=comment name='comment'></textarea></td>
-        </tr>
-        </table>
+        $('#note-form-fields').html(`
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">Дата</span><input type='date' id='day' name='day' value='${currentDate}'/>
+            </div>
+            <div class="input_field">
+                <span class="label">Прием пищи</span>
+                <select id='meal' name='meal'>
+                    <option value='1'>Завтрак</option>
+                    <option value='2'>Обед</option>
+                    <option value='3'>Ужин</option>
+                    <option value='4'>Перекус</option>
+                </select>
+            </div>
+        </div>
+        <div class="input_field">
+            <span class="label">Фото</span><input type='file' id='image' name='image'/>
+        </div>
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">Ккал</span><input type='number' id='kkal' name='kkal'/>
+            </div>
+            <div class="input_field">
+                <span class="label">Белки</span><input type='number' id='proteins' name='proteins'/>
+            </div>
+            <div class="input_field">
+                <span class="label">Жиры</span><input type='number' id='fats' name='fats'/>
+            </div>
+            <div class="input_field">
+                <span class="label">Углеводы</span><input type='number' id='carbohydrates' name='carbohydrates'/>
+            </div>
+        </div>
+        <div class="input_field">
+            <span class="label">Комментарий</span><textarea rows='3' id='comment' name='comment'></textarea>
+        </div>
         <p id="note-save-error"><p>
-        <button type='button' class='save-note btn btn-primary'>Сохранить</button>`);
+        <div class='single-button'>
+            <button type='button' class='save-note btn btn-primary'>Сохранить</button>
+        </div>`);
         $('#add-note').hide();
         return false;
     });
@@ -84,10 +99,10 @@ $(document).ready(function(){
         formData.append('comment', $('#comment').val());
         formData.append("csrfmiddlewaretoken", $('input[name=csrfmiddlewaretoken]').val());
 
-        $('#wait-message').show();
+        //$('#wait-message').show();
 
         // создаем AJAX-вызов
-        /*$.ajax({
+        $.ajax({
             method: "POST",
             data: formData, // получаяем данные формы
             url: "save_note/",
@@ -105,7 +120,7 @@ $(document).ready(function(){
                 // предупредим об ошибке
                 console.log(response.responseJSON.errors)
             }
-        });*/
+        });
     });
     //delete ingredient
     $(document).on('click', '.delete', function () {

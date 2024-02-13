@@ -5,9 +5,7 @@
     <table class="table table-striped">
         <tr>
             <th class="minCol">Название</th>
-            <th class="minCol">% Белков</th>
-            <th class="minCol">% Жиров</th>
-            <th class="minCol">% Углеводов</th>
+            <th class="minCol">БЖУ</th>
             <th class="btnCol"></th>
             <th class="btnCol"></th>
         </tr>
@@ -15,9 +13,7 @@
             {% for purpose in purposes %}
                 <tr>
                     <td class="minCol">{{ purpose.name }}</td>
-                    <td class="centerCol minCol">{{ purpose.proteins_rate_min }} - {{ purpose.proteins_rate_max }}</td>
-                    <td class="centerCol minCol">{{ purpose.fats_rate_min }} - {{ purpose.fats_rate_max }}</td>
-                    <td class="centerCol minCol">{{ purpose.carbohydrates_rate_min }} - {{ purpose.carbohydrates_rate_max }}</td>
+                    <td class="centerCol minCol">{{ purpose.proteins_rate_min }} / {{ purpose.fats_rate_min }} / {{ purpose.carbohydrates_rate_max }}</td>
                     <td class="btnCol">
                         <a href="{% url 'update_purpose' purpose.id %}">
                             <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
