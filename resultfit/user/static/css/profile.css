@@ -1,0 +1,31 @@
+.personal-data {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
+.personal-data .user-img {
+    width: 60px;
+    height: 60px;
+    background-color: rgb(135, 160, 152);
+    margin-right: 10px;
+    margin-top: 6px;
+    border-radius: 50%;
+}
+.personal-data p {
+    margin-bottom: 0;
+    font-size: small;
+    color: grey;
+}
+.personal-data p:nth-child(1) {
+    font-size: large;
+    font-weight: bold;
+    color: black;
+}
+.logout, .edit {
+    position: absolute;
+    right: 0;
+}
+.edit {
+    bottom: 0;
+}

@@ -1,33 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
-{#<!-- Content for displaying list of recipes -->#}
+{% block style %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
 {% block content %}   
 <h4 class="small-header">{% block pageName %}Профиль{% endblock %}</h4>
 <div id="inside-content">
-    <a href="{% url 'update_profile' profile.id %}" class="btn btn-primary">Редактировать</a>
-    <a href="{% url 'logout' %}" class="btn btn-danger">Выйти</a>
-    <br>
-    <table>
-        <tr>
-            <td>Фамилия Имя</td>
-            <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>{{ profile.user.email }}</td>
-        </tr>
-        <tr>
-            <td>Тип пользователя</td>
-            <td>{% for group in profile.user.groups.all %}
+    <div class="personal-data">
+        <img class="user-img" src="" alt="user image"/>
+        <div>
+            <p>{{ profile.user.last_name }} {{ profile.user.first_name }}</p>
+            <p>{{ profile.user.email }}</p>
+            <p>
+                {% for group in profile.user.groups.all %}
                     {% if profile.user.groups.all|length == 1 or profile.user.groups.all|length > 1 and group.name != 'base' %}
                         {{ group }}
                     {% endif %}
                 {% endfor %}
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"><hr></td>
-        </tr>
+            </p>
+        </div>
+        <div>
+            <a href="{% url 'logout' %}" class="logout"><img class="btnImage" src="{% static 'images/logout.svg' %}" alt="Logout"></a>
+            <a href="{% url 'update_profile' profile.id %}" class="edit"><img class="btnImage" src="{% static 'images/editBtn.svg' %}" alt="Edit"/></a>
+        </div>
+    </div>
+    <hr>
+    <table>
         <tr>
             <td>Пол</td>
             <td>{% if profile.sex %}{{ profile.sex }}{% else %}-{% endif %}</td>
@@ -35,8 +31,7 @@
                 {% if profile.sex and profile.age and profile.height and profile.weight and profile.activity %}
                     <a href="{% url 'calculate_cpfc' profile.user.id %}" class="btn btn-secondary">Рассчитать КБЖУ</a>
                 {% else %}
-                    <p>Заполните данные, чтобы мы могли сформировать для вас наилучшие рекомендации по питанию и физической активности.</p>
-                    <a href="{% url 'update_profile' profile.id %}" class="btn btn-secondary">Заполнить</a>
+                    <a href="{% url 'update_profile' profile.id %}" class="btn btn-secondary">Заполнить данные</a>
                 {% endif %}
             </td>
         </tr>
@@ -61,5 +56,13 @@
             <td>{% if profile.purpose %}{{ profile.purpose }}{% else %}-{% endif %}</td>
         </tr>
     </table>
+    {% for group in request.user.groups.all %}
+        {% if group.name == 'trainer' %}
+            <hr>
+            <div class="qualification">
+                <p>Тут будут файлы квалификации</p>
+            </div>
+        {% endif %}
+    {% endfor %}
 </div>    
 {% endblock %}

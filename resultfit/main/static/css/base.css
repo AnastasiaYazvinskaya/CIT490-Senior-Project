@@ -159,7 +159,7 @@ h4.small-header {
     margin-top: 5px;
 }
 #inside-content {
-    margin-left: -50px;
+    margin-left: -45px;
     padding: 10px;
     width: auto;
 }
@@ -234,6 +234,16 @@ input[type=number] {
 #wait-message {
     display: none;
     background-color: #0000007a;
+}
+.form-buttons {
+    position: relative;
+    width: 100%;
+    position: relative;
+    margin: auto;
+}
+.form-buttons .save {
+    position: absolute;
+    right: 0;
 }
 
 @media screen and (min-width: 600px){/* and (orientation: portrait){ /*Large view*/

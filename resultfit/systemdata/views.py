@@ -245,7 +245,7 @@ def product(request):
         if search:
             # Фильтрация списка
             products = products.filter(name__icontains = search)
-        return render(request, 'product/products.html', {'products': products, 'search': search, 'active': active, 'activeProduct': True})
+        return render(request, 'product/products.html', {'products': products[:8], 'search': search, 'active': active, 'activeProduct': True})
     return redirect('home')
 
 # Create/Edit purpose page

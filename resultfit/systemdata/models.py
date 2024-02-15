@@ -42,10 +42,10 @@ class UnitType(models.Model):
     
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name ='Название', null=True, default=None)
-    kkal = models.IntegerField(verbose_name ='Ккалории', blank=True, null=True, default=None)
-    proteins = models.IntegerField(verbose_name ='Белки', blank=True, null=True, default=None)
-    fats = models.IntegerField(verbose_name ='Жиры', blank=True, null=True, default=None)
-    carbohydrates = models.IntegerField(verbose_name ='Углеводы', blank=True, null=True, default=None)
+    kkal = models.FloatField(verbose_name ='Ккалории', blank=True, null=True, default=0)
+    proteins = models.FloatField(verbose_name ='Белки', blank=True, null=True, default=0)
+    fats = models.FloatField(verbose_name ='Жиры', blank=True, null=True, default=0)
+    carbohydrates = models.FloatField(verbose_name ='Углеводы', blank=True, null=True, default=0)
     baseUnit = models.ForeignKey(UnitType, on_delete=models.PROTECT, null=True, blank=True, related_name='Стандартная_ед_измерения')
     active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
 

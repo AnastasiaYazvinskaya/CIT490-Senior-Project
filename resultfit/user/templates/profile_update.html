@@ -50,9 +50,20 @@
                 <span class="label">Цель</span>{{ form1.purpose }}
             </div>
         </div>
+        {% comment %}<hr>
+        <div class="multifile-field">
+            {{  formset.management_form }}
+            <div id="formset">
+                {% for form in formset %}
+                    {{ form.file }}
+                {% endfor %}
+            </div>
+        </div>
+        {% endcomment %}
+        
         <div class="form-buttons">
             <a class="btn btn-danger" href="/profile/">Отмена</a>
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="submit" class="save btn btn-primary">Сохранить</button>
         </div>
     </form>
 </div>

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from .models import Profile
+from .models import *
 
 class RegisterForm(UserCreationForm):
     username = forms.CharField(validators=[RegexValidator(
@@ -62,3 +62,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('last_name', 'first_name', 'email')
 
+class FileForm(forms.ModelForm):
+    class Meta:
+        model = File
+        fields = ('file',)

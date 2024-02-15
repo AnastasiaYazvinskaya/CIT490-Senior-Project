@@ -23,6 +23,11 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+class File(models.Model):
+    file = models.FileField(upload_to='user/assets/media', verbose_name='file')
+    user = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name ='Активность', blank=True, null=True, default=None)
+
+
 # triggred when User object is created
 @receiver(post_save, sender=User)
 def user_created(sender, instance, created, **kwargs):

@@ -1,16 +1,14 @@
 $(document).ready(function(){
-    $('.add-comment').on('click', function () {
-        note_id = $(this).val();
-        $('#comment-form_'+note_id).html(`
-        <div class="input_field">
-            <span class="label">Комментарий</span><textarea rows='4' id='comment-text_${note_id}' name='comment'></textarea>
-        </div>
-        <p id="save-error_${note_id}"><p>
-        <div class='form-buttons'>
-            <button type='button' class="cancel-comment btn btn-danger" value='${note_id}'>Отмена</button>
-            <button type='button' class='save save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>
-        </div>`);
-        $('#add-comment_'+note_id).hide();
+    $('.comments-title').on('click', function () {
+        comments_id = $(this).attr('id').split('_')[1];
+        $('#collapse_'+comments_id).toggleClass('collapse-open');
+        if ($('#collapse_'+comments_id).hasClass('collapse-open')) {
+            $('#comments_'+comments_id+' .comments-body').show();
+        } else {
+            $('#add-comment_'+comments_id).show();
+            $('#comment-form_'+comments_id).html('');
+            $('#comments_'+comments_id+' .comments-body').hide();
+        }
         return false;
     });
     $(document).on('click', '.save-comment', function () {
@@ -42,12 +40,6 @@ $(document).ready(function(){
             }
         });
     });
-    $(document).on('click', '.cancel-comment', function () {
-        console.log('cancel-comment');
-        note_id = $(this).val();
-        $('#add-comment_'+note_id).show();
-        $('#comment-form_'+note_id).html('');
-    });
     $('#add-note').on('click', function () {
         const currentDate = new Date().toISOString().slice(0, 10);
         $('#note-form-fields').html(`
@@ -66,7 +58,7 @@ $(document).ready(function(){
             </div>
         </div>
         <div class="input_field">
-            <span class="label">Фото</span><input type='file' id='image' name='image'/>
+            <span class="label">Фото</span><input type='file' id='image' name='image' accept="image/*"/>
         </div>
         <div class="raw-fields">
             <div class="input_field">
@@ -163,4 +155,29 @@ $(document).ready(function(){
             }
         }
     })
+
+
+
+    
+    $('.add-comment').on('click', function () {
+        note_id = $(this).val();
+        $('#comment-form_'+note_id).html(`
+        <div class="input_field">
+            <span class="label">Комментарий</span><textarea rows='2' id='comment-text_${note_id}' name='comment'></textarea>
+        </div>
+        <p id="save-error_${note_id}"><p>
+        <div class='form-buttons'>
+            <button type='button' class="cancel-comment btn btn-danger" value='${note_id}'>Отмена</button>
+            <button type='button' class='save save-comment btn btn-primary' id='save-comment_${note_id}' value='${note_id}'>Отправить</button>
+        </div>`);
+        $('#add-comment_'+note_id).hide();
+        return false;
+    });
+    
+    $(document).on('click', '.cancel-comment', function () {
+        console.log('cancel-comment');
+        note_id = $(this).val();
+        $('#add-comment_'+note_id).show();
+        $('#comment-form_'+note_id).html('');
+    });
 })

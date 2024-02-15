@@ -13,11 +13,11 @@
         {% if days %}
             {% for day in days %}
                 {% if activeDay == day.day %}
-                    <a href="{% url 'food_dairy_by_date' day.day %}" class="subactive">
+                    <a href="{% url 'food_dairy_by_date' day.day %}" class="subactive" tabindex="1">
                         {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
                     </a>
                 {% else %}
-                    <a href="{% url 'food_dairy_by_date' day.day %}">
+                    <a href="{% url 'food_dairy_by_date' day.day %}" tabindex="0">
                         {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
                     </a>
                 {% endif %}
@@ -36,17 +36,34 @@
     {% if notes %}
         {% for note in notes %}
             <div class="note-info">
-                <p>{{ note.mealType }}</p>
-                <p>КБЖУ: {{ note.kkal }}/{{ note.proteins }}/{{ note.fats }}/{{ note.carbohydrates }}</p>
-                <p><img src='{{ note.image_url }}' alt='{{ note.image_url }}' style="width: 200px;"></p>
-                <div id="comments_{{ note.id }}" class="comments">
-                    {% for comment in note.comments %}
-                        <p>{{ comment.author }} ({{ comment.created_by }})</p>
-                        <p>{{ comment.text }}</p>
-                    {% endfor %}
+                <div class="note-title">
+                    <h4>{{ note.mealType }}</h4>
+                    {% if note.kkal %}<span>КБЖУ: {{ note.kkal }}/{{ note.proteins }}/{{ note.fats }}/{{ note.carbohydrates }}</span>{% endif %}
                 </div>
-                <p><button type="button" id="add-comment_{{ note.id }}" class="add-comment" value="{{ note.id }}">+ Комментарий</button></p>
-                <div id="comment-form_{{ note.id }}"></div>
+                <p><img src='{{ note.image_url }}' alt='{{ note.image_url }}' class="note-img"></p>
+                <div id="comments_{{ note.id }}" class="comments">
+                    <div class="comments-title" id="title_{{ note.id }}">
+                        <span class="collapse-icon" id="collapse_{{ note.id }}"></span>
+                        <span>Комментарии ({{ note.comments|length }})</span>
+                    </div>
+                    <div class="comments-body">
+                        {% for comment in note.comments %}
+                            <div class="comment">
+                                <p class="comment-label">{{ comment.author }} ({{ comment.created_by }})</p>
+                                <p>{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="raw-fields last-field">
+                            <div class="input_field large-field">
+                                <textarea rows='1' id='comment-text_{{ note.id }}' name='comment'></textarea>
+                            </div>
+                            <button type='button' class='save save-comment btnImage' id='save-comment_{{ note.id }}' value='{{ note.id }}'><img class="btnImage" src="{% static 'images/sendMail.svg' %}" alt="Send comment"/></button>
+                        </div>
+                        {% comment %}<p><button type="button" id="add-comment_{{ note.id }}" class="add-comment" value="{{ note.id }}">+ Комментарий</button></p>
+                        <div id="comment-form_{{ note.id }}"></div>
+                        {% endcomment %}
+                    </div>
+                </div>
             </div>
         {% endfor %}
     {% else %}

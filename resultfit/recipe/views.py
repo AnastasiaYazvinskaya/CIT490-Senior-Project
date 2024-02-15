@@ -41,17 +41,27 @@ def create_update_recipe(request, pk=None):
         extra = 0
     else: extra = 1
     if request.method == "POST":
+        print('method POST')
         recipeForm = RecipeForm(request.POST, request.FILES, instance = recipeObj)
         ingredientFormset = modelformset_factory(Ingredient, form=IngredientForm, extra=extra, can_delete=True)
         formset = ingredientFormset(request.POST, queryset=ingredients)
+        print(formset.errors)
+        print(recipeForm.is_valid())
         if recipeForm.is_valid() and formset.is_valid():
+            print('forms valid')
             # Предсохраняем данные введенные с формы (но не вносим в базу)
             recipe = recipeForm.save(commit=False)
             if recipe.author is None:
                 recipe.author = request.user
             # Переносим все изменения в базу
+            recipe.kkal = 0
+            recipe.proteins = 0
+            recipe.fats = 0
+            recipe.carbohydrates = 0
             recipe.save()
+            print('RECIPE saved')
             for form in formset:
+                print('ingredient saved')
                 ingredient = form.save(commit=False)
                 if ingredient.product_name != None:
                     product = Product.objects.filter(name = ingredient.product_name).exists()
@@ -65,11 +75,19 @@ def create_update_recipe(request, pk=None):
                     if ingredient.recipe is None:
                         ingredient.recipe = recipe
                     ingredient.save()
+                    recipe.kkal += product.kkal / 100 * ingredient.amount
+                    recipe.proteins += product.proteins / 100 * ingredient.amount
+                    recipe.fats += product.fats / 100 * ingredient.amount
+                    recipe.carbohydrates += product.carbohydrates / 100 * ingredient.amount
+    
             for form in formset.deleted_forms:
                 ingredient = form.save(commit=False)
                 ingredient.delete()
                 pass
             #form.save_m2m()
+            print('INGREDINETS saved')
+            recipe.save()
+            print('recipe kpfc updates')
             return redirect('recipes')
     else:
         recipeForm = RecipeForm(instance = recipeObj)
@@ -77,14 +95,18 @@ def create_update_recipe(request, pk=None):
         formset = ingredientFormset(queryset=ingredients)
     return render(request, "recipe_create_update.html", {'form': recipeForm, 'formset': formset, 'pk': pk, 'activeRecipe': True})
 
-'''from django.core import serializers
-def update_datalist(request):
+from django.core import serializers
+def update_datalist(request, pk=None):
     inputVal = request.GET.get('inputVal', None)
     if inputVal:
-        products = Product.objects.filter(name__icontains = inputVal)[:10]
-        response = serializers.serialize('json', products)
+        products = Product.objects.filter(name__istartswith = inputVal)[:5]
     else:
-        products = Product.objects.all()[:10]
-        response = serializers.serialize('json', products)
+        products = Product.objects.none()
+    response = {
+        'products': []
+    }
+    for product in products:
+        response['products'].append({
+            'name': product.name
+        })
     return JsonResponse(data=response, safe=False)
-'''

@@ -7,6 +7,6 @@ urlpatterns = [
     path('recipes/create/', views.create_update_recipe, name='create_recipe'),
     path('recipes/<int:pk>/update/', views.create_update_recipe, name='update_recipe'),
     
-    #path('recipes/create/update_datalist/', views.update_datalist, name='update_datalist'),
-    #path('recipes/<int:pk>/update/update_datalist/', views.update_datalist, name='update_datalist'),
+    path('recipes/create/update_datalist/', views.update_datalist, name='update_datalist_newr'),
+    path('recipes/<int:pk>/update/update_datalist/', views.update_datalist, name='update_datalist'),
 ]

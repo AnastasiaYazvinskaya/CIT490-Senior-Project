@@ -32,32 +32,41 @@
             {{  formset.management_form }}
             <div id="formset">
                 {% for form in formset %}
-                <div class="raw-fields">
-                    <div class="input_field large-field">
-                        <span class="label">{{ form.product_name.label }}</span>{{ form.product_name }}
+                <div id="form-{{ forloop.counter0 }}">
+                    {% if forloop.counter0 != 0 %}<hr>{% endif %}
+                    <div class="raw-fields">
+                        <div class="input_field large-field">
+                            <span class="label">{{ form.product_name.label }}</span>
+                            {% comment %}{{ form.product_name }} {% endcomment %}
+                            <input type="text" list="products-{{ forloop.counter0 }}" name="form-{{ forloop.counter0 }}-product_name" maxlength="100" id="id_form-{{ forloop.counter0 }}-product_name" class="product_name"
+                                {% if form.product_name.value %}
+                                    value="{{ form.product_name.value }}"
+                                {% endif %}/>
+                            <datalist id="products-{{ forloop.counter0 }}"></datalist>
+                        </div>
+                        <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-{{ forloop.counter0 }}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="raw-fields">
-                    <div class="input_field">
-                        <span class="label">Кол-во</span>{{ form.amount }}
+                    <div class="raw-fields">
+                        <div class="input_field">
+                            <span class="label">Кол-во</span>{{ form.amount }}
+                        </div>
+                        <div class="input_field">
+                            <span class="label">Ед. изм.</span>{{ form.unitType }}
+                        </div>
+                        {% if form.product_name.value %}
+                        {{ form.id }}
+                        <div class="hidden">{% if formset.can_delete %}{{ form.DELETE }}{% endif %}</div>
+                        {% endif %}
                     </div>
-                    <div class="input_field">
-                        <span class="label">Ед. изм.</span>{{ form.unitType }}
-                    </div>
-                    {% if form.product.value %}
-                    {{ form.id }}
-                    <div class="hidden">{% if formset.can_delete %}{{ form.DELETE }}{% endif %}</div>
-                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
             <button type="button" id="add-ingredient" class="btn btn-secondary">+ Ингредиент</button>
         </div>
         <div class="input_field">
-            <span class="label">{{ form.description.label }}</span>{{ form.description }}
+            <span class="label">Шаги приготовления</span>{{ form.description }}
         </div>
         <div class="input_field">
             <span class="label">{{ form.recommends.label }}</span>{{ form.recommends }}
@@ -72,7 +81,9 @@
             <hr>
             <div class="raw-fields">
                 <div class="input_field large-field">
-                    <span class="label">{{ formset.empty_form.product_name.label }}</span>{{ formset.empty_form.product_name }}
+                    <span class="label">{{ formset.empty_form.product_name.label }}</span>
+                    <input type="text" list="products-__prefix__" name="form-__prefix__-product_name" maxlength="100" id="id_form-__prefix__-product_name" class="product_name"/>
+                    <datalist id="products-__prefix__"></datalist>
                 </div>
                 <button type="button" class="delete" data-dismiss="alert" aria-label="Close" value="form-__prefix__">
                     <span aria-hidden="true">&times;</span>

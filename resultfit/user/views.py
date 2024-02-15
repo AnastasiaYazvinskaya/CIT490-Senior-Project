@@ -1,3 +1,4 @@
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -87,13 +88,20 @@ def update_profile(request, pk=None):
     if pk != None:
         # Если ключ передан, то ищем объект
         profileObj = Profile.objects.get(pk = pk)
+        files = File.objects.filter(user = profileObj)
     else: 
         # Если ключ не передан, то работаем с пустым объектом
         profileObj = None
+        files = File.objects.none()
+    if files != None and len(files) != 0:
+        extra = 0
+    else: extra = 1
     userObj = request.user
     if request.method == "POST":
         form1 = ProfileForm(request.POST, request.FILES, instance = profileObj)
         form2 = UserForm(request.POST, request.FILES, instance = userObj)
+        fileFormset = modelformset_factory(File, form=FileForm, extra=extra, can_delete=True)
+        formset = fileFormset(request.POST, request.FILES, queryset=files)
         if form1.is_valid():
             # Предсохраняем данные введенные с формы (но не вносим в базу)
             profile = form1.save(commit=False)
@@ -101,11 +109,21 @@ def update_profile(request, pk=None):
             # Переносим все изменения в базу
             profile.save()
             user.save()
+            for form in formset:
+                file = form.save(commit=False)
+                if file.file != None:
+                    file.save()
+            for form in formset.deleted_forms:
+                file = form.save(commit=False)
+                file.delete()
             return redirect('profile')
     else:
         form1 = ProfileForm(instance = profileObj)
         form2 = UserForm(instance = userObj)
-    return render(request, "profile_update.html", {'form1': form1, 'form2': form2, 'pk': pk})
+        fileFormset = modelformset_factory(File, form=FileForm, extra=extra, can_delete=True)
+        formset = fileFormset(queryset=files)
+        print(formset)
+    return render(request, "profile_update.html", {'form1': form1, 'form2': form2, 'formset': formset, 'pk': pk})
 
 @login_required
 def choose_trainer(request):

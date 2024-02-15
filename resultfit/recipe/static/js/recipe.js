@@ -12,18 +12,24 @@ $(document).ready(function(){
         return false;
     });
     //choose ingredient from datalist
-    $(".product_name").on('input', function () {
-        console.log('product choosen', this.value);
+    $(document).on('input', '.product_name', function () { //(".product_name").on('input'
+        prodId = $(this).attr('id').split('-')[1];
+        console.log('product input', prodId);
         //send ajax for update datalist
-        /*$.ajax({
+        $.ajax({
             data: {
                 "inputVal": this.value
             }, // получаяем данные формы
             url: "update_datalist",
             // если успешно, то
             success: function (response) {
-                console.log('elem', this);
                 console.log('response', response);
+                datalist = ''
+                for (i in response.products) {
+                    console.log('product', response.products[i].name);
+                    datalist += `<option value='${response.products[i].name}'></option>`;
+                }
+                $('#products-'+prodId).html(datalist);
             },
             // если ошибка, то
             error: function (response) {
@@ -31,7 +37,7 @@ $(document).ready(function(){
                 console.log(response.responseJSON.errors)
             }
         });
-        return false;*/
+        return false;
     });
     $(".product_name").on('blur', function () {
         console.log('product choosen (blur)', this.value);

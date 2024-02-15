@@ -85,12 +85,7 @@ form {
 .raw-fields .small-field {
     width: 40%;
 }
-.form-buttons {
-    position: relative;
-    width: 100%;
-}
-.form-buttons button.save {
-    position: absolute;
+.form-buttons .save {
     right: 10px;
 }
 button.delete {
@@ -101,4 +96,7 @@ button.delete {
     padding: 0;
     font-size: 35px;
     padding-bottom: 5px;
+}
+.last-field {
+    margin-bottom: 0;
 }
