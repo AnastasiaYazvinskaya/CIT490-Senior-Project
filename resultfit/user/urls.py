@@ -8,7 +8,6 @@ urlpatterns = [
     path('reset/', views.reset_password, name='reset'),
     
     path('profile/', views.profile, name='profile'),
-    path('profile/<int:pk>/update/', views.update_profile, name='update_profile'),
+    path('profile/update/', views.update_profile, name='update_profile'),
     path('home/', views.home, name='home'),
-    path('home/choose_trainer/', views.choose_trainer, name='choose_trainer'),
 ]

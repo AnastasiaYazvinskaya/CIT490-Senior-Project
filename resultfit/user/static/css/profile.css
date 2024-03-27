@@ -11,6 +11,17 @@
     margin-right: 10px;
     margin-top: 6px;
     border-radius: 50%;
+    position: relative;
+}
+.user-img p {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    font-size: 35px !important;
+    text-wrap: nowrap;
+    color: rgb(29, 29, 29);
 }
 .personal-data p {
     margin-bottom: 0;
@@ -29,3 +40,82 @@
 .edit {
     bottom: 0;
 }
+
+.raw-fields {
+    display: flex;
+    width: 100%;
+}
+
+.read_field {
+    position: relative;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.raw-fields .read_field{
+    margin-right: 5px;
+}
+.raw-fields .read_field:last-child{
+    margin-right: 0;
+}
+
+.read_field .label {
+    position: absolute;
+    top: -12px;
+    left: 7.5px;
+    padding: 0 5px;
+    background-color: #f9f3e7;
+}
+
+.read_field .value {
+    border: 1px solid #eae2d2;
+    padding: 10px 10px 5px 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.qualification {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+    overflow: scroll;
+}
+
+.qualification::-webkit-scrollbar {
+    display: none;
+}
+
+.qualification .img {
+    height: 200px;
+    width: 130px;
+    overflow: hidden;
+    position: relative;
+    border: 3px outset #4e7243;
+    margin-right: 3px;
+}
+
+
+.qualification img {
+    height: 100%;
+    width: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.multi-field-block {
+    position: relative;
+    border:1.5px solid #eae2d2;
+    border-radius: 5px;
+    margin-top: 17.5px;
+    padding: 15px 8px 0;
+}
+.multi-field-block .label {
+    position: absolute;
+    top:-13px;
+    left: 5px;
+    background-color: #f9f3e7;
+    padding: 0 3px;
+}
+

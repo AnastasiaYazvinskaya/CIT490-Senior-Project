@@ -40,7 +40,12 @@
                     <h4>{{ note.mealType }}</h4>
                     {% if note.kkal %}<span>КБЖУ: {{ note.kkal }}/{{ note.proteins }}/{{ note.fats }}/{{ note.carbohydrates }}</span>{% endif %}
                 </div>
-                <p><img src='{{ note.image_url }}' alt='{{ note.image_url }}' class="note-img"></p>
+                <p>{% if note.img %} 
+                    <img src='{{ note.image_url }}' alt='{{ note.image_url }}' class="note-img">
+                    {% elif note.recipes %}
+                        {{ note.recipes }} (По рецепту)
+                    {% endif %}
+                </p>
                 <div id="comments_{{ note.id }}" class="comments">
                     <div class="comments-title" id="title_{{ note.id }}">
                         <span class="collapse-icon" id="collapse_{{ note.id }}"></span>

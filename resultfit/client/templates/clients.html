@@ -50,7 +50,7 @@
                     <td class="centerCol emailCol">{% if client.client.phone %}{{ client.client.phone }}{% else %}-{% endif %}</td>
                     <td class="centerCol">{% if client.client.purpose %}{{ client.client.purpose }}{% else %}-{% endif %}</td>
                     <td class="btnCol">
-                        <a href="{% url 'client' client.client.user.id %}">
+                        <a href="{% url 'client' client.client.id %}">
                             <img src="{% static 'images/viewBtn.svg' %}" alt="View" class="btnImage">
                         </a>
                     </td>

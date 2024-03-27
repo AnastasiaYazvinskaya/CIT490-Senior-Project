@@ -7,9 +7,12 @@ from django.http import JsonResponse
 from .models import *
 from .forms import *
 from client.models import ClientTrainer
+from trainer.models import Qualification
 from fooddairy.models import DayMenu, Recipe
+from training.models import Training
 
 from django.utils import timezone
+from datetime import datetime
 
 def register(request):
     if request.user.is_authenticated:
@@ -62,37 +65,34 @@ def logout_user(request):
 
 @login_required
 def home(request):
-    trainers = Profile.objects.filter(user__groups__name='trainer').exclude(user = request.user).order_by('-trainer_rating')
+    foodPurpose = FoodDairyGeneral.objects.filter(user = request.user)[0]
     todayMenu = DayMenu.objects.filter(user = request.user, day = timezone.now().date())
     if len(todayMenu) == 0:
         todayMenu = DayMenu.objects.create(
             day = timezone.now().date(),
             user = request.user
         )
-        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Завтрак').order_by("?").first())
-        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Обед').order_by("?").first())
-        todayMenu.recipes.add(Recipe.objects.filter(privacy__name = 'Публичный', mealType__name = 'Ужин').order_by("?").first())
     else:
         todayMenu = todayMenu[0]
-    todayMenu = todayMenu.recipes.all().order_by('mealType__id')
-    return render(request, 'home.html', {'trainers': trainers, 'menu': todayMenu, 'activeHome': True})
+    print(datetime.now().weekday())
+    training = Training.objects.filter(user = request.user, weekDay = datetime.now().weekday())
+    #recipes = todayMenu.recipes.all().order_by('mealType__id')
+    return render(request, 'home.html', {'menu': todayMenu, 'foodPurpose': foodPurpose, 'training':training, 'activeHome': True})
 
 @login_required
 def profile(request):
     profile = Profile.objects.get(user = request.user)
-    return render(request, 'profile.html', {'profile': profile})
+    qualification = Qualification.objects.filter(profile = profile)#.order_by('-pk')
+    hasTrainer = ClientTrainer.objects.filter(client__user=request.user)
+    if (len(hasTrainer) != 0):
+        hasTrainer = hasTrainer[0]
+    return render(request, 'profile.html', {'hasTrainer': hasTrainer, 'profile': profile, 'qualification': qualification})
 
 # Create/Edit profile page
 @login_required
-def update_profile(request, pk=None):
-    if pk != None:
-        # Если ключ передан, то ищем объект
-        profileObj = Profile.objects.get(pk = pk)
-        files = File.objects.filter(user = profileObj)
-    else: 
-        # Если ключ не передан, то работаем с пустым объектом
-        profileObj = None
-        files = File.objects.none()
+def update_profile(request):
+    profileObj = Profile.objects.get(user = request.user)
+    files = File.objects.filter(user = profileObj)
     if files != None and len(files) != 0:
         extra = 0
     else: extra = 1
@@ -123,25 +123,4 @@ def update_profile(request, pk=None):
         fileFormset = modelformset_factory(File, form=FileForm, extra=extra, can_delete=True)
         formset = fileFormset(queryset=files)
         print(formset)
-    return render(request, "profile_update.html", {'form1': form1, 'form2': form2, 'formset': formset, 'pk': pk})
-
-@login_required
-def choose_trainer(request):
-    trainer_pk = request.GET.get('trainer', None)
-    trainer = User.objects.get(pk=trainer_pk)
-    client = Profile.objects.get(user = request.user)
-    is_exist = len(ClientTrainer.objects.filter(client=client, trainer=trainer)) > 0
-    if not is_exist:
-        ClientTrainer.objects.create(
-            client=client,
-            trainer=trainer
-        )
-        response = {
-            'trainer': f'{trainer.last_name} {trainer.first_name}'
-        }
-    else:
-        response = {
-            'error': 'Вы уже отправляли заявку этому тренеру.'
-        }
-    print('responce', response)
-    return JsonResponse(response)
+    return render(request, "profile_update.html", {'form1': form1, 'form2': form2, 'formset': formset})

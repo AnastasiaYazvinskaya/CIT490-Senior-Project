@@ -59,3 +59,33 @@ class MealType(models.Model):
     def __str__(self):
         return self.name
     
+class FileType(models.Model):
+    name = models.CharField(max_length=20, verbose_name ='Название', null=True, default=None)
+    active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
+
+    def __str__(self):
+        return self.name
+    
+class LargeZoneType(models.Model):
+    name = models.CharField(max_length=50, verbose_name ='Название', null=True, default=None)
+    description = models.CharField(max_length=200, verbose_name ='Описание', blank=True, null=True, default=None)
+    active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
+
+    def __str__(self):
+        return self.name
+    
+class ZoneType(models.Model):
+    name = models.CharField(max_length=50, verbose_name ='Название', null=True, default=None)
+    description = models.CharField(max_length=200, verbose_name ='Описание', blank=True, null=True, default=None)
+    active = models.BooleanField(default=True, verbose_name ='Активный', blank=True)
+    zone = models.ForeignKey(LargeZoneType, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+class Exercise(models.Model):
+    name = models.CharField(max_length=50, null=True, default=None)
+    zoneType = models.ForeignKey(ZoneType, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.name + ' ('+self.zoneType.name+')'

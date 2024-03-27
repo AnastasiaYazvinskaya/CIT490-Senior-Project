@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('fooddairy.urls')),
     path('systemdata/', include('systemdata.urls')),
     path('', include('recipe.urls')),
+    path('', include('training.urls')),
 ]

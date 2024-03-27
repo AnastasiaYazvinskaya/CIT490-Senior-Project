@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'client', #Работа с клиентом (список клиентов, просмотр/изменение/удаление тренера)
     'fooddairy', #Дневник питания
     'recipe', #Работа с рецептами (вообще тут должно быть согласование с DietCreation)
+    'training',
 ]
 
 MIDDLEWARE = [
@@ -86,9 +87,8 @@ WSGI_APPLICATION = 'resultfit.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+    'default': 
+        dj_database_url.config( default=os.environ.get('DATABASE_URL') )
     #,'dietcreation': {
     #    'ENGINE': str(os.getenv('DB_ENGINE')),
     #    'NAME': BASE_DIR / str(os.getenv('DB_NAME')),

@@ -21,7 +21,23 @@ class MealTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'active')
 admin.site.register(MealType, MealTypeAdmin)
 
+class FileTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active')
+admin.site.register(FileType, FileTypeAdmin)
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'kkal', 'proteins', 'fats', 'carbohydrates', 'baseUnit', 'active')
 admin.site.register(Product, ProductAdmin)
+
+class LargeZoneTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'active')
+admin.site.register(LargeZoneType, LargeZoneTypeAdmin)
+
+class ZoneTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'active')
+admin.site.register(ZoneType, ZoneTypeAdmin)
+
+class ExerciseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'zoneType')
+admin.site.register(Exercise, ExerciseAdmin)
 

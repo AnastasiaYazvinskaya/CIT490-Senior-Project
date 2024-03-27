@@ -7,8 +7,12 @@ from django.core.validators import RegexValidator
 class FoodDairyNoteForm(forms.ModelForm):
     class Meta:
         model = FoodDairyNote
-        fields = ('image', 'kkal', 'proteins', 'fats', 'carbohydrates') 
+        fields = ('image', 'mealType', 'kkal', 'proteins', 'fats', 'carbohydrates', 'recipes') 
 
+class DayNoteForm(forms.ModelForm):
+    class Meta:
+        model = DayNote
+        fields = ('day',)
 
 class CommentForm(forms.ModelForm):
     class Meta:

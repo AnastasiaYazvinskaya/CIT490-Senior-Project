@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/sport.css' %}">
+{% endblock %}
+{% block script2 %}<script src="{% static 'js/sport.js' %}"></script>{% endblock %}
+{#<!-- Content for Creating/Updating page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}План тренировок{% endblock %}</h4>
+<div id="inside-content">
+    <div class="week">
+        <div class="day">
+            <div class="day-week">ПН (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 0 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 0 %}"  value="1">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">ВТ (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 1 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 1 %}"  value="2">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">СР (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 2 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 2 %}"  value="3">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">ЧТ (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 3 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 3 %}"  value="4">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">ПТ (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 4 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 4 %}"  value="5">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">СБ (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 5 %}
+                    <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 5 %}"  value="6">+</a>
+            </div>
+        </div>
+        <div class="day">
+            <div class="day-week">ВС (<span>N</span>)</div>
+            <div class="training-list">
+                {% for train in plan %}
+                    {% if train.weekDay == 6 %}
+                        <div class="training"><a href="{% url 'sport_plan_read' train.pk %}">{{ train.name }} - {{ train.time|date:"G:i" }}</a></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="day-buttons">
+                <a href="{% url 'sport_plan_create' 6 %}"  value="0">+</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        {% if hasTrainer %}
+            {% if hasTrainer.active %}
+                <a href="#">Ваш тренер: {{ hasTrainer.trainer.last_name }} {{ hasTrainer.trainer.first_name.0 }}</a>
+            {% else %}
+                <span>Запрос отправлен: {{ hasTrainer.trainer.last_name }} {{ hasTrainer.trainer.first_name.0 }}</span>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

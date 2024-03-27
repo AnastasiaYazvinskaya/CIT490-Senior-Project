@@ -5,6 +5,10 @@ class FoodDairyGeneralAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'kkal', 'proteins', 'fats', 'carbohydrates')
 admin.site.register(FoodDairyGeneral, FoodDairyGeneralAdmin)
 
+#class MealDetailAdmin(admin.ModelAdmin):
+#list_display = ('id', 'day', 'user')
+admin.site.register(MealDetail)#, MealDetailAdmin)
+
 class DayMenuAdmin(admin.ModelAdmin):
     list_display = ('id', 'day', 'user')
 admin.site.register(DayMenu, DayMenuAdmin)

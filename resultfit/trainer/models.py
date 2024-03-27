@@ -6,6 +6,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+from user.models import Profile
+from systemdata.models import FileType
     
 class PrepareUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT, null=True, blank=True)
@@ -17,6 +19,11 @@ class PrepareUser(models.Model):
     
     def __str__(self):
         return (self.firstName + self.lastName)
+    
+class Qualification(models.Model):
+    file = models.FileField(upload_to='trainer/assets/media', verbose_name='file', null=True, blank=True)
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name ='Профиль', blank=True, null=True, default=None)
+    type = models.ForeignKey(FileType, on_delete=models.PROTECT, verbose_name ='Тип', blank=True, null=True, default=None)
 
 @receiver(post_save, sender=PrepareUser)
 def user_created(sender, instance, created, **kwargs):

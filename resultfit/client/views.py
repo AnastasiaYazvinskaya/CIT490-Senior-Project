@@ -1,10 +1,14 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+
+from training.models import Training, TrainingExercise
 from .models import *
 from user.models import Profile
+from fooddairy.models import FoodDairyGeneral
    
 # Clients page
 @login_required
@@ -31,7 +35,34 @@ def client(request, pk=None):
     if request.user.groups.filter(name='trainer').exists():
         if pk:
             client = Profile.objects.get(pk=pk)
-            return render(request, 'client_profile.html', {'client': client, 'activeClient': True})
+            recommends = FoodDairyGeneral.objects.get(user=client.user)
+            return render(request, 'client_profile.html', {'client': client, 'recommends': recommends, 'activeClient': True, 'activeClientData': True})
+        return redirect('clients')
+    return redirect('home')
+
+# Client page
+@login_required
+def client_meal(request, pk=None):
+    if request.user.groups.filter(name='trainer').exists():
+        if pk:
+            client = Profile.objects.get(pk=pk)
+            recommends = FoodDairyGeneral.objects.get(user=client.user)
+            return render(request, 'client_meal.html', {'client': client, 'recommends': recommends, 'activeClient': True, 'activeClientMeal': True})
+        return redirect('clients')
+    return redirect('home')
+
+# Client page
+@login_required
+def client_sport(request, pk=None):
+    if request.user.groups.filter(name='trainer').exists():
+        if pk:
+            todayWeek = timezone.now().date().weekday()
+            client = Profile.objects.get(pk=pk)
+            plan = Training.objects.filter(user = client.user).order_by('weekDay')
+            todayTrainings = Training.objects.filter(user = client.user, weekDay=todayWeek).values()
+            for i in todayTrainings:
+                i['exercises'] = TrainingExercise.objects.filter(training = i['id'])
+            return render(request, 'client_sport.html', {'client': client, 'plan': plan, 'todayTrainings': todayTrainings, 'activeClient': True, 'activeClientSport': True, 'todayWeek': todayWeek})
         return redirect('clients')
     return redirect('home')
 
@@ -68,3 +99,4 @@ def delete_trainer(request, pk=None):
         elif template == 'card':
             return redirect('trainer', pk=trainer.pk)
 """
+

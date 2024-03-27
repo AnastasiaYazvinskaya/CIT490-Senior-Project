@@ -37,3 +37,4 @@ class PrepareUserForm(forms.ModelForm):
             self.add_error('code', "КАжется код случайно повторился, обновите код.")
 
 
+

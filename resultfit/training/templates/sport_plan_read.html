@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!-- Content for Reading page -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Тренер{% endblock %}</h4>
+<div id="inside-content">
+    {#<!-- Other object data -->#}
+    <table class="object-detail">
+        <tr>
+            <td>Название:</td>
+            <td>{{ train.name }}</td>
+        </tr>
+        <tr>
+            <td>Время:</td>
+            <td>{% if train.weekDay == 0%}Понедельник{% elif train.weekDay == 1%}Вторник{% elif train.weekDay == 2%}Среда{% elif train.weekDay == 3%}Четверг{% elif train.weekDay == 4%}Пятница{% elif train.weekDay == 5%}Суббота{% elif train.weekDay == 6%}Воскресенье{% endif %} - {{ train.time|date:"G:i" }}</td>
+        </tr>
+        <tr>
+            <td>Упражнения:</td>
+        </tr>
+        {% for exercise in exercises %}
+            <tr>
+                <td></td>
+                <td>{{ exercise.exercise.name }} - {{ exercise.repeatNum }}x{{ exercise.timesNum }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="acts">
+        <a href="/sport/plan/{{train.pk}}/update">
+            <img src="{% static 'images/editBtn.svg' %}" alt="Edit" class="btnImage">
+        </a>
+        <form action="" method="POST" id="delete-form">
+            {% csrf_token %}
+            <input type="hidden" value="card" name="template">
+            <button type="submit" class="btnImage"><img src="{% static 'images/deleteBtn.svg' %}" alt="Delete" class="btnImage"></button>
+        </form>
+    </div>
+</div>
+{% endblock %}

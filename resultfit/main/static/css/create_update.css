@@ -15,6 +15,21 @@ form {
     background-image: linear-gradient(#f9f3e7 55%, #ebebeb 45%);
     padding: 0 3px;
 }
+.second-label {
+    position: absolute;
+    top:-13px;
+    left: 105px;
+    font-weight: bold;
+    /*background-color: #f9f3e7;*/
+    background-image: linear-gradient(#f9f3e7 55%, #ebebeb 45%);
+    padding: 0 3px;
+}
+.active-label {
+    color: black;
+}
+.unactive-label {
+    color: #858585;
+}
 .input_field input, .input_field select {
     height: 40px;
     padding: 5px 5px;

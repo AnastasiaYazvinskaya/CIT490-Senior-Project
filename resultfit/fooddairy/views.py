@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta 
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -9,9 +10,26 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 
 @login_required
-def fooddairy(request):
+def fooddairy(request, day=None):
+    dayNotes = DayMenu.objects.filter(user = request.user).order_by('-day')
     dairy = FoodDairyGeneral.objects.get(user = request.user)
-    return render(request, 'food_dairy.html', {"dairy": dairy, "activeFood": True})
+    print('day', day)
+    if day is None:
+        day = timezone.now().date()
+    else:
+        day = datetime.strptime(day, '%Y-%m-%d')
+    print('day2', day)
+    todayMenu = DayMenu.objects.filter(user = request.user, day = day)
+    print('todayMenu', todayMenu)
+    if len(todayMenu) == 0:
+        todayMenu = DayMenu.objects.create(
+            day = timezone.now().date(),
+            user = request.user
+        )
+    else:
+        todayMenu = todayMenu[0]
+    day = todayMenu.day
+    return render(request, 'food_dairy.html', {"days": dayNotes, "dairy": dairy, 'menu': todayMenu, "activeFood": True, "activeDay": day, 'newDay':dayNotes[0].day+timedelta(days=1), 'curTime':int(timezone.now().strftime('%H'))})
 
 @login_required
 def calculate_cpfc(request, pk):
@@ -49,11 +67,72 @@ def food_dairy(request, day=None):
         notes = notesQ.values()
         for idy, note in enumerate(notes):
             note['comments'] = notesQ[idy].foodnote.all().order_by('-created_by')
-            note['image_url'] = notesQ[idy].image.url
+            if notesQ[idy].image:
+                note['image_url'] = notesQ[idy].image.url
+            elif notesQ[idy].recipes:
+                note['recipes'] = notesQ[idy].recipes.name
             note['mealType'] = notesQ[idy].mealType.name
         day = day.day
     
     return render(request, 'food_dairy/dairy.html', {"days": dayNotes, "notes": notes, "activeFood": True, "activeDay": day})
+
+def meal(request, pk):
+    return render(request, 'food_dairy/meal.html', {"activeFood": True})
+
+def add_note(request, meal=None):
+    newNote = FoodDairyNote()
+    dayNote = DayNote()
+    dayNote.day = timezone.now().date()
+    if meal != None:
+        # Если ключ передан, то ищем объект
+        meal = MealDetail.objects.get(pk = meal)
+        newNote.mealType = meal.mealType
+        newNote.kkal = meal.kkal
+        newNote.proteins = meal.proteins
+        newNote.fats = meal.fats
+        newNote.carbohydrates = meal.carbohydrates
+        newNote.recipes = meal.recipes
+    else: 
+        # Если ключ не передан, то работаем с пустым объектом
+        meal = None
+    if request.method == "POST":
+        form1 = FoodDairyNoteForm(request.POST, request.FILES, instance = newNote)
+        form2 = DayNoteForm(request.POST, request.FILES, instance = dayNote)
+        if form1.is_valid() and form2.is_valid():
+            # Предсохраняем данные введенные с формы (но не вносим в базу)
+            note = form1.save(commit=False)
+            # Переносим все изменения в базу
+            day = form2.save(commit=False)
+            day.user = request.user
+            day.save()
+            note.day = day
+            note.save()
+            comment = request.POST.get('comment', None)
+            print(comment)
+            if comment:
+                comment = Comment.objects.create(
+                    author = request.user,
+                    created_by = timezone.now(),
+                    text = comment,
+                    foodNote = note
+                )
+            meal.is_noted = True
+            meal.save()
+            dayMenu = DayMenu.objects.filter(braekfast=meal) | DayMenu.objects.filter(lanch=meal) | DayMenu.objects.filter(dinner=meal) | DayMenu.objects.filter(snack=meal)
+            dayMenu = dayMenu[0]
+            dayMenu.kkal += meal.kkal
+            dayMenu.proteins += meal.proteins
+            dayMenu.fats += meal.fats
+            dayMenu.carbohydrates += meal.carbohydrates
+            dayMenu.save()
+            
+            return redirect('food_dairy_by_date', day.day.strftime("%Y-%m-%d"))
+    else:
+        #print(newNote.mealType)
+        form1 = FoodDairyNoteForm(instance = newNote)
+        form2 = DayNoteForm(instance = dayNote)
+    #return render(request, "trainer_create_update.html", {'form1': form1, 'form2': form2, 'activeTrainer': True})
+    return render(request, 'food_dairy/add_note.html', {'form1': form1, 'form2': form2, "activeFood": True})
 
 def save_comment(request, day=None):
     text = request.GET.get('comment', None)

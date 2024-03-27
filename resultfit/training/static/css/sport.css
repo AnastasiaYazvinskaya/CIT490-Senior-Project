@@ -1,0 +1,86 @@
+.week, .trainings {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.day {
+    width: 100%;
+    text-align: left;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+.day-week {
+    font-size: large;
+    width: 60px;
+}
+.day-week span {
+    font-size: small;
+}
+.day-buttons {
+    text-align: center;
+    
+    
+    font-size: 30px;
+    line-height: 20px;
+    font-weight: bold;
+}
+.day:hover .day-buttons {
+    display: block;
+}
+.day-buttons a {
+    margin: auto;
+}
+.training {
+    background-color: #2774334e;
+    border-radius: 5px;
+    padding: 5px;
+}
+.training-name {
+    font-weight: bold;
+}
+.exercises {
+    padding-left: 20px;
+    font-size: small;
+}
+.small-hide {
+    display: none;
+}
+.btn-secondary {
+    margin-bottom: 5px;
+}
+.day-data {
+    display: block;
+}
+.activeWeek {
+    background-color: rgba(226, 223, 181, 0.66);
+}
+
+
+@media screen and (min-width: 600px){/*Large view*/
+    .week, .trainings {
+        flex-direction: row;
+    }
+    .day {
+        flex-direction: column;
+    }
+    .day-week {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid gray;
+        margin-bottom: 5px;
+    }
+    .small-hide {
+        display: inline;
+        border-top: 1px solid gray;
+    }
+    span.small-hide {
+        border-top: none;
+    }
+    .day-buttons {
+        margin: 0 auto;
+    }
+}

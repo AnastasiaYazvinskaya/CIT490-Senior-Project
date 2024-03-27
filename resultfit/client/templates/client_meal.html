@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of clients -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Профиль клиента{% endblock %}</h4>
+<div id="inside-content">
+    <div id="submenu" class="submenu">
+        <a href="{% url 'client' client.pk %}" {% if activeClientData %}class="subactive"{% endif %}>Данные</a>
+        <a href="{% url 'client_meal' client.pk %}" {% if activeClientMeal %}class="subactive"{% endif %}>Питание</a>
+        <a href="{% url 'client_sport' client.pk %}" {% if activeClientSport %}class="subactive"{% endif %}>Тренировки</a>
+    </div>
+    <div>
+        
+    </div>
+</div>
+{% endblock %}

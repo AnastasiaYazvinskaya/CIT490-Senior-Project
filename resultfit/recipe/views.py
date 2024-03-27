@@ -91,6 +91,7 @@ def create_update_recipe(request, pk=None):
             return redirect('recipes')
     else:
         recipeForm = RecipeForm(instance = recipeObj)
+        print('recipeObj', type(recipeObj.mealType))
         ingredientFormset = modelformset_factory(Ingredient, form=IngredientForm, extra=extra, can_delete=True)
         formset = ingredientFormset(queryset=ingredients)
     return render(request, "recipe_create_update.html", {'form': recipeForm, 'formset': formset, 'pk': pk, 'activeRecipe': True})

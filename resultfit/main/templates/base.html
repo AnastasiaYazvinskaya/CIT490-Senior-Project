@@ -37,7 +37,7 @@
                 <div id="menu" class="menu">
                     <a href="{% url 'home' %}" {% if activeHome %}class="active"{% endif %}>Планы</a>
                     <a href="{% url 'fooddairy' %}" {% if activeFood %}class="active"{% endif %}>Питание</a>
-                    <a href="#" style="text-decoration: line-through;" {% if activeSport %}class="active"{% endif %}>Тренировки</a>
+                    <a href="{% url 'sport' %}" {% if activeSport %}class="active"{% endif %}>Тренировки</a>
                     <br>
                     {% for group in request.user.groups.all %}
                         {% if group.name == "trainer" %}
@@ -61,7 +61,7 @@
                     <h3><span class="small-header">ResultFit</span><span class="large-header">{% block pageName %}ResultFit{% endblock %}</span></h3>
                     <div id="account">
                         {% if request.user.is_authenticated %}
-                            <a href="{% url 'profile' %}">{{ user.username }}</a>
+                            <div class="profile-img"><a href="{% url 'profile' %}"><span>{{ user.last_name.0 }}{{ user.first_name.0 }}</span></a></div>
                             <!--<a href="{% url 'logout' %}">Выйти</a>-->
                         {% else %}
                             <a href="{% url 'login' %}">Войти</a>

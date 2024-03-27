@@ -25,12 +25,9 @@
         <div class="input_field">
             <span class="label">База данных</span>
             <select id="database" name="database" required>
-                <option value="Ingredient">Ingredient</option>
-                <option value="Product">Product</option>
-                <option value="Recipe">Recipe</option>
-                <option value="PrepareUser">PrepareUser</option>
-                <option value="ClientTrainer">ClientTrainer</option>
-                <option value="MealType">MealType</option>
+                {% for t in tables %}
+                    <option value="{{t}}">{{t}}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="input_field">

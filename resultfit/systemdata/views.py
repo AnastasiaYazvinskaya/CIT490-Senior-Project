@@ -1,3 +1,4 @@
+import sys
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -6,7 +7,8 @@ from django.http import JsonResponse
 from .models import *
 from user.models import Group
 from .forms import *
-from recipe.models import Ingredient, Recipe
+from recipe.models import *
+from fooddairy.models import *
 from django.forms import modelformset_factory
 
 @login_required
@@ -300,25 +302,22 @@ def activate_product(request, pk=None):
     return redirect(reverse('product')+ '?active='+str(to_active))
 
 from django.db import connection
+
+def get_class(class_name):
+    return getattr(sys.modules[__name__], class_name)
+
 @login_required
 def reset(request):
     if request.user.groups.filter(name='programmer').exists():
+        tables = ['DayMenu']
         messages = []
         if request.method == "POST":
             form = request.POST
             #check database
-            if form['database'].lower() == 'ingredient':
-                model = Ingredient
-                messages.append('Вы работали с Ингредиентами. Был выполнен скрипт:')
-            if form['database'].lower() == 'recipe':
-                model = Recipe
-                messages.append('Вы работали с Рецептами. Был выполнен скрипт:')
-            if form['database'].lower() == 'product':
-                model = Product
-                messages.append('Вы работали с Продуктами. Был выполнен скрипт:')
-            #if form['database'].lower() == 'prepareuser':
-            #    model = Product
-            #    messages.append('Вы работали с PrepareUser. Был выполнен скрипт:')
+            for t in tables:
+                if form['database'] == t:
+                    model = get_class(t)
+                    messages.append(f'Вы работали с {t}. Был выполнен скрипт:')
             #check filter
             if 'sql' in form.keys():
                 with connection.cursor() as cursor:
@@ -327,29 +326,25 @@ def reset(request):
             else:
                 print('not sql')
         
-        model = Ingredient
+        model = get_class(tables[0])
         table_data = {
-            'table_name': "Ingredient",
+            'table_name': tables[0],
             'db_table': model._meta.db_table,
             'fields': []
         }
         for field in model._meta.get_fields():
             table_data['fields'].append({'name': field.name, 'type': field.get_internal_type()})
-        return render(request, 'reset.html', {'messages': messages, 'table_data': table_data, 'activeReset': True})
+        return render(request, 'reset.html', {'messages': messages, 'tables': tables, 'table_data': table_data, 'activeReset': True})
     return redirect('home')
 
 def update_table(request):
     database = request.GET.get('database', None)
-    if database.lower() == 'ingredient':
-        model = Ingredient
-    elif database.lower() == 'recipe':
-        model = Recipe
-    elif database.lower() == 'product':
-        model = Product
-    elif database.lower() == 'mealtype':
-        model = MealType
-    #elif database.lower() == 'prepareuser':
-    #    model = PrepareUser
+    tables = ['DayMenu']
+    for t in tables:
+        if database == t:
+            model = get_class(t)
+            messages.append(f'Вы работали с {t}. Был выполнен скрипт:')
+    
     table_data = {
         'table': {
             'table_name': database,

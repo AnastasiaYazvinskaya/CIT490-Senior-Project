@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/fooddairy.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
+{% endblock %}
+{% block script2 %}<script src="{% static 'js/fooddairy.js' %}"></script>{% endblock %}
+{#<!-- Content for displaying list of trainers -->#}
+{% block content %}
+<h4 class="small-header">{% block pageName %}Новая запись{% endblock %}</h4>
+<div id="inside-content">
+    {#<!-- Форма отправки данных -->#}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {#<!-- Таблица полей, для ровного отображения -->#}
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">Дата</span>{{ form2.day }}
+            </div>
+            <div class="input_field">
+                <span class="label">Прием пищи</span>{{ form1.mealType }}
+            </div>
+        </div>
+        <div class="two-fields">
+            <div class="input_field">
+                {% if not form1.recipes %}
+                    <span class="label"><span class="active-label">Фото</span> | <span class="unactive-label">Рецепт</span></span>
+                    {{ form1.image }}<div class="hidden">{{ form1.recipes }}</div>
+                {% else %}
+                    <span class="label"><span class="unactive-label">Фото</span> | <span class="active-label">Рецепт</span></span>
+                    <div class="hidden">{{ form1.image }}</div>{{ form1.recipes }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="raw-fields">
+            <div class="input_field">
+                <span class="label">Ккал</span>{{ form1.kkal }}
+            </div>
+            <div class="input_field">
+                <span class="label">Белки</span>{{ form1.proteins }}
+            </div>
+            <div class="input_field">
+                <span class="label">Жиры</span>{{ form1.fats }}
+            </div>
+            <div class="input_field">
+                <span class="label">Угл-ды</span>{{ form1.carbohydrates }}
+            </div>
+        </div>
+        <div class="input_field">
+            <span class="label">Комментарий</span><textarea rows='3' id='comment' name='comment'></textarea>
+        </div>
+        <div class='form-buttons'>
+            <a href="{% url 'home' %}" class="cancel-note btn btn-danger" >Отмена</a>
+            <button type='submit' class='save save-note btn btn-primary'>Сохранить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

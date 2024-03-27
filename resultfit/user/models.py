@@ -28,7 +28,7 @@ class File(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name ='Активность', blank=True, null=True, default=None)
 
 
-# triggred when User object is created
+# triggred when User object is created/updated
 @receiver(post_save, sender=User)
 def user_created(sender, instance, created, **kwargs):
     if created:

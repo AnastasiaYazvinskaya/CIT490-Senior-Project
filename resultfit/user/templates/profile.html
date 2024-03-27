@@ -5,7 +5,7 @@
 <h4 class="small-header">{% block pageName %}Профиль{% endblock %}</h4>
 <div id="inside-content">
     <div class="personal-data">
-        <img class="user-img" src="" alt="user image"/>
+        <div class="user-img"><p>{{ profile.user.last_name.0 }}{{ profile.user.first_name.0 }}</p></div>
         <div>
             <p>{{ profile.user.last_name }} {{ profile.user.first_name }}</p>
             <p>{{ profile.user.email }}</p>
@@ -19,48 +19,70 @@
         </div>
         <div>
             <a href="{% url 'logout' %}" class="logout"><img class="btnImage" src="{% static 'images/logout.svg' %}" alt="Logout"></a>
-            <a href="{% url 'update_profile' profile.id %}" class="edit"><img class="btnImage" src="{% static 'images/editBtn.svg' %}" alt="Edit"/></a>
+            <a href="{% url 'update_profile' %}" class="edit"><img class="btnImage" src="{% static 'images/editBtn.svg' %}" alt="Edit"/></a>
         </div>
     </div>
     <hr>
-    <table>
-        <tr>
-            <td>Пол</td>
-            <td>{% if profile.sex %}{{ profile.sex }}{% else %}-{% endif %}</td>
-            <td rowspan="5"  class="centerCol">
-                {% if profile.sex and profile.age and profile.height and profile.weight and profile.activity %}
-                    <a href="{% url 'calculate_cpfc' profile.user.id %}" class="btn btn-secondary">Рассчитать КБЖУ</a>
-                {% else %}
-                    <a href="{% url 'update_profile' profile.id %}" class="btn btn-secondary">Заполнить данные</a>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>Возраст</td>
-            <td>{% if profile.age %}{{ profile.age }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Рост</td>
-            <td>{% if profile.height %}{{ profile.height }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Вес</td>
-            <td>{% if profile.weight %}{{ profile.weight }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Активность</td>
-            <td>{% if profile.activity %}{{ profile.activity }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Цель</td>
-            <td>{% if profile.purpose %}{{ profile.purpose }}{% else %}-{% endif %}</td>
-        </tr>
-    </table>
+    <div>
+        <div class="raw-fields">
+            <div class="read_field">
+                <div class="label">Пол</div>
+                <div class="value">{% if profile.sex == 'F' %}Женщина{% elif profile.sex == 'M' %}Мужчина{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Активность</div>
+                <div class="value">{% if profile.activity %}{{ profile.activity }}{% else %}-{% endif %}</div>
+            </div>
+        </div>
+        <div class="raw-fields">
+            <div class="read_field">
+                <div class="label">Возраст</div>
+                <div class="value">{% if profile.age %}{{ profile.age }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Рост</div>
+                <div class="value">{% if profile.height %}{{ profile.height }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Вес</div>
+                <div class="value">{% if profile.weight %}{{ profile.weight }}{% else %}-{% endif %}</div>
+            </div>
+        </div>
+        <div class="read_field">
+            <div class="label">Цель</div>
+            <div class="value">{% if profile.purpose %}{{ profile.purpose }}{% else %}-{% endif %}</div>
+        </div>
+        {% comment %}
+        <div class="read_field">
+            {% if profile.sex and profile.age and profile.height and profile.weight and profile.activity %}
+                <a href="{% url 'calculate_cpfc' profile.user.id %}" class="btn btn-secondary">Рассчитать КБЖУ</a>
+            {% else %}
+                <a href="{% url 'update_profile' %}" class="btn btn-secondary">Заполнить данные</a>
+            {% endif %}
+        </div>
+        {% endcomment %}
+    </div>
+    {% if hasTrainer %}
+        <hr>
+        <div>
+            {% if hasTrainer.active %}
+                <p>Ваш тренер: <a href="#">{{ hasTrainer.trainer.last_name }} {{ hasTrainer.trainer.first_name.0 }}</a></p>
+            {% else %}
+                <p>Запрос отправлен: {{ hasTrainer.trainer.last_name }} {{ hasTrainer.trainer.first_name.0 }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
     {% for group in request.user.groups.all %}
         {% if group.name == 'trainer' %}
             <hr>
             <div class="qualification">
-                <p>Тут будут файлы квалификации</p>
+                {% if qualification %}
+                    {% for file in qualification %}
+                        <div class="img"><img src='{{ file.file.url }}' alt='{{ file.file.url }}'></div>
+                    {% endfor %}
+                {% else %}
+                    <p>Пока что у вас нет прикрепленных файлов</p>
+                {% endif %}
             </div>
         {% endif %}
     {% endfor %}

@@ -1,32 +1,83 @@
 {% extends "base.html" %}
 {% load static %}
-{% block style %}<link rel="stylesheet" href="{% static 'css/table.css' %}">{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
 {% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
 {#<!-- Content for displaying list of clients -->#}
 {% block content %}
 <h4 class="small-header">{% block pageName %}Профиль клиента{% endblock %}</h4>
 <div id="inside-content">
-    <table>
-        <tr>
-            <td>Фамилия Имя</td>
-            <td>{{ client.user.last_name }} {{ client.user.first_name }}</td>
-        </tr>
-        <tr>
-            <td>Телефон</td>
-            <td>{% if client.phone %}{{ client.phone }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Текущие показатели (рост/вес/активность)</td>
-            <td>{% if client.height %}{{ client.height }}{% else %}-{% endif %}/{% if client.weight %}{{ client.weight }}{% else %}-{% endif %}/{% if client.activity %}{{ client.activity }}{% else %}-{% endif %}</td>
-        </tr>
-        <tr>
-            <td>Статистика по дневнику питания</td>
-            <td>-</td>
-        </tr>
-        <tr>
-            <td>Статистика по дневнику тренировок</td>
-            <td>-</td>
-        </tr>
-    </table>
+    <div id="submenu" class="submenu">
+        <a href="{% url 'client' client.pk %}" {% if activeClientData %}class="subactive"{% endif %}>Данные</a>
+        <a href="{% url 'client_meal' client.pk %}" {% if activeClientMeal %}class="subactive"{% endif %}>Питание</a>
+        <a href="{% url 'client_sport' client.pk %}" {% if activeClientSport %}class="subactive"{% endif %}>Тренировки</a>
+    </div>
+    <div>
+        <div class="raw-fields">
+            <div class="read_field">
+                <div class="label">Фамилия</div>
+                <div class="value">{% if client.user.last_name %}{{ client.user.last_name }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Имя</div>
+                <div class="value">{% if client.user.first_name %}{{ client.user.first_name }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Телефон</div>
+                <div class="value">{% if client.phone %}{{ client.phone }}{% else %}-{% endif %}</div>
+            </div>
+        </div>
+        <div class="raw-fields">
+            <div class="read_field">
+                <div class="label">Пол</div>
+                <div class="value">{% if client.sex == 'F' %}Женщина{% elif client.sex == 'M' %}Мужчина{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Возраст</div>
+                <div class="value">{% if client.age %}{{ client.age }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Рост</div>
+                <div class="value">{% if client.height %}{{ client.height }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Вес</div>
+                <div class="value">{% if client.weight %}{{ client.weight }}{% else %}-{% endif %}</div>
+            </div>
+        </div>
+        <div class="raw-fields">
+            <div class="read_field">
+                <div class="label">Активность</div>
+                <div class="value">{% if client.activity %}{{ client.activity }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="read_field">
+                <div class="label">Цель</div>
+                <div class="value">{% if client.purpose %}{{ client.purpose }}{% else %}-{% endif %}</div>
+            </div>
+        </div>
+        <div class="multi-field-block">
+            <span class="label">Рекомендации КБЖУ</span>
+            <div class="raw-fields">
+                <div class="read_field">
+                    <div class="label">кКал</div>
+                    <div class="value">{% if recommends.kkal %}{{ recommends.kkal }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="read_field">
+                    <div class="label">Белки</div>
+                    <div class="value">{% if recommends.proteins %}{{ recommends.proteins }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="read_field">
+                    <div class="label">Жиры</div>
+                    <div class="value">{% if recommends.fats %}{{ recommends.fats }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="read_field">
+                    <div class="label">Угл-ды</div>
+                    <div class="value">{% if recommends.carbohydrates %}{{ recommends.carbohydrates }}{% else %}-{% endif %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

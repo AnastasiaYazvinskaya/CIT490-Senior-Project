@@ -12,63 +12,137 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    {% comment %}
-        <div id="trainer-list">
-            <p>У вас ещё нет тренера? Вот наши топ тренера:</p>
-            <div id="trainers">
-                {% for trainer in trainers %}
-                    <a>
-                        <p>{{ trainer.user.last_name }} {{trainer.user.first_name }}</p>
-                        <button type="button" class="btn btn-primary chooseTrainer" value="{{ trainer.user.id }}">Выбрать</button>
-                    </a>
-                {% endfor %}
+    <div class="progress-div">
+        <div class="kkal-progress">
+            <label for="kkal-progress">кКал <span>({{ menu.kkal }}/{{ foodPurpose.kkal }})</span></label>
+            <progress id="kkal-progress" class="kkal" max="{{ foodPurpose.kkal }}" value="{{ menu.kkal }}"></progress>
+        </div>
+        <div class="details-progress">
+            <div>
+                <label for="proteins-progress">Белки <span>({{ menu.proteins }}/{{ foodPurpose.proteins }})</span></label>
+                <progress id="proteins-progress" class="" max="{{ foodPurpose.proteins }}" value="{{ menu.proteins }}"></progress>
+            </div>
+            <div>
+                <label for="fats-progress">Жиры <span>({{ menu.fats }}/{{ foodPurpose.fats }})</label>
+                <progress id="fats-progress" class="" max="{{ foodPurpose.fats }}" value="{{ menu.fats }}"></progress>
+            </div>
+            <div>
+                <label for="carbohydrates-progress">Углеводы <span>({{ menu.carbohydrates }}/{{ foodPurpose.carbohydrates }})</span></label>
+                <progress id="carbohydrates-progress" class="" max="{{ foodPurpose.carbohydrates }}" value="{{ menu.carbohydrates }}"></progress>
             </div>
         </div>
-    {% endcomment %}
-    <p>Сегодня</p>
-    <hr>
-    <div>
-        <p>Цели КБЖУ:</p>
-        <table>
-            <tr>
-                <td>Ккал:</td>
-                <td>800 / 2200</td>
-            </tr>
-            <tr>
-                <td>Белки:</td>
-                <td>800 / 2200</td>
-            </tr>
-            <tr>
-                <td>Жиры:</td>
-                <td>800 / 2200</td>
-            </tr>
-            <tr>
-                <td>Углеводы:</td>
-                <td>800 / 2200</td>
-            </tr>
-        </table>
     </div>
-    <hr>
-    {% if menu %}
     <div id="day-menu">
-        <p>Меню:</p>
-        <table>
-            {% for recipe in menu %}
-            <tr>
-                <td>{{ recipe.mealType }}:</td>
-                <td>{{ recipe.name }}</td>
-            </tr>
-            {% endfor %}
-            <tr><td>
-                <a href="#" style="text-decoration: line-through;">Изменить меню</a>
-            </td></tr>
-        </table>
+        <div class="meal-block">
+            <a href="{% url 'meal' menu.braekfast.pk %}" class="meal" id="breakfast">
+                <img src="{% static 'images/breakfast.svg' %}" alt="breakfast" class="meal-img" />
+                <div>
+                    <p class="meal-title">Завтрак <span>(КБЖУ: {{ menu.braekfast.kkal }}/{{ menu.braekfast.proteins }}/{{ menu.braekfast.fats }}/{{ menu.braekfast.carbohydrates }})</span></p>
+                    {% if menu.braekfast.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>{{ menu.braekfast.recipes.name }}</p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% if menu.braekfast.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% else %}
+                <a href="{% url 'add_note' menu.braekfast.pk %}" class="btnAction">
+                    <img src="{% static 'images/addNote.svg' %}" alt="Add note to dairy" class="btnImage" >
+                </a>
+            {% endif %}
+        </div>
+        <div class="meal-block">
+            <a href="{% url 'meal' menu.lanch.pk %}" class="meal" id="lanch">
+                <img src="{% static 'images/lanch.svg' %}" alt="lanch" class="meal-img" />
+                <div>
+                    <p class="meal-title">Обед <span>(КБЖУ: {{ menu.lanch.kkal }}/{{ menu.lanch.proteins }}/{{ menu.lanch.fats }}/{{ menu.lanch.carbohydrates }})</span></p>
+                    {% if menu.lanch.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>{{ menu.lanch.recipes.name }}</p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% if menu.lanch.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% else %}
+                <a href="{% url 'add_note' menu.lanch.pk %}" class="btnAction">
+                    <img src="{% static 'images/addNote.svg' %}" alt="Add note to dairy" class="btnImage" >
+                </a>
+            {% endif %}
+        </div>
+        <div class="meal-block">
+            <a href="{% url 'meal' menu.dinner.pk %}" class="meal" id="dinner">
+                <img src="{% static 'images/dinner.svg' %}" alt="dinner" class="meal-img" />
+                <div>
+                    <p class="meal-title">Ужин <span>(КБЖУ: {{ menu.dinner.kkal }}/{{ menu.dinner.proteins }}/{{ menu.dinner.fats }}/{{ menu.dinner.carbohydrates }})</span></p>
+                    {% if menu.dinner.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>{{ menu.dinner.recipes.name }}</p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% if menu.dinner.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% else %}
+                <a href="{% url 'add_note' menu.dinner.pk %}" class="btnAction">
+                    <img src="{% static 'images/addNote.svg' %}" alt="Add note to dairy" class="btnImage" >
+                </a>
+            {% endif %}
+        </div>
+        <div class="meal-block">
+            <a href="#" class="meal" id="snack">
+                <img src="{% static 'images/snack.svg' %}" alt="snack" class="meal-img" />
+                <div>
+                    <p class="meal-title">Перекус <span>(КБЖУ: {{ menu.snack.kkal }}/{{ menu.snack.proteins }}/{{ menu.snack.fats }}/{{ menu.snack.carbohydrates }})</span></p>
+                    {% if menu.snack.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>{{ menu.snack.recipes.name }}</p>
+                    {% elif menu.snack %}
+                        <p>Авторская сборка</p>
+                    {% else %}
+                        <p>Нет данных</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% if menu.snack.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% else %}
+                <a href="#" class="btnAction">
+                    <img src="{% static 'images/addNote.svg' %}" alt="Add note to dairy" class="btnImage" >
+                </a>
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
     <hr>
     <div id="day-training">
-        <p>Тренировки:</p>
-        <p>Тут будут данные по плановым тренировкам (при создании дневника/плана тренировок)</p>
+        {% if training %}
+            {% for train in training %}
+                <div class="sport-block">
+                    <a href="#" class="sport">
+                        <img src="{% static 'images/sport.svg' %}" alt="sport" class="sport-img" />
+                        <div>
+                            <p class="sport-title">{{ train.name }}</p>
+                            <p>Время: {{ train.time|date:"G:i" }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+        <div class="sport-block">
+            <a href="#" class="sport">
+                <div>
+                    <p class="no-sport">Сегодня у вас нет тренировки</p>
+                </div>
+            </a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
