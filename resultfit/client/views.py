@@ -28,7 +28,7 @@ def clients(request, type):#Список клиентов для тренера
             pass
             # Фильтрация списка
             #clients = clients.filter(client_firstName__icontains = search)|clients.filter(client_lastName__icontains = search)|clients.filter(client_email__icontains = search)
-        return render(request, 'clients.html', {'clients': clients, 'search': search, 'activeCurrent': type == 'current', 'activeRequest': type == 'request', 'requestNum': requestNum})
+        return render(request, 'clients.html', {'clients': clients, 'search': search,'activeClient': True, 'activeCurrent': type == 'current', 'activeRequest': type == 'request', 'requestNum': requestNum})
     return redirect('home')
 
 # Client page

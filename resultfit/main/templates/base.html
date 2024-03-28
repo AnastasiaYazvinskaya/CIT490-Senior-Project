@@ -46,10 +46,11 @@
                         {% if group.name == "administrator" %}
                             <a href="{% url 'trainers' %}" {% if activeTrainer %}class="active"{% endif %}>Тренера</a>
                         {% endif %}
-                        {% if group.name == "programmer" %}
+                        {% comment %}{% if group.name == "programmer" %}
                             <a href="{% url 'systemdata' %}" {% if activeSystemdata %}class="active"{% endif %}>Системные данные</a>
                             <a href="{% url 'reset' %}" {% if activeReset %}class="active"{% endif %}>Работа с БД</a>
                         {% endif %}
+                        {% endcomment %}
                     {% endfor %}
                     <a href="{% url 'recipes' %}" {% if activeRecipe %}class="active"{% endif %}>Рецепты</a>
                 </div>

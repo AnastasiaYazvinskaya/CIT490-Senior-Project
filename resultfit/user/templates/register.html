@@ -19,29 +19,29 @@
             <table>
                 <tr>
                     <td colspan="2" class="errorCol">{% if form.last_name.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.last_name.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="errorCol">{% if form.first_name.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.first_name.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr> 
                     <td colspan="2" class="errorCol">{% if form.email.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.email.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr>
@@ -59,29 +59,29 @@
                 <tr><td colspan="3"><hr></td></tr>
                 <tr>
                     <td colspan="2" class="errorCol">{% if form.username.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.username.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="errorCol">{% if form.password1.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.password1.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="errorCol">{% if form.password2.errors %}
-                        <ul class="errorlist">
+                        
                             {% for error in form.password2.errors %}
-                                <li>{{ error }}</li>
+                                <p class="error">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                        
                     {% endif %}</td>
                 </tr>
                 <tr>

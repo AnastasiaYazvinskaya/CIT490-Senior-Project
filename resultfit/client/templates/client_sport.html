@@ -7,7 +7,7 @@
 {% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
 {#<!-- Content for displaying list of clients -->#}
 {% block content %}
-<h4 class="small-header">{% block pageName %}Профиль клиента{% endblock %}</h4>
+<h4 class="small-header">{% block pageName %}Профиль клиента: <span style="font-size: 20px;">{{ client.user.last_name }} {{ client.user.first_name }}</span>{% endblock %}</h4>
 <div id="inside-content">
     <div id="submenu" class="submenu">
         <a href="{% url 'client' client.pk %}" {% if activeClientData %}class="subactive"{% endif %}>Данные</a>

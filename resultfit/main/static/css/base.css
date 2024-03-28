@@ -220,6 +220,12 @@ h4.small-header {
 .errorCol {
     color:#9a0303;
     width: 30px;
+    font-weight: bold;
+}
+.error {
+    background-color: #eaeaea8f;
+    border-radius: 5px;
+    text-align: center;
 }
 .saveCol {
     position: relative;
@@ -404,7 +410,7 @@ input[type=number] {
     margin: 3px auto;
     height: 81px;
 }
-.sport {
+.sport-block {
     background-color: #2d27741b;
 }
 .meal:hover, .sport:hover {
