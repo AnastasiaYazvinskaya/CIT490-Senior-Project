@@ -180,4 +180,26 @@ $(document).ready(function(){
         $('#add-comment_'+note_id).show();
         $('#comment-form_'+note_id).html('');
     });
+
+    // Client data
+    $('.openDetails').on('click', function () {
+        meal_id = $(this).attr('id').split('_')[1];
+        if ($('#open_'+meal_id).is(':hidden') || $('#open_'+meal_id).is(':visible')) {
+            $('#details_'+meal_id).show();
+            $(this).hide()
+            $('#close_'+meal_id).show();
+        } else {
+            $('#details_'+meal_id).hide();
+        }
+        return false;
+    });
+    $('.closeDetails').on('click', function () {
+        meal_id = $(this).attr('id').split('_')[1];
+        if ($('#close_'+meal_id).is(':hidden') || $('#close_'+meal_id).is(':visible')) {
+            $('#details_'+meal_id).hide();
+            $(this).hide()
+            $('#open_'+meal_id).show();
+        }
+        return false;
+    });
 })

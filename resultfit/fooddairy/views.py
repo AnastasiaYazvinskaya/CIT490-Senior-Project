@@ -32,23 +32,20 @@ def fooddairy(request, day=None):
     return render(request, 'food_dairy.html', {"days": dayNotes, "dairy": dairy, 'menu': todayMenu, "activeFood": True, "activeDay": day, 'newDay':dayNotes[0].day+timedelta(days=1), 'curTime':int(timezone.now().strftime('%H'))})
 
 @login_required
-def calculate_cpfc(request, pk):
-    if request.user.pk == pk:
-        dairy = FoodDairyGeneral.objects.get(user = request.user)
-        if (dairy != None):
-            profile = Profile.objects.get(user = request.user)
-            if profile.sex == 'F':
-                dairy.kkal = round((655.1 + (9.563*float(profile.weight)) + (1.85*float(profile.height)) - (4.676*float(profile.age))) * float(profile.activity.rate))
-            elif profile.sex == 'M':
-                dairy.kkal = round((66.5 + (13.75*float(profile.weight)) + (5.003*float(profile.height)) - (6.775*float(profile.age))) * float(profile.activity.rate))
-            dairy.proteins = round(dairy.kkal * float(profile.purpose.proteins_rate_min) / 100)
-            dairy.fats = round(dairy.kkal * float(profile.purpose.fats_rate_min) / 100)
-            dairy.carbohydrates = round(dairy.kkal * float(profile.purpose.carbohydrates_rate_max) / 100)
-            dairy.save()
-            return redirect('fooddairy')
-        return redirect('profile')
-    else:
-        return redirect('profile')
+def calculate_cpfc(request):
+    dairy = FoodDairyGeneral.objects.get(user = request.user)
+    if (dairy != None):
+        profile = Profile.objects.get(user = request.user)
+        if profile.sex == 'F':
+            dairy.kkal = round((655.1 + (9.563*float(profile.weight)) + (1.85*float(profile.height)) - (4.676*float(profile.age))) * float(profile.activity.rate))
+        elif profile.sex == 'M':
+            dairy.kkal = round((66.5 + (13.75*float(profile.weight)) + (5.003*float(profile.height)) - (6.775*float(profile.age))) * float(profile.activity.rate))
+        dairy.proteins = round(dairy.kkal * float(profile.purpose.proteins_rate_min) / 100)
+        dairy.fats = round(dairy.kkal * float(profile.purpose.fats_rate_min) / 100)
+        dairy.carbohydrates = round(dairy.kkal * float(profile.purpose.carbohydrates_rate_max) / 100)
+        dairy.save()
+        return redirect('fooddairy')
+    return redirect('profile')
     
 @login_required
 def food_dairy(request, day=None):

@@ -60,3 +60,13 @@
 .note-img {
     width: 50%;
 }
+.details {
+    display: none;
+}
+.ingredsTitle {
+    margin-bottom: 0;
+}
+.ingreds p {
+    margin-bottom: 0;
+    margin-left: 30px;
+}

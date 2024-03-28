@@ -392,13 +392,15 @@ input[type=number] {
 .meal-block, .sport-block {
     width: 100%;
     position: relative;
+    background-color: #2774311b;
+    border-radius: 5px;
+    padding: 3px;
+    margin: 3px auto;
 }
 .meal, .sport {
     display: flex;
     flex-direction: row;
-    background-color: #2774311b;
-    padding: 3px;
-    border-radius: 5px;
+    position: relative;
     margin: 3px auto;
     height: 81px;
 }
@@ -431,6 +433,17 @@ input[type=number] {
 }
 img.btnAction {
     padding: 4px;
+}
+.meal-block .openDetails, .meal-block .closeDetails {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.meal-block .closeDetails {
+    display: none;
+}
+.meal-block .openDetails:hover, .meal-block .closeDetails:hover {
+    cursor: pointer;
 }
 
 .progress-div progress, .kkal-progress {

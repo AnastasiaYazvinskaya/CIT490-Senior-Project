@@ -2,9 +2,10 @@
 {% load static %}
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/table.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fooddairy.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_update.css' %}">
 {% endblock %}
-{% block script2 %}<script src="{% static 'js/client.js' %}"></script>{% endblock %}
+{% block script2 %}<script src="{% static 'js/fooddairy.js' %}"></script>{% endblock %}
 {#<!-- Content for displaying list of clients -->#}
 {% block content %}
 <h4 class="small-header">{% block pageName %}Профиль клиента{% endblock %}</h4>
@@ -14,8 +15,255 @@
         <a href="{% url 'client_meal' client.pk %}" {% if activeClientMeal %}class="subactive"{% endif %}>Питание</a>
         <a href="{% url 'client_sport' client.pk %}" {% if activeClientSport %}class="subactive"{% endif %}>Тренировки</a>
     </div>
-    <div>
-        
+    <div id="submenu" class="submenu">
+        {% if days %}
+            {% for day in days %}
+                {% if activeDay == day.day %}
+                    <a href="{% url 'meal_plan_by_date' day.day %}" class="subactive" tabindex="1">
+                        {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
+                    </a>
+                {% else %}
+                    <a href="{% url 'meal_plan_by_date' day.day %}" tabindex="0">
+                        {% if day.day|date:"w" == '0' %}вс{% elif day.day|date:"w" == '1' %}пн{% elif day.day|date:"w" == '2' %}вт{% elif day.day|date:"w" == '3' %}ср{% elif day.day|date:"w" == '4' %}чт{% elif day.day|date:"w" == '5' %}пт{% elif day.day|date:"w" == '6' %}сб{% endif %} {{ day.day|date:"d.m.Y" }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <a href="{% url 'meal_plan_by_date' activeDay %}" class="subactive">
+                {% if activeDay|date:"w" == '0' %}вс{% elif activeDay|date:"w" == '1' %}пн{% elif activeDay|date:"w" == '2' %}вт{% elif activeDay|date:"w" == '3' %}ср{% elif activeDay|date:"w" == '4' %}чт{% elif activeDay|date:"w" == '5' %}пт{% elif activeDay|date:"w" == '6' %}сб{% endif %} {{ activeDay|date:"d.m.Y" }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="progress-div">
+        <div class="kkal-progress">
+            <label for="kkal-progress">кКал <span>({{ menu.kkal }}/{{ dairy.kkal }})</span></label>
+            <progress id="kkal-progress" class="kkal" max="{{ dairy.kkal }}" value="{{ menu.kkal }}"></progress>
+        </div>
+        <div class="details-progress">
+            <div>
+                <label for="proteins-progress">Белки <span>({{ menu.proteins }}/{{ dairy.proteins }})</span></label>
+                <progress id="proteins-progress" class="" max="{{ dairy.proteins }}" value="{{ menu.proteins }}"></progress>
+            </div>
+            <div>
+                <label for="fats-progress">Жиры <span>({{ menu.fats }}/{{ dairy.fats }})</label>
+                <progress id="fats-progress" class="" max="{{ dairy.fats }}" value="{{ menu.fats }}"></progress>
+            </div>
+            <div>
+                <label for="carbohydrates-progress">Углеводы <span>({{ menu.carbohydrates }}/{{ dairy.carbohydrates }})</span></label>
+                <progress id="carbohydrates-progress" class="" max="{{ dairy.carbohydrates }}" value="{{ menu.carbohydrates }}"></progress>
+            </div>
+        </div>
+    </div>
+    <div id="day-menu">
+        <div class="meal-block">
+
+            <a href="{% url 'meal' menu.braekfast.pk %}" class="meal" id="breakfast">
+                <img src="{% static 'images/breakfast.svg' %}" alt="breakfast" class="meal-img" />
+                <div>
+                    <p class="meal-title">Завтрак <span>(КБЖУ: {{ menu.braekfast.kkal }}/{{ menu.braekfast.proteins }}/{{ menu.braekfast.fats }}/{{ menu.braekfast.carbohydrates }})</span></p>
+                    {% if menu.braekfast.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>
+                            {{ menu.braekfast.recipes.name }}
+                        </p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+                <img src="{% static 'images/open-details.svg' %}" alt="Open details" class="btnImage openDetails" id="open_{{ menu.braekfast.pk }}">
+                <img src="{% static 'images/close-details.svg' %}" alt="Close details" class="btnImage closeDetails" id="close_{{ menu.braekfast.pk }}">
+            </a>
+            {% if menu.braekfast.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% endif %}
+            <div id="details_{{ menu.braekfast.id }}" class="details details-body">
+                <div>
+                    <p class="ingredsTitle">Ингредиенты:</p>
+                    <div class="ingreds">
+                        {% for ingredient in breakfastIngred %}
+                            <p>{{ ingredient.product_name }} - {{ ingredient.amount }} {{ ingredient.unitType }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="comments_{{ breakfastNote.id }}" class="comments">
+                    <div class="comments-title" id="title_{{ breakfastNote.id }}">
+                        <span class="collapse-icon" id="collapse_{{ breakfastNote.id }}"></span>
+                        <span>Комментарии ({{ breakfastNote.comments|length }})</span>
+                    </div>
+                    <div class="comments-body">
+                        {% for comment in breakfastNote.comments %}
+                            <div class="comment">
+                                <p class="comment-label">{{ comment.author }} ({{ comment.created_by }})</p>
+                                <p>{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="raw-fields last-field">
+                            <div class="input_field large-field">
+                                <textarea rows='1' id='comment-text_{{ note.id }}' name='comment'></textarea>
+                            </div>
+                            <button type='button' class='save save-comment btnImage' id='save-comment_{{ note.id }}' value='{{ note.id }}'><img class="btnImage" src="{% static 'images/sendMail.svg' %}" alt="Send comment"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="meal-block">
+            <a href="{% url 'meal' menu.lanch.pk %}" class="meal" id="lanch">
+                <img src="{% static 'images/lanch.svg' %}" alt="lanch" class="meal-img" />
+                <div>
+                    <p class="meal-title">Обед <span>(КБЖУ: {{ menu.lanch.kkal }}/{{ menu.lanch.proteins }}/{{ menu.lanch.fats }}/{{ menu.lanch.carbohydrates }})</span></p>
+                    {% if menu.lanch.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>
+                            {{ menu.lanch.recipes.name }}
+                        </p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+                <img src="{% static 'images/open-details.svg' %}" alt="Open details" class="btnImage openDetails" id="open_{{ menu.lanch.pk }}">
+                <img src="{% static 'images/close-details.svg' %}" alt="Close details" class="btnImage closeDetails" id="close_{{ menu.lanch.pk }}">
+            </a>
+            {% if menu.lanch.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% endif %}
+            <div id="details_{{ menu.lanch.id }}" class="details details-body">
+                <div>
+                    <p class="ingredsTitle">Ингредиенты:</p>
+                    <div class="ingreds">
+                        {% for ingredient in lanchIngred %}
+                            <p>{{ ingredient.product_name }} - {{ ingredient.amount }} {{ ingredient.unitType }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="comments_{{ lanchNote.id }}" class="comments">
+                    <div class="comments-title" id="title_{{ lanchNote.id }}">
+                        <span class="collapse-icon" id="collapse_{{ lanchNote.id }}"></span>
+                        <span>Комментарии ({{ lanchNote.comments|length }})</span>
+                    </div>
+                    <div class="comments-body">
+                        {% for comment in lanchNote.comments %}
+                            <div class="comment">
+                                <p class="comment-label">{{ comment.author }} ({{ comment.created_by }})</p>
+                                <p>{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="raw-fields last-field">
+                            <div class="input_field large-field">
+                                <textarea rows='1' id='comment-text_{{ note.id }}' name='comment'></textarea>
+                            </div>
+                            <button type='button' class='save save-comment btnImage' id='save-comment_{{ note.id }}' value='{{ note.id }}'><img class="btnImage" src="{% static 'images/sendMail.svg' %}" alt="Send comment"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="meal-block">
+            <a href="{% url 'meal' menu.dinner.pk %}" class="meal" id="dinner">
+                <img src="{% static 'images/dinner.svg' %}" alt="dinner" class="meal-img" />
+                <div>
+                    <p class="meal-title">Ужин <span>(КБЖУ: {{ menu.dinner.kkal }}/{{ menu.dinner.proteins }}/{{ menu.dinner.fats }}/{{ menu.dinner.carbohydrates }})</span></p>
+                    {% if menu.dinner.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>
+                            {{ menu.dinner.recipes.name }}
+                        </p>
+                    {% else %}
+                        <p>Авторская сборка</p>
+                    {% endif %}
+                </div>
+                <img src="{% static 'images/open-details.svg' %}" alt="Open details" class="btnImage openDetails" id="open_{{ menu.dinner.pk }}">
+                <img src="{% static 'images/close-details.svg' %}" alt="Close details" class="btnImage closeDetails" id="close_{{ menu.dinner.pk }}">
+            </a>
+            {% if menu.dinner.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% endif %}
+            <div id="details_{{ menu.dinner.id }}" class="details details-body">
+                <div>
+                    <p class="ingredsTitle">Ингредиенты:</p>
+                    <div class="ingreds">
+                        {% for ingredient in dinnerIngred %}
+                            <p>{{ ingredient.product_name }} - {{ ingredient.amount }} {{ ingredient.unitType }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="comments_{{ dinnerNote.id }}" class="comments">
+                    <div class="comments-title" id="title_{{ dinnerNote.id }}">
+                        <span class="collapse-icon" id="collapse_{{ dinnerNote.id }}"></span>
+                        <span>Комментарии ({{ dinnerNote.comments|length }})</span>
+                    </div>
+                    <div class="comments-body">
+                        {% for comment in dinnerNote.comments %}
+                            <div class="comment">
+                                <p class="comment-label">{{ comment.author }} ({{ comment.created_by }})</p>
+                                <p>{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="raw-fields last-field">
+                            <div class="input_field large-field">
+                                <textarea rows='1' id='comment-text_{{ note.id }}' name='comment'></textarea>
+                            </div>
+                            <button type='button' class='save save-comment btnImage' id='save-comment_{{ note.id }}' value='{{ note.id }}'><img class="btnImage" src="{% static 'images/sendMail.svg' %}" alt="Send comment"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if menu.snack.recipes %}
+        <div class="meal-block">
+            <a href="#" class="meal" id="snack">
+                <img src="{% static 'images/snack.svg' %}" alt="snack" class="meal-img" />
+                <div>
+                    <p class="meal-title">Перекус <span>(КБЖУ: {{ menu.snack.kkal }}/{{ menu.snack.proteins }}/{{ menu.snack.fats }}/{{ menu.snack.carbohydrates }})</span></p>
+                    {% if menu.snack.is_recommend %}
+                        <p>Рекоммендация</p>
+                        <p>
+                            {{ menu.snack.recipes.name }}
+                        </p>
+                    {% elif menu.snack %}
+                        <p>Авторская сборка</p>
+                    {% else %}
+                        <p>Нет данных</p>
+                    {% endif %}
+                </div>
+                <img src="{% static 'images/open-details.svg' %}" alt="Open details" class="btnImage openDetails" id="open_{{ menu.snack.pk }}">
+                <img src="{% static 'images/close-details.svg' %}" alt="Close details" class="btnImage closeDetails" id="close_{{ menu.snack.pk }}">
+            </a>
+            {% if menu.snack.is_noted %}
+                <img src="{% static 'images/check.svg' %}" alt="Checked note" class="btnImage btnAction" >
+            {% endif %}
+            <div id="details_{{ menu.snack.id }}" class="details details-body">
+                <div>
+                    <p class="ingredsTitle">Ингредиенты:</p>
+                    <div class="ingreds">
+                        {% for ingredient in snackIngred %}
+                            <p>{{ ingredient.product_name }} - {{ ingredient.amount }} {{ ingredient.unitType }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="comments_{{ snackNote.id }}" class="comments">
+                    <div class="comments-title" id="title_{{ snackNote.id }}">
+                        <span class="collapse-icon" id="collapse_{{ snackNote.id }}"></span>
+                        <span>Комментарии ({{ snackNote.comments|length }})</span>
+                    </div>
+                    <div class="comments-body">
+                        {% for comment in snackNote.comments %}
+                            <div class="comment">
+                                <p class="comment-label">{{ comment.author }} ({{ comment.created_by }})</p>
+                                <p>{{ comment.text }}</p>
+                            </div>
+                        {% endfor %}
+                        <div class="raw-fields last-field">
+                            <div class="input_field large-field">
+                                <textarea rows='1' id='comment-text_{{ note.id }}' name='comment'></textarea>
+                            </div>
+                            <button type='button' class='save save-comment btnImage' id='save-comment_{{ note.id }}' value='{{ note.id }}'><img class="btnImage" src="{% static 'images/sendMail.svg' %}" alt="Send comment"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

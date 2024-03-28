@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +9,8 @@ from django.http import JsonResponse
 from training.models import Training, TrainingExercise
 from .models import *
 from user.models import Profile
-from fooddairy.models import FoodDairyGeneral
+from fooddairy.models import *
+from recipe.models import *
    
 # Clients page
 @login_required
@@ -42,11 +44,62 @@ def client(request, pk=None):
 
 # Client page
 @login_required
-def client_meal(request, pk=None):
+def client_meal(request, pk=None, day=None):
     if request.user.groups.filter(name='trainer').exists():
         if pk:
             client = Profile.objects.get(pk=pk)
-            recommends = FoodDairyGeneral.objects.get(user=client.user)
+            dayNotes = DayMenu.objects.filter(user = client.user).order_by('-day')
+            dairy = FoodDairyGeneral.objects.get(user = client.user)
+            print('day', day)
+            if day is None:
+                day = timezone.now().date()
+            else:
+                day = datetime.strptime(day, '%Y-%m-%d')
+            print('day2', day)
+            todayMenu = DayMenu.objects.filter(user = client.user, day = day)
+            print('todayMenu', todayMenu)
+            if len(todayMenu) == 0:
+                todayMenu = DayMenu.objects.create(
+                    day = timezone.now().date(),
+                    user = client.user
+                )
+            else:
+                todayMenu = todayMenu[0]
+            day = todayMenu.day
+            note = FoodDairyNote.objects.filter(day__day=day)
+            breakfastNote=None
+            breakfastIngred=None
+            lanchNote=None
+            lanchIngred=None
+            dinnerNote=None
+            dinnerIngred=None
+            snackNote=None
+            snackIngred=None
+            if len(note) != 0:
+                breakfastNote = note.values()[0]
+                breakfastIngred = Ingredient.objects.filter(recipe=todayMenu.braekfast.recipes)
+                if len(breakfastNote) != 0:
+                    breakfastNote['comments'] = Comment.objects.filter(foodNote=note[0]).order_by('-created_by')
+                lanchNote = note.values()[0]
+                lanchIngred = Ingredient.objects.filter(recipe=todayMenu.lanch.recipes)
+                if len(lanchNote) != 0:
+                    lanchNote['comments'] = Comment.objects.filter(foodNote=note[0]).order_by('-created_by')
+                dinnerNote = note.values()[0]
+                dinnerIngred = Ingredient.objects.filter(recipe=todayMenu.dinner.recipes)
+                if len(dinnerNote) != 0:
+                    dinnerNote['comments'] = Comment.objects.filter(foodNote=note[0]).order_by('-created_by')
+                if todayMenu.snack:
+                    snackNote = note.values()[0]
+                    snackIngred = Ingredient.objects.filter(recipe=todayMenu.snack.recipes)
+                    if len(snackNote) != 0:
+                        snackNote['comments'] = Comment.objects.filter(foodNote=note[0]).order_by('-created_by')
+                
+            return render(request, 'client_meal.html', {"days": dayNotes, "dairy": dairy, 'menu': todayMenu, "activeDay": day, 'client': client,
+                                                        'breakfastNote': breakfastNote, 'breakfastIngred':breakfastIngred, 
+                                                        'lanchNote': lanchNote, 'lanchIngred':lanchIngred, 
+                                                        'dinnerNote': dinnerNote, 'dinnerIngred':dinnerIngred, 
+                                                        'snackNote': snackNote, 'snackIngred':snackIngred,
+                                                        'activeClient': True, 'activeClientMeal': True})
             return render(request, 'client_meal.html', {'client': client, 'recommends': recommends, 'activeClient': True, 'activeClientMeal': True})
         return redirect('clients')
     return redirect('home')

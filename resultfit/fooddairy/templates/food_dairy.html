@@ -27,7 +27,12 @@
         {% endif %}
     </div>
     
-    <a class="btn btn-secondary" href="{% url 'food_dairy_by_date' activeDay %}">Дневник</a>
+    <div>
+        <a class="btn btn-secondary" href="{% url 'food_dairy_by_date' activeDay %}">Дневник</a>
+        {% if not dairy.kkal or dairy.kkal == 0 %}
+            <a class="btn btn-secondary" href="{% url 'calculate_cpfc' %}">Расчитать КБЖУ</a>
+        {% endif %}
+    </div>
     <div class="progress-div">
         <div class="kkal-progress">
             <label for="kkal-progress">кКал <span>({{ menu.kkal }}/{{ dairy.kkal }})</span></label>
